@@ -22,7 +22,7 @@ public class CompanyController : BaseController
 
     // GET /company
     //editted from Index to CompanyIndex
-    public ActionResult CompanyIndex(string order="id", string direction="asc")
+    public ActionResult CompanyIndex(string order="cr_no", string direction="asc")
     {
         // load Companies using service and pass to view
         var paged = _svc.GetCompanies(order);
