@@ -17,10 +17,10 @@ namespace SustiVest.Data.Services
             this.ctx = ctx; 
         }
 
-        public void Initialise()
-        {
-           ctx.Initialise(); 
-        }
+        // public void Initialise()
+        // {
+        //    ctx.Initialise(); 
+        // }
 
     
 
@@ -36,47 +36,47 @@ namespace SustiVest.Data.Services
         {
             var results = (order.ToLower(), direction.ToLower()) switch
             {
-                ("id", "asc") => ctx.Companies.OrderBy(c => c.Id),
-                ("id", "desc") => ctx.Companies.OrderByDescending(c => c.Id),
+                ("cr_no", "asc") => ctx.Companies.OrderBy(c => c.CR_No),
+                ("cr_no", "desc") => ctx.Companies.OrderByDescending(c => c.CR_No),
 
-                ("name", "asc") => ctx.Companies.OrderBy(c => c.CompanyName),
-                ("name", "desc") => ctx.Companies.OrderByDescending(c => c.CompanyName),
+                ("taxID", "asc") => ctx.Companies.OrderBy(c => c.TaxID),
+                ("TaxID", "desc") => ctx.Companies.OrderByDescending(c => c.TaxID),
+                
+                ("companyName", "asc") => ctx.Companies.OrderBy(c => c.CompanyName),
+                ("companyName", "desc") => ctx.Companies.OrderByDescending(c => c.CompanyName),
 
                 ("industry", "asc") => ctx.Companies.OrderBy(c => c.Industry),
                 ("industry", "desc") => ctx.Companies.OrderByDescending(c => c.Industry),
+                
+                ("dateofestablishment", "asc") => ctx.Companies.OrderBy(c => c.DateOfEstablishment),
+                ("dateofestablishment", "desc") => ctx.Companies.OrderByDescending(c => c.DateOfEstablishment),
 
-                ("riskrating", "asc") => ctx.Companies.OrderBy(c => c.RiskRating),
-                ("riskrating", "desc") => ctx.Companies.OrderByDescending(c => c.RiskRating),
+                ("activity", "asc") => ctx.Companies.OrderBy(c => c.Activity),
+                ("activity", "desc") => ctx.Companies.OrderByDescending(c => c.Activity),
 
-                ("tenor", "asc") => ctx.Companies.OrderBy(c => c.Tenor),
-                ("tenor", "desc") => ctx.Companies.OrderByDescending(c => c.Tenor),
+                ("type", "asc") => ctx.Companies.OrderBy(c => c.Type),
+                ("type", "desc") => ctx.Companies.OrderByDescending(c => c.Type),
 
-                ("roidecimal", "asc") => ctx.Companies.OrderBy(c => c.ROIdecimal),
-                ("roidecimal", "desc") => ctx.Companies.OrderByDescending(c => c.ROIdecimal),
-
-                _                      => ctx.Companies.OrderBy(c => c.Id)
+                ("shareholderstructure", "asc") => ctx.Companies.OrderBy(c => c.ShareholderStructure),
+                ("shareholderstructure", "desc") => ctx.Companies.OrderByDescending(c => c.ShareholderStructure),
+                _                      => ctx.Companies.OrderBy(c => c.CR_No)
             };
             return results.ToList();
         }
 
         // Retrieve Company by Id 
-        public Company GetCompany(int id)
+        public Company GetCompany(string cr_no)
         {
-            return ctx.Companies.FirstOrDefault(c => c.Id == id);
+            return ctx.Companies.FirstOrDefault(c => c.CR_No == cr_no);
                     //  .Include(s => s.Tickets)             
         }
 
         // Add a new company
         public Company AddCompany(Company c)
         {
-            // check if company with name exists            
+            // check if company with name exists           
             var exists = GetCompanyByName(c.CompanyName);
             if (exists != null)
-            {
-                return null;
-            }
-            // check Tenor is valid
-            if (c.Tenor > 7)
             {
                 return null;
             }
@@ -84,11 +84,14 @@ namespace SustiVest.Data.Services
             // create new company
             var company = new Company
             {
+                CR_No=c.CR_No,
+                TaxID=c.TaxID,
                 CompanyName = c.CompanyName,
                 Industry = c.Industry,
-                RiskRating = c.RiskRating,
-                Tenor = c.Tenor,
-                ROIdecimal = c.ROIdecimal,
+                DateOfEstablishment = c.DateOfEstablishment,
+                Activity = c.Activity,
+                Type = c.Type,
+                ShareholderStructure = c.ShareholderStructure,
             };
 
             ctx.Companies.Add(company); // add company to the list
@@ -98,9 +101,9 @@ namespace SustiVest.Data.Services
 
         // Delete the company identified by Id returning true if 
         // deleted and false if not found
-        public bool DeleteCompany(int id)
+        public bool DeleteCompany(string CR_No)
         {
-            var c = GetCompany(id);
+            var c = GetCompany(CR_No);
             if (c == null)
             {
                 return false;
@@ -114,7 +117,7 @@ namespace SustiVest.Data.Services
         public Company UpdateCompany(Company updated)
         {
             // verify the commpany exists 
-            var company = GetCompany(updated.Id);
+            var company = GetCompany(updated.CR_No);
             if (company == null)
             {
                 return null;
@@ -122,13 +125,7 @@ namespace SustiVest.Data.Services
 
             // verify name is still unique
             var exists = GetCompanyByName(updated.CompanyName);
-            if (exists != null && exists.Id != updated.Id)
-            {
-                return null;
-            }
-
-            // verify tenor is valid
-            if (updated.Tenor > 7)
+            if (exists != null && exists.CR_No != updated.CR_No)
             {
                 return null;
             }
@@ -136,9 +133,10 @@ namespace SustiVest.Data.Services
             // update the details of the company retrieved and save
             company.CompanyName = updated.CompanyName;
             company.Industry = updated.Industry;
-            company.RiskRating = updated.RiskRating;
-            company.Tenor = updated.Tenor;
-            company.ROIdecimal = updated.ROIdecimal;
+            company.DateOfEstablishment = updated.DateOfEstablishment;
+            company.Activity = updated.Activity;
+            company.Type = updated.Type;
+            company.ShareholderStructure = updated.ShareholderStructure;
 
             ctx.SaveChanges();
             return company;

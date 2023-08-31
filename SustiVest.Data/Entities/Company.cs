@@ -4,7 +4,9 @@ namespace SustiVest.Data.Entities
 {
     public class Company
 {
-    public int Id { get; set; }
+    public string CR_No { get; set; } //Commercial Registration Number
+
+    public string TaxID { get; set; } //Tax ID Number
 
     // [Required]
     public string CompanyName { get; set; }
@@ -13,15 +15,18 @@ namespace SustiVest.Data.Entities
     public string Industry { get; set; }
 
     // [Required]
-    public int RiskRating { get; set; }
+    public DateOnly DateOfEstablishment { get; set; }
 
+    public string Activity { get; set; }
+
+    public enum CompanyType
+    {
+        SME,
+        Startup
+    }
+
+    public CompanyType Type { get; set; } //Refers to company type SME or Startup
+    public string ShareholderStructure {get; set;} //Represents Owner Equity Structure of a company
     
-    // [Required]
-    public int Tenor { get; set; }
-
-    // [Required]
-    public double ROIdecimal { get; set; }
-    // [Url] [UrlResource]
-    // public string PhotoUrl { get; set; }
 }
 }

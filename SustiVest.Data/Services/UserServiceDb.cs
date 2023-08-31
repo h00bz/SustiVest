@@ -16,10 +16,10 @@ namespace SustiVest.Data.Services
             this.ctx = ctx; 
         }
 
-        public void Initialise()
-        {
-           ctx.Initialise(); 
-        }
+        // public void Initialise()
+        // {
+        //    ctx.Initialise(); 
+        // }
 
         // ------------------ User Related Operations ------------------------
 
@@ -180,7 +180,8 @@ namespace SustiVest.Data.Services
             // return non expired tokens
             return ctx.ForgotPasswords.Where(t => t.ExpiresAt > DateTime.Now)
                                       .Select(t => t.Token)
-                                      .ToList();
+                               
+                                     .ToList();
         }
    
     }

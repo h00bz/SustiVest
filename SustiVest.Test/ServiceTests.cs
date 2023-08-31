@@ -23,7 +23,7 @@ namespace SustiVest.Test
 
             // create service with new context
             service = new UserServiceDb(new DatabaseContext(options));
-            service.Initialise();
+            // service.Initialise();
         }
 
          [Fact]

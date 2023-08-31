@@ -30,10 +30,10 @@ public class CompanyController : BaseController
         return View(paged);
     }
 
-    // GET /company/details/{id}
-    public IActionResult Details(int id)
+    // GET /company/details/{CR_No}
+    public IActionResult Details(String CR_No)
     {
-        var company = _svc.GetCompany(id);
+        var company = _svc.GetCompany(CR_No);
       
         // check if company is null and alert/redirect 
         if (company is null) {
@@ -55,7 +55,7 @@ public class CompanyController : BaseController
     // [Authorize(Roles="admin,support")]
     [ValidateAntiForgeryToken]
     [HttpPost]
-    public IActionResult Create([Bind("CompanyName, Industry, RiskRating, Tenor, ROIdecimal")] Company c)
+    public IActionResult Create([Bind("CR_No, TaxID, CompanyName, Industry, DateOfEstablishment, Activity, Type, ShareholderStructure")] Company c)
     {   
         // validate company name is unique
         if (_svc.GetCompanyByName(c.CompanyName) != null)
@@ -73,7 +73,7 @@ public class CompanyController : BaseController
                 Alert("Encountered issue creating company profile.", AlertType.warning);
                 return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Details), new { Id = company.Id});   
+            return RedirectToAction(nameof(Details), new { CR_No = company.CR_No});   
         }
         
         // redisplay the form for editing as there are validation errors
@@ -82,10 +82,10 @@ public class CompanyController : BaseController
 
     // GET /company/edit/{id}
     // [Authorize(Roles="admin,support")]
-    public IActionResult Edit(int id)
+    public IActionResult Edit(string cr_no)
     {
         // load the company using the service
-        var company = _svc.GetCompany(id);
+        var company = _svc.GetCompany(cr_no);
 
         // check if company is null and Alert/Redirect
         if (company is null)
@@ -106,7 +106,7 @@ public class CompanyController : BaseController
     {
         // check if email exists and is not owned by company being edited 
         var existing = _svc.GetCompanyByName(c.CompanyName);
-        if (existing != null && c.Id != existing.Id) 
+        if (existing != null && c.CR_No != existing.CR_No) 
         {
            ModelState.AddModelError(nameof(c.CompanyName), "The company name entered is not unique.");
         } 
@@ -121,7 +121,7 @@ public class CompanyController : BaseController
             }
 
             // redirect back to view the company details
-            return RedirectToAction(nameof(Details), new { Id = c.Id });
+            return RedirectToAction(nameof(Details), new { CR_No = c.CR_No });
         }
 
         // redisplay the form for editing as validation errors
@@ -130,10 +130,10 @@ public class CompanyController : BaseController
 
     // GET / company/delete/{id}
     [Authorize(Roles="admin")]      
-    public IActionResult Delete(int id)
+    public IActionResult Delete(string cr_no)
     {
         // load the company using the service
-        var company = _svc.GetCompany(id);
+        var company = _svc.GetCompany(cr_no);
         // check the returned company is not null and if so return NotFound()
         if (company == null)
         {
@@ -149,10 +149,10 @@ public class CompanyController : BaseController
     [HttpPost]
     // [Authorize(Roles="admin")]
     [ValidateAntiForgeryToken]   
-    public IActionResult DeleteConfirm(int id)
+    public IActionResult DeleteConfirm(string cr_no)
     {
         // delete company via service
-        var deleted = _svc.DeleteCompany(id);
+        var deleted = _svc.DeleteCompany(cr_no);
         if (deleted)
         {
             Alert("Company deleted successfully.", AlertType.success);            

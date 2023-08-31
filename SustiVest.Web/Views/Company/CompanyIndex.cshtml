@@ -24,12 +24,13 @@
     <table class="table table-hover mt-4">
         <thead>
             <tr>3
-                <th><a asp-action="Index" asp-route-order="id">#</a></th>
+                <th><a asp-action="Index" asp-route-order="cr_no">Commercial Registration</a></th>
                 <th><a asp-action="Index" asp-route-order="companyName">Name</a></th>
                 <th><a asp-action="Index" asp-route-order="industy">Industry</a></th>
-                <th><a asp-action="Index" asp-route-order="riskRating">Risk Rating</a></th>
-                <th><a asp-action="Index" asp-route-order="tenor">Tenor</a></th>
-                <th><a asp-action="Index" asp-route-order="ROIDecimal">ROI</a></th>
+                <th><a asp-action="Index" asp-route-order="dateOfEstablishment">Established</a></th>
+                <th><a asp-action="Index" asp-route-order="activity">Activity</a></th>
+                <th><a asp-action="Index" asp-route-order="companyType">Type</a></th>
+                <th><a asp-action="Index" asp-route-order="shareholderStructure">Shareholders</a></th>   
                 <th>Actions</th>
             </tr>
         </thead>
@@ -37,19 +38,20 @@
             @foreach(var c in Model)
             {
                 <tr>
-                    <td>@c.Id</td>
+                    <td>@c.CR_No</td>
                     <td>@c.CompanyName</td>
                     <td>@c.Industry</td>
-                    <td>@c.RiskRating</td>
-                    <td>@c.Tenor</td>
-                    <td>@c.ROIdecimal</td>
+                    <td>@c.DateOfEstablishment</td>
+                    <td>@c.Activity</td>
+                    <td>@c.Type</td>
+                    <td>@c.ShareholderStructure</td>
                     <td>                       
-                        <a asp-action="Details" asp-route-id=@c.Id>
+                        <a asp-action="Details" asp-route-id=@c.CR_No>
                             <i class="bi bi-display-fill me-2" title="view company" arial-label="view compamy"></i>
                         </a>
                         @* <a asp-condition=@User.HasOneOfRoles("admin,support") asp-action="Edit" asp-route-id=@c.Id>
                             <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i> *@
-                         <a asp-action="Edit" asp-route-id=@c.Id>
+                         <a asp-action="Edit" asp-route-id=@c.CR_No>
                             <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i>
                         </a>
                     </td>
