@@ -1,0 +1,61 @@
+@model IList<Company>
+
+<partial name="_BreadCrumbs" model=@(new [] {
+    ("/","Home"),
+    ("","Companies")
+}) />
+
+<div class="card border rounded shadow p-4">
+ 
+    <!-- Title bar -->
+    <div class="d-flex align-items-center justify-content-between">
+        <h3>Company</h3>
+        
+        @* <a asp-condition=@User.HasOneOfRoles("admin") class="btn btn-sm btn-primary" asp-action="create" title="add student" aria-label="add student">
+           <i class="bi bi-plus"></i> Create
+        </a> *@
+           <a class="btn btn-sm btn-primary" asp-action="create" title="add company" aria-label="add company">
+           <i class="bi bi-plus"></i> Create
+        </a>
+        
+    </div>
+
+    <!-- List of companies -->
+    <table class="table table-hover mt-4">
+        <thead>
+            <tr>3
+                <th><a asp-action="Index" asp-route-order="id">#</a></th>
+                <th><a asp-action="Index" asp-route-order="companyName">Name</a></th>
+                <th><a asp-action="Index" asp-route-order="industy">Industry</a></th>
+                <th><a asp-action="Index" asp-route-order="riskRating">Risk Rating</a></th>
+                <th><a asp-action="Index" asp-route-order="tenor">Tenor</a></th>
+                <th><a asp-action="Index" asp-route-order="ROIDecimal">ROI</a></th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var c in Model)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.CompanyName</td>
+                    <td>@c.Industry</td>
+                    <td>@c.RiskRating</td>
+                    <td>@c.Tenor</td>
+                    <td>@c.ROIdecimal</td>
+                    <td>                       
+                        <a asp-action="Details" asp-route-id=@c.Id>
+                            <i class="bi bi-display-fill me-2" title="view company" arial-label="view compamy"></i>
+                        </a>
+                        @* <a asp-condition=@User.HasOneOfRoles("admin,support") asp-action="Edit" asp-route-id=@c.Id>
+                            <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i> *@
+                         <a asp-action="Edit" asp-route-id=@c.Id>
+                            <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
