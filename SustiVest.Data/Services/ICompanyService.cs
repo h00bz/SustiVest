@@ -8,7 +8,7 @@ namespace SustiVest.Data.Services
     // void Initialise();
  
     IList<Company> GetCompanies();
-    IList<Company> GetCompanies(string order = null, string direction="asc");
+    Paged<Company> GetCompanies(int page = 1, int size = 10, string orderBy = "companyname", string direction = "asc");
     Company GetCompany(string CR_No);
     Company GetCompanyByName(string CompanyName);
     Company AddCompany(Company c);

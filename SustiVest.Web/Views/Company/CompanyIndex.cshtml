@@ -1,4 +1,4 @@
-@model IList<Company>
+@model Paged<Company>
 
 <partial name="_BreadCrumbs" model=@(new [] {
     ("/","Home"),
@@ -24,18 +24,83 @@
     <table class="table table-hover mt-4">
         <thead>
             <tr>
-                <th><a asp-action="CompanyIndex" asp-route-order="cr_no">Commercial Registration</a></th>
-                <th><a asp-action="CompanyIndex" asp-route-order="companyName">Name</a></th>
-                <th><a asp-action="CompanyIndex" asp-route-order="industry">Industry</a></th>
-                <th><a asp-action="CompanyIndex" asp-route-order="dateofestablishment">Established</a></th>
-                <th><a asp-action="CompanyIndex" asp-route-order="activity">Activity</a></th>
-                <th><a asp-action="CompanyIndex" asp-route-order="type">Type</a></th>
-                <th><a asp-action="CompanyIndex" asp-route-order="shareholderstructure">Shareholders</a></th>   
-                <th>Actions</th>
-            </tr>
-        </thead>
+                <thead>
+                    <tr>
+                        <th>
+                            Commercial Registration
+                            <a asp-action="CompanyIndex" 
+                                asp-route-order="cr_no" 
+                                asp-route-direction=@Model.Direction 
+                                asp-route-page=@Model.CurrentPage 
+                                asp-route-size=@Model.PageSize >
+                                <vc:sort-order field="cr_no" orderby=@Model.OrderBy direction=@Model.Direction />  
+                            </a>  
+                        </th>
+                        <th>
+                            Name
+                            <a asp-action="CompanyIndex" 
+                                asp-route-order="companyname" 
+                                asp-route-direction=@Model.Direction 
+                                asp-route-page=@Model.CurrentPage 
+                                asp-route-size=@Model.PageSize >
+                                <vc:sort-order field="companyname" orderby=@Model.OrderBy direction=@Model.Direction />  
+                            </a>  
+                        </th>
+                        <th>
+                            Industry
+                            <a asp-action="CompanyIndex" 
+                                asp-route-order="industry" 
+                                asp-route-direction=@Model.Direction 
+                                asp-route-page=@Model.CurrentPage 
+                                asp-route-size=@Model.PageSize >
+                                <vc:sort-order field="industry" orderby=@Model.OrderBy direction=@Model.Direction />  
+                            </a>  
+                        </th>
+                        <th>
+                            Established
+                            <a asp-action="CompanyIndex" 
+                                asp-route-order="dateofestablishment" 
+                                asp-route-direction=@Model.Direction 
+                                asp-route-page=@Model.CurrentPage 
+                                asp-route-size=@Model.PageSize >
+                                <vc:sort-order field="dateofestablishment" orderby=@Model.OrderBy direction=@Model.Direction />  
+                            </a>  
+                        </th>
+                        <th>
+                            Activity
+                            <a asp-action="CompanyIndex" 
+                                asp-route-order="activity" 
+                                asp-route-direction=@Model.Direction 
+                                asp-route-page=@Model.CurrentPage 
+                                asp-route-size=@Model.PageSize >
+                                <vc:sort-order field="activity" orderby=@Model.OrderBy direction=@Model.Direction />  
+                            </a>  
+                        </th>
+                        <th>
+                            Type
+                            <a asp-action="CompanyIndex" 
+                                asp-route-order="type" 
+                                asp-route-direction=@Model.Direction 
+                                asp-route-page=@Model.CurrentPage 
+                                asp-route-size=@Model.PageSize >
+                                <vc:sort-order field="type" orderby=@Model.OrderBy direction=@Model.Direction />  
+                            </a>  
+                        </th>
+                        <th>
+                            Shareholders
+                            <a asp-action="CompanyIndex" 
+                                asp-route-order="shareholderstructure" 
+                                asp-route-direction=@Model.Direction 
+                                asp-route-page=@Model.CurrentPage 
+                                asp-route-size=@Model.PageSize >
+                                <vc:sort-order field="shareholderstructure" orderby=@Model.OrderBy direction=@Model.Direction />  
+                            </a>  
+                        </th>   
+                        <th>Actions</th>
+                    </tr>
+                </thead>
         <tbody>
-            @foreach(var c in Model)
+            @foreach(var c in Model.Data)
             {
                 <tr>
                     <td>@c.CR_No</td>

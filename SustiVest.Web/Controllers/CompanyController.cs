@@ -6,7 +6,7 @@ using SustiVest.Data.Entities;
 using SustiVest.Data.Services;
 using Microsoft.AspNetCore.Authorization;
 using SustiVest.Data.Security;
-using SustiVest.Web.Models.User;
+// using SustiVest.Web.Models.User;
 
 namespace SustiVest.Web.Controllers
 {
@@ -22,12 +22,12 @@ public class CompanyController : BaseController
 
     // GET /company
     //editted from Index to CompanyIndex
-    public ActionResult CompanyIndex(string order="cr_no", string direction="asc")
+    public ActionResult CompanyIndex(int page = 1, int size = 10, string order = "companyname", string direction = "asc")
     {
         // load Companies using service and pass to view
-        var paged = _svc.GetCompanies(order);
+        var table = _svc.GetCompanies(page, size, order, direction);
         
-        return View(paged);
+        return View(table);
     }
 
     // GET /company/details/{CR_No}

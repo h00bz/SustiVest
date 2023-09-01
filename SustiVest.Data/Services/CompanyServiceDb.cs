@@ -32,22 +32,22 @@
                 return ctx.Companies.ToList();
             }
 
-            public IList<Company> GetCompanies(string order = null, string direction = "asc")
+            public Paged<Company> GetCompanies(int page = 1, int size = 20, string orderBy = "CompanyName", string direction = "asc")
             {
-                var results = (order.ToLower(), direction.ToLower()) switch
+                var results = (orderBy.ToLower(), direction.ToLower()) switch
                 {
                     ("cr_no", "asc") => ctx.Companies.OrderBy(c => c.CR_No),
                     ("cr_no", "desc") => ctx.Companies.OrderByDescending(c => c.CR_No),
 
                     // ("taxID", "asc") => ctx.Companies.OrderBy(c => c.TaxID),
                     // ("taxID", "desc") => ctx.Companies.OrderByDescending(c => c.TaxID),
-                    
-                    ("companyName", "asc") => ctx.Companies.OrderBy(c => c.CompanyName),
-                    ("companyName", "desc") => ctx.Companies.OrderByDescending(c => c.CompanyName),
+
+                    ("companyname", "asc") => ctx.Companies.OrderBy(c => c.CompanyName),
+                    ("companyname", "desc") => ctx.Companies.OrderByDescending(c => c.CompanyName),
 
                     ("industry", "asc") => ctx.Companies.OrderBy(c => c.Industry),
                     ("industry", "desc") => ctx.Companies.OrderByDescending(c => c.Industry),
-                    
+
                     ("dateofestablishment", "asc") => ctx.Companies.OrderBy(c => c.DateOfEstablishment),
                     ("dateofestablishment", "desc") => ctx.Companies.OrderByDescending(c => c.DateOfEstablishment),
 
@@ -59,9 +59,9 @@
 
                     ("shareholderstructure", "asc") => ctx.Companies.OrderBy(c => c.ShareholderStructure),
                     ("shareholderstructure", "desc") => ctx.Companies.OrderByDescending(c => c.ShareholderStructure),
-                    _                      => ctx.Companies.OrderBy(c => c.CR_No)
+                    _ => ctx.Companies.OrderBy(c => c.CR_No)
                 };
-                return results.ToList();
+                return results.ToPaged(page, size, orderBy, direction);
             }
 
             // Retrieve Company by Id 
