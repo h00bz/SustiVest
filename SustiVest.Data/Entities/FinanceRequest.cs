@@ -28,10 +28,10 @@ namespace SustiVest.Data.Entities
         //     IPO,
         // }
 
-        public string Facility_Type { get; set; }
-
-            
+        public string FacilityType { get; set; }   
         public string CR_No { get; set; }
+        public string Status { get; set; }
+
         [ForeignKey("CR_No")]
         public Company Company { get; set; }
     }

@@ -16,19 +16,20 @@
             <th>Purpose</th>  
             <th>Amount</th>       
             <th>Tenor</th>  
-            <th>Facility</th>       
+            <th>Facility</th>
+            <th>Status</th>       
             <th class="text-end">Actions</th>
         </tr>
     </thead>
     <tbody>
-        @* @if (Model.FinanceRequests.Count == 0)
+        @if (Model.FinanceRequests.Count == 0)
         {
             <tr>              
                 <td colspan="4">No Requests...</td>
             </tr>
         }
         else
-        { *@
+        {
         
             @foreach(var f in Model.FinanceRequests) {
                 <tr>             
@@ -36,7 +37,8 @@
                     <td>@f.Purpose</td>  
                     <td>@f.Amount</td>
                     <td>@f.Tenor</td>
-                    <td>@f.Facility_Type</td>
+                    <td>@f.FacilityType</td>
+                    <td>@f.Status</td>
 
               
                     <td class="text-end">
