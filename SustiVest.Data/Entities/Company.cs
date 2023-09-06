@@ -1,5 +1,8 @@
 //using system; commented out 
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using SustiVest.Data.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace SustiVest.Data.Entities
 {
     public class Company
@@ -27,6 +30,8 @@ namespace SustiVest.Data.Entities
 
     public CompanyType Type { get; set; } //Refers to company type SME or Startup
     public string ShareholderStructure {get; set;} //Represents Owner Equity Structure of a company
+    public IList<FinanceRequest> FinanceRequests {get; set; } = new List<FinanceRequest>();
+
+    }
     
-}
 }

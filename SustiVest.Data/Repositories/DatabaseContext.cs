@@ -14,6 +14,9 @@ namespace SustiVest.Data.Repositories
         // authentication store
         public DbSet<User> Users { get; set; }
         public DbSet<Company> Companies { get; set; }
+
+        public DbSet<FinanceRequest> FinanceRequests { get; set; }
+
         public DbSet<ForgotPassword> ForgotPasswords { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
@@ -33,8 +36,12 @@ namespace SustiVest.Data.Repositories
             modelBuilder.Entity<Company>().ToTable("Company");
             modelBuilder.Entity<Company>()
            .HasKey(c => c.CR_No);
-            modelBuilder.Entity<User>().HasKey(u => u.Id);   
+            modelBuilder.Entity<User>().HasKey(u => u.Id);
+            modelBuilder.Entity<FinanceRequest>().ToTable("FinanceRequest");
+            modelBuilder.Entity<FinanceRequest>().HasKey(f => f.Request_No);
         }
+
+      
 
         // Convenience method to recreate the database thus ensuring the new database takes 
         // account of any changes to Models or DatabaseContext. ONLY to be used in development

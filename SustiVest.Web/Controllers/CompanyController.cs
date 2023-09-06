@@ -31,9 +31,9 @@ public class CompanyController : BaseController
     }
 
     // GET /company/details/{CR_No}
-    public IActionResult Details(String CR_No)
+    public IActionResult CompanyDetails(String cr_no)
     {
-        var company = _svc.GetCompany(CR_No);
+        var company = _svc.GetCompany(cr_no);
       
         // check if company is null and alert/redirect 
         if (company is null) {
@@ -73,7 +73,7 @@ public class CompanyController : BaseController
                 Alert("Encountered issue creating company profile.", AlertType.warning);
                 return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Details), new { CR_No = company.CR_No});   
+            return RedirectToAction(nameof(CompanyDetails), new { CR_No = company.CR_No});   
         }
         
         // redisplay the form for editing as there are validation errors
@@ -121,7 +121,7 @@ public class CompanyController : BaseController
             }
 
             // redirect back to view the company details
-            return RedirectToAction(nameof(Details), new { CR_No = c.CR_No });
+            return RedirectToAction(nameof(CompanyDetails), new { CR_No = c.CR_No });
         }
 
         // redisplay the form for editing as validation errors
@@ -165,5 +165,7 @@ public class CompanyController : BaseController
         // redirect to the index view
         return RedirectToAction(nameof(Index));
     } 
+
+    
 }
 }

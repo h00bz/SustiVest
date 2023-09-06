@@ -14,5 +14,6 @@ namespace SustiVest.Data.Services
     Company AddCompany(Company c);
     Company UpdateCompany (Company updated);  
     bool DeleteCompany(string CR_No);
+    IList <FinanceRequest> GetFinanceRequests();
 } 
 }

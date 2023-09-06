@@ -99,31 +99,26 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-        <tbody>
-            @foreach(var c in Model.Data)
-            {
-                <tr>
-                    <td>@c.CR_No</td>
-                    <td>@c.CompanyName</td>
-                    <td>@c.Industry</td>
-                    <td>@c.DateOfEstablishment</td>
-                    <td>@c.Activity</td>
-                    <td>@c.Type</td>
-                    <td>@c.ShareholderStructure</td>
-                    <td>                       
-                        <a asp-action="Details" asp-route-id=@c.CR_No>
-                            <i class="bi bi-display-fill me-2" title="view company" arial-label="view compamy"></i>
-                        </a>
-                        @* <a asp-condition=@User.HasOneOfRoles("admin,support") asp-action="Edit" asp-route-id=@c.Id>
-                            <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i> *@
-                         <a asp-action="Edit" asp-route-id=@c.CR_No>
-                            <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i>
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-</div>
-
+                <tbody>
+                    @foreach(var c in Model.Data)
+                    {
+                        <tr>
+                            <td>@c.CR_No</td>
+                            <td>@c.CompanyName</td>
+                            <td>@c.Industry</td>
+                            <td>@c.DateOfEstablishment</td>
+                            <td>@c.Activity</td>
+                            <td>@c.Type</td>
+                            <td>@c.ShareholderStructure</td>
+                            <td>                       
+                                <a asp-action="CompanyDetails" asp-route-cr_no="@c.CR_No">
+                                    <i class="bi bi-display-fill me-2" title="view company" arial-label="view company"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id=@c.CR_No>
+                                    <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
