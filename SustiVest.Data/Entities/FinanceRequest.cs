@@ -5,6 +5,8 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 namespace SustiVest.Data.Entities
 {
+    public enum FinanceRequestStatus { ASSESSED, PENDING, ALL }
+
     public class FinanceRequest
     {
 
@@ -31,6 +33,10 @@ namespace SustiVest.Data.Entities
         public string FacilityType { get; set; }   
         public string CR_No { get; set; }
         public string Status { get; set; }
+
+        public DateOnly DateOfRequest { get; set; }
+
+        public bool Assessment { get; set; }
 
         [ForeignKey("CR_No")]
         public Company Company { get; set; }

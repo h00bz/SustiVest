@@ -13,6 +13,7 @@
     <thead>
         <tr>          
             <th>Request No.</th>
+            <th>Submitted On</th>
             <th>Purpose</th>  
             <th>Amount</th>       
             <th>Tenor</th>  
@@ -34,6 +35,7 @@
             @foreach(var f in Model.FinanceRequests) {
                 <tr>             
                     <td>@f.Request_No</td>
+                    <td>@f.DateOfRequest</td>
                     <td>@f.Purpose</td>  
                     <td>@f.Amount</td>
                     <td>@f.Tenor</td>
