@@ -1,0 +1,88 @@
+@model FinanceRequest
+
+<!-- Breadcrumbs using partial view -->
+<partial name="_Breadcrumbs" model=@(new [] { ("/", "Home"), ("/FinanceRequest", "FinanceRequests"), ("","Close") }) />
+    
+<div class="col card rounded shadow-lg p-4">
+    <h3 class="mb-4">Finance Request</h3>
+    
+    <!-- Ticket Details Data List -->
+    <dl class="row">       
+        <dt class="col-4">Request No.</dt>
+        <dd class="col-8">@Model.Request_No</dd>
+        
+        <dt class="col-4">Company</dt>
+        <dd class="col-8">@Model.Company.CompanyName</dd>
+   
+        <dt class="col-4">Purpose</dt>
+        <dd class="col-8">@Model.Purpose</dd>
+     
+        <dt class="col-4">Amount</dt>
+        <dd class="col-8">@Model.Amount</dd>
+
+        <dt class="col-4">Tenor</dt>
+        <dd class="col-8">@Model.Tenor</dd>
+
+        <dt class="col-4">Facility Type</dt>
+        <dd class="col-8">@Model.FacilityType</dd>
+
+        <dt class="col-4">Status</dt>
+        <dd class="col-8">@Model.Status</dd>
+
+        <dt class="col-4">Date</dt>
+        <dd class="col-8">@Model.DateOfRequest</dd>
+
+        <dt class="col-4">Assessment</dt>
+        <dd class="col-8">@Model.Assessment</dd>
+
+    </dl>
+
+    @* <!-- Ticket Close Form -->
+    <form asp-action="Resubmit" asp-route-request_no="@Model.Request_No">           
+        <div class="mt-3">
+            <input asp-format="Status" asp-for="Status" class="form-control"></>
+            <span asp-validation-for="Status" class="text-danger"></span>
+           
+        <div class="mt-3 d-flex align justify-content-end gap-2">
+            <input type="submit" value="Confirm" class="btn btn-sm btn-danger" />
+            <button type="button" class="btn btn-sm btn-secondary" onclick="closeRequest()">Cancel</button>           
+        </div>
+    </form> *@
+
+    <!-- Page Controls -->
+
+@*     
+    @* <div class="mt-4 d-flex gap-2" id="closeRequestControls">           
+        @* <button hidden="@(!Model.Assessment)" onclick="closeTicket()" asp-condition=@(User.HasOneOfRoles("admin,support")) class="btn btn-sm btn-danger"> *@
+        @* <button ="@(!Model.Assessment)" onclick="closeTicket()" class="btn btn-sm btn-danger"></button>
+        <i class="bi bi-trash me-2"></i>Close</button> *@
+
+        @* <form asp-action ="Resubmit"  class="form-inline"  asp-action="Re"> 
+            <input type="hidden" name="Request_No" value="@Model.Request_No" />       
+            <button type="submit" class="btn btn-sm btn-primary">
+                <i class="bi bi-envelope-open me-2"></i>Resubmit
+            </button>
+        </form> *@
+
+        @* <a class="btn btn-sm btn-light ms-2" asp-action="Index">
+            <i class="bi bi-list me-2"></i>Requests
+        </a>
+    </div> *@ 
+
+    <div>             
+        <a asp-action="RequestEdit" asp-route-request_No="@Model.Request_No" class="btn btn-sm btn-outline-secondary" aria-label="edit request">
+                    <i class="bi bi-pen-fill" title="edit request"></i>
+                    <span class="ms-1 d-none d-md-inline">Edit</span>
+                </a></div>
+</div> 
+
+<script>
+    @* toggle display of closeTicketForm and controls div
+    function closeTicket() {
+        const form = document.getElementById("closeTicketForm")
+        const controls = document.getElementById("closeTicketControls")
+        form.hidden = !form.hidden
+        //controls.hidden = !controls.hidden
+        controls.style.visibility = controls.style.visibility == 'hidden' ? '' : 'hidden'
+    } *@
+</script>

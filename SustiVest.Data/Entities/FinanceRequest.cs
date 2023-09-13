@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 namespace SustiVest.Data.Entities
 {
-    public enum FinanceRequestStatus { ASSESSED, PENDING, ALL }
+    public enum FinanceRequestStatus { OPEN, CLOSED, ALL }
 
     public class FinanceRequest
     {

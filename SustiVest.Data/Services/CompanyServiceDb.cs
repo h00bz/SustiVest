@@ -159,7 +159,7 @@ namespace SustiVest.Data.Services
             .ToList();
         }
 
-        public FinanceRequest RequestFinance(string companyCR, string purpose, int amount, int tenor, string facilityType, string status, bool assessment, DateOnly dateOfRequest)
+        public FinanceRequest RequestFinance(string companyCR, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment)
         {
             var company = GetCompany(companyCR);
             if (company == null) return null;
@@ -188,7 +188,7 @@ namespace SustiVest.Data.Services
             .FirstOrDefault(f => f.Request_No == request_No);
         }
 
-        public FinanceRequest UpdateRequest(int request_No, string purpose, int amount, int tenor, string facilityType, string status, bool assessment, DateOnly dateOfRequest )
+        public FinanceRequest UpdateRequest(int request_No, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment )
         {
             var financeRequest = GetFinanceRequest(request_No);
             if (financeRequest == null) return null;
@@ -205,7 +205,7 @@ namespace SustiVest.Data.Services
             return financeRequest;
         }
         
-        public FinanceRequest ResubmitRequest(int request_No, bool assessment, DateOnly dateOfRequest)
+        public FinanceRequest ResubmitRequest(int request_No, DateOnly dateOfRequest, bool assessment)
         {
             var financeRequest = GetFinanceRequest(request_No);
             if (financeRequest == null) return null;

@@ -63,11 +63,16 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapControllerRoute(
-    name: "company-details",
-    pattern: "Company/CompanyDetails/{cr_no}", // Define your custom URL format here
-    defaults: new { controller = "Company", action = "CompanyDetails" }
-);
+// app.MapControllerRoute(
+//     name: "company-details",
+//     pattern: "Company/CompanyDetails/{cr_no}", // Define your custom URL format here
+//     defaults: new { controller = "Company", action = "CompanyDetails" }
+// );
+
+// app.MapControllerRoute(
+//     name: "FinanceRequest",
+//     pattern: "{controller=FinanceRequest}/{action=Index}/{request_No?}"); // Define your custom URL format here
+
 
 
 app.Run();
