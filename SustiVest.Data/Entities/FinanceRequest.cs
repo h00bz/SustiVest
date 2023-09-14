@@ -9,7 +9,7 @@ namespace SustiVest.Data.Entities
 
     public class FinanceRequest
     {
-
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Request_No { get; set; }
 
         // [Required]

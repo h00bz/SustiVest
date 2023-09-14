@@ -159,18 +159,18 @@ namespace SustiVest.Data.Services
             .ToList();
         }
 
-        public FinanceRequest RequestFinance(string companyCR, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment)
+        public FinanceRequest CreateRequest(string purpose, int amount, int tenor, string facilityType, string cr_no, string status, DateOnly dateOfRequest, bool assessment)
         {
-            var company = GetCompany(companyCR);
+            var company = GetCompany(cr_no);
             if (company == null) return null;
 
             var financeRequest = new FinanceRequest
             {
-                CR_No = companyCR,
                 Purpose = purpose,
                 Amount = amount,
                 Tenor = tenor,
                 FacilityType = facilityType,
+                CR_No = cr_no,
                 Status = status,
                 DateOfRequest = dateOfRequest,
                 Assessment = false,

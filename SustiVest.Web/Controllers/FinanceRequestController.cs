@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-
+using SustiVest.Web.Views;
 using SustiVest.Data.Entities;
 using SustiVest.Data.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +9,7 @@ using SustiVest.Data.Security;
 using SustiVest.Web.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore;
 
 namespace SustiVest.Web.Controllers
 {
@@ -76,7 +77,7 @@ namespace SustiVest.Web.Controllers
             if (financeRequest == null)
             {
                 Alert("Request Not Found", AlertType.warning);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(CompanyController.CompanyIndex));
             }
 
             return View("Details", financeRequest);
@@ -112,35 +113,40 @@ namespace SustiVest.Web.Controllers
 
         // GET /ticket/create
         // [Authorize(Roles = "admin,support")]
+        [HttpGet]
         public IActionResult CreateRequest()
         {
-            var companies = svc.GetCompanies();
+            // var companies = svc.GetCompanies();
             // populate viewmodel select list property
-            var rvm = new RequestFinanceViewModel
-            {
-
-                Companies = new SelectList(companies, "Request_No", "Purpose")
-            };
+            // var rvm = new RequestFinanceViewModel
+            // {
+            //     Companies= new SelectList(companies, nameof(Company.CR_No), nameof(Company.CompanyName))
+            // };
 
             // render blank form
-            return View(rvm);
+            return View();
         }
 
         // // POST /ticket/create
         [HttpPost]
         // [Authorize(Roles = "admin,support")]
-        public IActionResult SubmitRequest(RequestFinanceViewModel rvm)
+        public IActionResult CreateRequest( [Bind("Purpose, Amount, Tenor, FacilityType, CR_No, Status, DateOfRequest, Assessment")] FinanceRequest fr)
         {
             if (ModelState.IsValid)
             {
-                svc.RequestFinance(rvm.CompanyCR_No, rvm.Purpose, rvm.Amount, rvm.Tenor, rvm.FacilityType, rvm.Status, rvm.DateOfRequest,rvm.Assessment);
-
-                Alert($"Requested Submitted", AlertType.info);
-                return RedirectToAction(nameof(Index));
+               var request = svc.CreateRequest(fr.Purpose, fr.Amount, fr.Tenor, fr.FacilityType, fr.CR_No, fr.Status, fr.DateOfRequest, fr.Assessment);
+           
+            if (request is null) 
+            {
+                Alert("Encountered issue creating request.", AlertType.warning);
+                return RedirectToAction(nameof(Details), new {Request_No=2});
+            }
+                Alert($"Request Submitted", AlertType.info);
+                return RedirectToAction(nameof(Details) , new { Request_No = 2});
             }
 
             // redisplay the form for editing
-            return View(rvm);
+            return View(fr);
         }
 
         public IActionResult Index()
@@ -155,7 +161,7 @@ namespace SustiVest.Web.Controllers
             if (financeRequest == null)
             {
                 Alert("Request Not Found", AlertType.warning);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details));
             }
 
             return View("RequestEdit", financeRequest);
@@ -166,9 +172,8 @@ namespace SustiVest.Web.Controllers
             if (ModelState.IsValid)
             {
                 var request = svc.UpdateRequest(request_No, f.Purpose, f.Amount, f.Tenor, f.FacilityType, f.Status, f.DateOfRequest, f.Assessment);
-                return RedirectToAction(
-                    nameof(Details), new { Request_No = f.Request_No }
-                );
+                return RedirectToAction(nameof(Details), new { request_No = request_No });
+
             }
             // redisplay the form for editing
             return View(f);

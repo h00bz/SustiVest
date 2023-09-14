@@ -22,13 +22,13 @@ namespace SustiVest.Data.Entities
 
     public string Activity { get; set; }
 
-    public enum CompanyType
-    {
-        SME,
-        Startup
-    }
+    // public enum CompanyType
+    // {
+    //     SME,
+    //     Startup
+    // }
 
-    public CompanyType Type { get; set; } //Refers to company type SME or Startup
+    public string Type { get; set; } //Refers to company type SME or Startup
     public string ShareholderStructure {get; set;} //Represents Owner Equity Structure of a company
     public IList<FinanceRequest> FinanceRequests {get; set; } = new List<FinanceRequest>();
 

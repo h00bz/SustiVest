@@ -17,7 +17,7 @@ namespace SustiVest.Data.Services
     IList <FinanceRequest> GetFinanceRequests();
     IList <FinanceRequest> GetOpenRequests();
     FinanceRequest GetFinanceRequest(int request_No);
-    FinanceRequest RequestFinance(string companyCR, string purpose, int amount, int tenor, string facilityType, string status,  DateOnly dateOfRequest, bool assessment);
+    FinanceRequest CreateRequest(string purpose, int amount, int tenor, string facilityType, string companyCR,  string status,  DateOnly dateOfRequest, bool assessment);
     FinanceRequest CloseRequest(int request_No, string status);
     FinanceRequest UpdateRequest(int request_No, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment);
     FinanceRequest ResubmitRequest(int request_No, DateOnly dateOfRequest, bool assessment);

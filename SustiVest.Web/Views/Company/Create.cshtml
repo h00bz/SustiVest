@@ -1,0 +1,73 @@
+@model Company 
+
+<partial name="_BreadCrumbs" model=@(new [] {
+    ("/","Home"),
+    ($"/company/companyindex","Companies"),
+    ("","Create Company")
+}) />
+
+<div class="card rounded shadow p-4">
+    <h3>Create Company</h3>
+    <form asp-action="Create" method="post">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mt-3">
+            <label asp-for="CR_No" class="form-label"></label>
+            <input asp-for="CR_No" class="form-control" />
+            <span asp-validation-for="CR_No" class="text-danger"></span>
+        </div>
+
+        <div class="mt-3">
+            <label asp-for="TaxID" class="form-label"></label>
+            <input asp-for="TaxID" class="form-control" />
+            <span asp-validation-for="TaxID" class="text-danger"></span>
+        </div>
+
+        <div class="mt-3">
+            <label asp-for="CompanyName" class="form-label"></label>
+            <input asp-for="CompanyName" class="form-control" />
+            <span asp-validation-for="CompanyName" class="text-danger"></span>
+        </div>
+
+        <div class="mt-3">
+            <label asp-for="Industry" class="form-label"></label>
+            <input asp-for="Industry" class="form-control" />
+            <span asp-validation-for="Industry" class="text-danger"></span>
+        </div>
+
+        <div class="mt-3">
+            <label asp-for="DateOfEstablishment" class="form-label"></label>
+            <input asp-for="DateOfEstablishment" class="form-control" />
+            <span asp-validation-for="DateOfEstablishment" class="text-danger"></span>
+        </div>
+
+        <div class="mt-3">
+            <label asp-for="Activity" class="form-label"></label>
+            <input asp-for="Activity" class="form-control" />
+            <span asp-validation-for="Activity" class="text-danger"></span>
+        </div>
+
+        <div class="mt-3">
+            <label asp-for="Type" class="form-label"></label>
+            <input asp-for="Type" class="form-control" />
+            <span asp-validation-for="Type" class="text-danger"></span>
+        </div>
+
+        <div class="mt-3">
+            <label asp-for="ShareholderStructure" class="form-label"></label>
+            <input asp-for="ShareholderStructure" class="form-control" />
+            <span asp-validation-for="ShareholderStructure" class="text-danger"></span>
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" name="submit" class="btn btn-primary" aria-label="save">Save</button>
+            <a class="btn btn-secondary" asp-action="CompanyIndex" aria-label="cancel">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,5 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SustiVest.Data.Services;
+using SustiVest.Data.Repositories;
+using SustiVest.Data.Entities;
 
 namespace SustiVest.Web.Models
 {
@@ -8,10 +11,11 @@ namespace SustiVest.Web.Models
         // selectlist of students (id, name)       
         public SelectList Companies { get; set; }
 
-        // Collecting StudentId and Issue in Form
-        [Required(ErrorMessage = "Please select a company")]
-        [Display(Name = "Select Company")]
-        public string CompanyCR_No { get; set; }
+        // // Collecting StudentId and Issue in Form
+        // [Required(ErrorMessage = "Please select a company")]
+        // [Display(Name = "Select Company")]
+        public string Request_No { get; set; }
+        public string CR_No { get; set; }
 
         [Required]
         [StringLength(100, MinimumLength = 5)]
@@ -20,6 +24,8 @@ namespace SustiVest.Web.Models
         [Required]
         public int Amount{ get; set; }
 
+         public int Tenor { get; set; }
+
         [Required]
         public string FacilityType { get; set; }   
         public string Status { get; set; }
@@ -27,7 +33,7 @@ namespace SustiVest.Web.Models
 
         public bool Assessment { get; set; }= false;
 
-        public int Tenor { get; set; }
+ 
 
     }
 }

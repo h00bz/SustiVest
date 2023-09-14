@@ -1,10 +1,6 @@
 @model Company
 
-<partial name="_BreadCrumbs" model=@(new [] {
-    ("/","Home"),
-    ("/compamy","companies"),
-    ("",$"{Model.CompanyName}")
-}) />
+<partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/compamy","companies"), ("",$"{Model.CompanyName}") }) />
 
 <div class="card rounded shadow p-4">
     <!-- Display student details -->
@@ -14,19 +10,19 @@
             <!-- Company details -->
             <div>
                 <h2 class="mb-4 text-primary">@Model.CompanyName Profile</h2>
-                <dl class="row">  
+                <dl class="row">
                     <dt class="col-4 pb-1">CR_No</dt>
                     <dd class="col-8 pb-1">@Model.CR_No</dd>
 
                     <dt class="col-4 pb-1">Tax ID</dt>
                     <dd class="col-8 pb-1">@Model.TaxID</dd>
-                    
+
                     <dt class="col-4 pb-1">Industry</dt>
                     <dd class="col-8 pb-1">@Model.Industry</dd>
-                    
+
                     <dt class="col-4 pb-1">Eastablished On</dt>
                     <dd class="col-8 pb-1">@Model.DateOfEstablishment</dd>
-                    
+
                     <dt class="col-4 pb-1">Activity</dt>
                     <dd class="col-8 pb-1">@Model.Activity</dd>
 
@@ -39,61 +35,72 @@
             </div>
 
             <!-- Navigation links -->
-            <div>               
+            <div>
                 <!-- navigation link to Index action -->
                 <a asp-action="Index" class="btn btn-sm btn-outline-primary" aria-label="company list">
                     <i class="bi bi-list" title="company list"></i>
                     <span class="ms-1 d-none d-md-inline">List</span>
                 </a>
-    
-                <!-- navigation link to Update action, passing the correct route id parameter --> 
-                @* Commented out <a asp-condition=@User.HasOneOfRoles("admin,support") asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary" aria-label="edit student">
-                    <i class="bi bi-pen-fill" title="edit student"></i>
-                    <span class="ms-1 d-none d-md-inline">Edit</span>
-                </a> *@
-                               
-                <!-- navigation link to Delete action, passing the correct route id parameter --> 
-                @* <a asp-condition=@User.HasOneOfRoles("admin") asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-danger" aria-label="delete student">
-                    <i class="bi bi-trash-fill" title="delete student"></i>
-                    <span class="ms-1 d-none d-md-inline">Delete</span>
-                </a>   *@
 
-                <a asp-action="Edit" asp-route-id="@Model.CR_No" class="btn btn-sm btn-outline-secondary" aria-label="edit company">
+                <!-- navigation link to Update action, passing the correct route id parameter -->
+                @* Commented out <a asp-condition=@User.HasOneOfRoles("admin,support") asp-action="Edit"
+                asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary" aria-label="edit student">
+                <i class="bi bi-pen-fill" title="edit student"></i>
+                <span class="ms-1 d-none d-md-inline">Edit</span>
+                </a> *@
+
+                <!-- navigation link to Delete action, passing the correct route id parameter -->
+                @* <a asp-condition=@User.HasOneOfRoles("admin") asp-action="Delete" asp-route-id="@Model.Id" class="btn
+                btn-sm btn-outline-danger" aria-label="delete student">
+                <i class="bi bi-trash-fill" title="delete student"></i>
+                <span class="ms-1 d-none d-md-inline">Delete</span>
+                </a> *@
+
+                <a asp-action="Edit" asp-route-cr_no="@Model.CR_No" class="btn btn-sm btn-outline-secondary"
+                    aria-label="edit company">
                     <i class="bi bi-pen-fill" title="edit company"></i>
                     <span class="ms-1 d-none d-md-inline">Edit</span>
                 </a>
 
-                <a  asp-action="Delete" asp-route-id="@Model.CR_No" class="btn btn-sm btn-outline-danger" aria-label="delete company">
+                <a asp-action="Delete" asp-route-id="@Model.CR_No" class="btn btn-sm btn-outline-danger"
+                    aria-label="delete company">
                     <i class="bi bi-trash-fill" title="delete company"></i>
                     <span class="ms-1 d-none d-md-inline">Delete</span>
-                </a>  
-                               
-                
-                <!-- alternate delete modal activation button --> 
-                <button asp-condition=@User.HasOneOfRoles("admin") type="button" class="btn btn-sm btn-outline-danger" aria-label="delete student"
-                        data-bs-toggle="modal" data-bs-target="#deleteStudentModal">
-                    <i class="bi bi-trash"></i> Delete
-                </button>
+                </a>
+
+                <a asp-controller="FinanceRequest" asp-action="CreateRequest" asp-route-cr_no="@Model.CR_No"
+                    class="btn btn-sm btn-outline-primary" aria-label="request finance">
+                    <i class="bi bi-cash-stack" title="request finance"></i>
+                    <span class="ms-1 d-none d-md-inline">Request Finance</span>
+                </a>
+
+
+                @* <!-- alternate delete modal activation button -->
+                <button asp-condition=@User.HasOneOfRoles("admin") type="button" class="btn btn-sm btn-outline-danger"
+                aria-label="delete student"
+                data-bs-toggle="modal" data-bs-target="#deleteStudentModal">
+                <i class="bi bi-trash"></i> Delete
+                </button> *@
             </div>
         </div>
 
         @* Commented out <!-- Photo -->
         <div class="col-4">
-            @if (Model.PhotoUrl?.Length > 0)
-            {
-                <img src="@Model.PhotoUrl" class="img-fluid" alt="student photo">
-            } else {
-                <span class="text-info">No photo available</span>
-            }
+        @if (Model.PhotoUrl?.Length > 0)
+        {
+        <img src="@Model.PhotoUrl" class="img-fluid" alt="student photo">
+        } else {
+        <span class="text-info">No photo available</span>
+        }
         </div> *@
 
-    </div>    
+    </div>
 </div>
 
 <!-- Finance Requests -->
 <div class="card rounded shadow p-4 mt-4">
     <partial name="_FinanceRequests" />
 </div>
-@* 
+@*
 <!-- Delete Modal -->
 <partial name="_DeleteModal" /> *@
