@@ -38,7 +38,7 @@ public class CompanyController : BaseController
         // check if company is null and alert/redirect 
         if (company is null) {
             Alert("company not found", AlertType.warning);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(CompanyIndex));
         }
         return View(company);
     }
@@ -71,7 +71,7 @@ public class CompanyController : BaseController
             if (company is null) 
             {
                 Alert("Encountered issue creating company profile.", AlertType.warning);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(CompanyIndex));
             }
             return RedirectToAction(nameof(CompanyDetails), new { CR_No = company.CR_No});   
         }
@@ -91,7 +91,7 @@ public class CompanyController : BaseController
         if (company is null)
         {
             Alert("company not found", AlertType.warning);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(CompanyIndex));
         }  
 
         // pass company to view for editing
@@ -129,7 +129,7 @@ public class CompanyController : BaseController
     }
 
     // GET / company/delete/{id}
-    [Authorize(Roles="admin")]      
+    // [Authorize(Roles="admin")]      
     public IActionResult Delete(string cr_no)
     {
         // load the company using the service
@@ -138,16 +138,16 @@ public class CompanyController : BaseController
         if (company == null)
         {
             Alert("Company not found", AlertType.warning);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(CompanyIndex));
         }     
         
         // pass company to view for deletion confirmation
         return View(company);
     }
 
-    // POST /company/delete/{id}
+        // [Authorize(Roles="admin")]
+// POST /company/delete/{id}
     [HttpPost]
-    // [Authorize(Roles="admin")]
     [ValidateAntiForgeryToken]   
     public IActionResult DeleteConfirm(string cr_no)
     {
@@ -163,7 +163,7 @@ public class CompanyController : BaseController
         }
         
         // redirect to the index view
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(CompanyIndex));
     } 
 
     

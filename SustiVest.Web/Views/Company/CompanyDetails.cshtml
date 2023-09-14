@@ -56,17 +56,15 @@
                 <span class="ms-1 d-none d-md-inline">Delete</span>
                 </a> *@
 
-                <a asp-action="Edit" asp-route-cr_no="@Model.CR_No" class="btn btn-sm btn-outline-secondary"
-                    aria-label="edit company">
+                <a asp-action="Edit" asp-route-cr_no="@Model.CR_No" class="btn btn-sm btn-outline-secondary" aria-label="edit company">
                     <i class="bi bi-pen-fill" title="edit company"></i>
                     <span class="ms-1 d-none d-md-inline">Edit</span>
                 </a>
-
-                <a asp-action="Delete" asp-route-id="@Model.CR_No" class="btn btn-sm btn-outline-danger"
-                    aria-label="delete company">
+@* 
+                <button class="btn btn-sm btn-outline-danger" aria-label="delete company" data-toggle="modal" data-target="#deleteModal">
                     <i class="bi bi-trash-fill" title="delete company"></i>
                     <span class="ms-1 d-none d-md-inline">Delete</span>
-                </a>
+                </button> *@
 
                 <a asp-controller="FinanceRequest" asp-action="CreateRequest" asp-route-cr_no="@Model.CR_No"
                     class="btn btn-sm btn-outline-primary" aria-label="request finance">
@@ -75,12 +73,11 @@
                 </a>
 
 
-                @* <!-- alternate delete modal activation button -->
-                <button asp-condition=@User.HasOneOfRoles("admin") type="button" class="btn btn-sm btn-outline-danger"
-                aria-label="delete student"
-                data-bs-toggle="modal" data-bs-target="#deleteStudentModal">
-                <i class="bi bi-trash"></i> Delete
-                </button> *@
+                <!-- alternate delete modal activation button -->
+                <button type="button" class="btn btn-sm btn-outline-danger" aria-label="delete company"
+                        data-bs-toggle="modal" data-bs-target="#deleteCompanyModal">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
             </div>
         </div>
 
@@ -101,6 +98,6 @@
 <div class="card rounded shadow p-4 mt-4">
     <partial name="_FinanceRequests" />
 </div>
-@*
+
 <!-- Delete Modal -->
-<partial name="_DeleteModal" /> *@
+<partial name="_DeleteModal" />
