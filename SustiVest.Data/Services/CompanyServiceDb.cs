@@ -38,8 +38,8 @@ namespace SustiVest.Data.Services
         {
             var results = (orderBy.ToLower(), direction.ToLower()) switch
             {
-                ("cr_no", "asc") => ctx.Companies.OrderBy(c => c.CR_No),
-                ("cr_no", "desc") => ctx.Companies.OrderByDescending(c => c.CR_No),
+                ("crNo", "asc") => ctx.Companies.OrderBy(c => c.CRNo),
+                ("crNo", "desc") => ctx.Companies.OrderByDescending(c => c.CRNo),
 
                 // ("taxID", "asc") => ctx.Companies.OrderBy(c => c.TaxID),
                 // ("taxID", "desc") => ctx.Companies.OrderByDescending(c => c.TaxID),
@@ -61,17 +61,17 @@ namespace SustiVest.Data.Services
 
                 ("shareholderstructure", "asc") => ctx.Companies.OrderBy(c => c.ShareholderStructure),
                 ("shareholderstructure", "desc") => ctx.Companies.OrderByDescending(c => c.ShareholderStructure),
-                _ => ctx.Companies.OrderBy(c => c.CR_No)
+                _ => ctx.Companies.OrderBy(c => c.CRNo)
             };
             return results.ToPaged(page, size, orderBy, direction);
         }
 
         // Retrieve Company by Id 
-        public Company GetCompany(string cr_no)
+        public Company GetCompany(string crNo)
         {
             return ctx.Companies
             .Include(c => c.FinanceRequests)
-            .FirstOrDefault(c => c.CR_No == cr_no);
+            .FirstOrDefault(c => c.CRNo == crNo);
         }
 
         // Add a new company
@@ -87,7 +87,7 @@ namespace SustiVest.Data.Services
             // create new company
             var company = new Company
             {
-                CR_No = c.CR_No,
+                CRNo = c.CRNo,
                 TaxID = c.TaxID,
                 CompanyName = c.CompanyName,
                 Industry = c.Industry,
@@ -104,9 +104,9 @@ namespace SustiVest.Data.Services
 
         // Delete the company identified by Id returning true if 
         // deleted and false if not found
-        public bool DeleteCompany(string CR_No)
+        public bool DeleteCompany(string crNo)
         {
-            var c = GetCompany(CR_No);
+            var c = GetCompany(crNo);
             if (c == null)
             {
                 return false;
@@ -120,7 +120,7 @@ namespace SustiVest.Data.Services
         public Company UpdateCompany(Company updated)
         {
             // verify the commpany exists 
-            var company = GetCompany(updated.CR_No);
+            var company = GetCompany(updated.CRNo);
             if (company == null)
             {
                 return null;
@@ -128,7 +128,7 @@ namespace SustiVest.Data.Services
 
             // verify name is still unique
             var exists = GetCompanyByName(updated.CompanyName);
-            if (exists != null && exists.CR_No != updated.CR_No)
+            if (exists != null && exists.CRNo != updated.CRNo)
             {
                 return null;
             }
@@ -159,9 +159,9 @@ namespace SustiVest.Data.Services
             .ToList();
         }
 
-        public FinanceRequest CreateRequest(string purpose, int amount, int tenor, string facilityType, string cr_no, string status, DateOnly dateOfRequest, bool assessment)
+        public FinanceRequest CreateRequest(string purpose, int amount, int tenor, string facilityType, string crNo, string status, DateOnly dateOfRequest, bool assessment)
         {
-            var company = GetCompany(cr_no);
+            var company = GetCompany(crNo);
             if (company == null) return null;
 
             var financeRequest = new FinanceRequest
@@ -170,7 +170,7 @@ namespace SustiVest.Data.Services
                 Amount = amount,
                 Tenor = tenor,
                 FacilityType = facilityType,
-                CR_No = cr_no,
+                CRNo = crNo,
                 Status = status,
                 DateOfRequest = dateOfRequest,
                 Assessment = false,
@@ -181,16 +181,17 @@ namespace SustiVest.Data.Services
             return financeRequest;
         }
 
-        public FinanceRequest GetFinanceRequest(int request_No)
+        public FinanceRequest GetFinanceRequest(int requestNo)
         {
             return ctx.FinanceRequests
             .Include(f => f.Company)
-            .FirstOrDefault(f => f.Request_No == request_No);
+            .FirstOrDefault(f => f.RequestNo == requestNo);
         }
 
-        public FinanceRequest UpdateRequest(int request_No, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment )
+
+        public FinanceRequest UpdateRequest(int requestNo, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment )
         {
-            var financeRequest = GetFinanceRequest(request_No);
+            var financeRequest = GetFinanceRequest(requestNo);
             if (financeRequest == null) return null;
 
             financeRequest.Purpose = purpose;
@@ -205,9 +206,9 @@ namespace SustiVest.Data.Services
             return financeRequest;
         }
         
-        public FinanceRequest ResubmitRequest(int request_No, DateOnly dateOfRequest, bool assessment)
+        public FinanceRequest ResubmitRequest(int requestNo, DateOnly dateOfRequest, bool assessment)
         {
-            var financeRequest = GetFinanceRequest(request_No);
+            var financeRequest = GetFinanceRequest(requestNo);
             if (financeRequest == null) return null;
 
             financeRequest.Assessment= assessment;
@@ -217,9 +218,9 @@ namespace SustiVest.Data.Services
             return financeRequest;
         }
         
-        public FinanceRequest CloseRequest(int request_No, string status) 
+        public FinanceRequest CloseRequest(int requestNo, string status) 
         {
-            var financeRequest = GetFinanceRequest(request_No);
+            var financeRequest = GetFinanceRequest(requestNo);
             if (financeRequest == null) return null;
 
             financeRequest.Assessment= true;
@@ -229,9 +230,9 @@ namespace SustiVest.Data.Services
             return financeRequest;
         }
        
-        public bool DeleteRequest(int request_No)
+        public bool DeleteRequest(int requestNo)
         {
-            var financeRequest = GetFinanceRequest(request_No);
+            var financeRequest = GetFinanceRequest(requestNo);
             if (financeRequest == null) return false;
 
             ctx.FinanceRequests.Remove(financeRequest);

@@ -36,7 +36,7 @@
             @foreach (var f in Model.FinanceRequests)
             {
                 <tr>
-                    <td>@f.Request_No</td>
+                    <td>@f.RequestNo</td>
                     <td>@f.DateOfRequest</td>
                     <td>@f.Purpose</td>
                     <td>@f.Amount</td>
@@ -47,10 +47,10 @@
 
                     <td class="text-end">
                     <td>
-                        <a asp-controller="FinanceRequest" asp-action="Details" asp-route-request_No="@f.Request_No">
+                        <a asp-controller="FinanceRequest" asp-action="Details" asp-route-requestNo="@f.RequestNo">
                             <i class="bi bi-display-fill me-2" title="view request" arial-label="view request"></i>
                         </a>
-                        <a asp-action="Edit" asp-route-request_No="@f.Request_No">
+                        <a asp-action="Edit" asp-route-requestNo="@f.RequestNo">
                             <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i>
                         </a>
                     </td>

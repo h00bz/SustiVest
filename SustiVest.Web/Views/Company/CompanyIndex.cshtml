@@ -29,11 +29,11 @@
                         <th>
                             Commercial Registration
                             <a asp-action="CompanyIndex" 
-                                asp-route-order="cr_no" 
+                                asp-route-order="crNo" 
                                 asp-route-direction=@Model.Direction 
                                 asp-route-page=@Model.CurrentPage 
                                 asp-route-size=@Model.PageSize >
-                                <vc:sort-order field="cr_no" orderby=@Model.OrderBy direction=@Model.Direction />  
+                                <vc:sort-order field="crNo" orderby=@Model.OrderBy direction=@Model.Direction />  
                             </a>  
                         </th>
                         <th>
@@ -103,7 +103,7 @@
                     @foreach(var c in Model.Data)
                     {
                         <tr>
-                            <td>@c.CR_No</td>
+                            <td>@c.CRNo</td>
                             <td>@c.CompanyName</td>
                             <td>@c.Industry</td>
                             <td>@c.DateOfEstablishment</td>
@@ -111,10 +111,10 @@
                             <td>@c.Type</td>
                             <td>@c.ShareholderStructure</td>
                             <td>                       
-                                <a asp-action="CompanyDetails" asp-route-cr_no="@c.CR_No">
+                                <a asp-action="CompanyDetails" asp-route-crNo="@c.CRNo">
                                     <i class="bi bi-display-fill me-2" title="view company" arial-label="view company"></i>
                                 </a>
-                                <a asp-action="Edit" asp-route-cr_no=@c.CR_No>
+                                <a asp-action="Edit" asp-route-crNo=@c.CRNo>
                                     <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i>
                                 </a>
                             </td>

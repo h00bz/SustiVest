@@ -35,10 +35,10 @@ namespace SustiVest.Data.Repositories
         {
             modelBuilder.Entity<Company>().ToTable("Company");
             modelBuilder.Entity<Company>()
-           .HasKey(c => c.CR_No);
+           .HasKey(c => c.CRNo);
             modelBuilder.Entity<User>().HasKey(u => u.Id);
             modelBuilder.Entity<FinanceRequest>().ToTable("FinanceRequest");
-            modelBuilder.Entity<FinanceRequest>().HasKey(f => f.Request_No);
+            modelBuilder.Entity<FinanceRequest>().HasKey(f => f.RequestNo);
         }
 
       

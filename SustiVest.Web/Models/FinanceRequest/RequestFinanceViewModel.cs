@@ -14,8 +14,8 @@ namespace SustiVest.Web.Models
         // // Collecting StudentId and Issue in Form
         // [Required(ErrorMessage = "Please select a company")]
         // [Display(Name = "Select Company")]
-        public string Request_No { get; set; }
-        public string CR_No { get; set; }
+        public string RequestNo { get; set; }
+        public string CRNo { get; set; }
 
         [Required]
         [StringLength(100, MinimumLength = 5)]

@@ -11,8 +11,8 @@
             <div>
                 <h2 class="mb-4 text-primary">@Model.CompanyName Profile</h2>
                 <dl class="row">
-                    <dt class="col-4 pb-1">CR_No</dt>
-                    <dd class="col-8 pb-1">@Model.CR_No</dd>
+                    <dt class="col-4 pb-1">CRNo</dt>
+                    <dd class="col-8 pb-1">@Model.CRNo</dd>
 
                     <dt class="col-4 pb-1">Tax ID</dt>
                     <dd class="col-8 pb-1">@Model.TaxID</dd>
@@ -56,7 +56,7 @@
                 <span class="ms-1 d-none d-md-inline">Delete</span>
                 </a> *@
 
-                <a asp-action="Edit" asp-route-cr_no="@Model.CR_No" class="btn btn-sm btn-outline-secondary" aria-label="edit company">
+                <a asp-action="Edit" asp-route-crNo="@Model.CRNo" class="btn btn-sm btn-outline-secondary" aria-label="edit company">
                     <i class="bi bi-pen-fill" title="edit company"></i>
                     <span class="ms-1 d-none d-md-inline">Edit</span>
                 </a>
@@ -66,7 +66,7 @@
                     <span class="ms-1 d-none d-md-inline">Delete</span>
                 </button> *@
 
-                <a asp-controller="FinanceRequest" asp-action="CreateRequest" asp-route-cr_no="@Model.CR_No"
+                <a asp-controller="FinanceRequest" asp-action="CreateRequest" asp-route-crNo="@Model.CRNo"
                     class="btn btn-sm btn-outline-primary" aria-label="request finance">
                     <i class="bi bi-cash-stack" title="request finance"></i>
                     <span class="ms-1 d-none d-md-inline">Request Finance</span>

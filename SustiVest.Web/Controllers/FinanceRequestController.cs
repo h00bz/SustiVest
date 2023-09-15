@@ -71,9 +71,9 @@ namespace SustiVest.Web.Controllers
         // }
 
         // GET/ticket/{id}
-        public IActionResult Details(int request_No)
+        public IActionResult Details(int requestNo)
         {
-            var financeRequest = svc.GetFinanceRequest(request_No);
+            var financeRequest = svc.GetFinanceRequest(requestNo);
             if (financeRequest == null)
             {
                 Alert("Request Not Found", AlertType.warning);
@@ -85,30 +85,30 @@ namespace SustiVest.Web.Controllers
 
         // [HttpPost]
         // [Authorize(Roles = "admin,support")]
-        public IActionResult Resubmit(int request_No, DateOnly dateOfRequest, bool assessment)
+        public IActionResult Resubmit(int requestNo, DateOnly dateOfRequest, bool assessment)
         {
-            svc.ResubmitRequest(request_No, dateOfRequest, assessment);
-            return RedirectToAction(nameof(Details), new { Request_No = request_No });
+            svc.ResubmitRequest(requestNo, dateOfRequest, assessment);
+            return RedirectToAction(nameof(Details), new { RequestNo = requestNo });
         }
 
         // POST /ticket/close/{id}
         // [HttpPost]
         // [Authorize(Roles = "admin,support")]
-        public IActionResult Close([Bind("Request_No, Status")] FinanceRequest f)
+        public IActionResult Close([Bind("RequestNo, Status")] FinanceRequest f)
         {
             // close ticket via service
-            var financeRequest = svc.CloseRequest(f.Request_No, f.Status);
+            var financeRequest = svc.CloseRequest(f.RequestNo, f.Status);
             if (financeRequest == null)
             {
                 Alert("Request Not Found", AlertType.warning);
             }
             else
             {
-                Alert($"Request No. {f.Request_No} closed", AlertType.info);
+                Alert($"Request No. {f.RequestNo} closed", AlertType.info);
             }
 
             // redirect to the index view
-            return RedirectToAction(nameof(Details), new { Request_No = f.Request_No });
+            return RedirectToAction(nameof(Details), new { RequestNo = f.RequestNo });
         }
 
         // GET /ticket/create
@@ -130,19 +130,19 @@ namespace SustiVest.Web.Controllers
         // // POST /ticket/create
         [HttpPost]
         // [Authorize(Roles = "admin,support")]
-        public IActionResult CreateRequest( [Bind("Purpose, Amount, Tenor, FacilityType, CR_No, Status, DateOfRequest, Assessment")] FinanceRequest fr)
+        public IActionResult CreateRequest( [Bind("Purpose, Amount, Tenor, FacilityType, CRNo, Status, DateOfRequest, Assessment")] FinanceRequest fr)
         {
             if (ModelState.IsValid)
             {
-               var request = svc.CreateRequest(fr.Purpose, fr.Amount, fr.Tenor, fr.FacilityType, fr.CR_No, fr.Status, fr.DateOfRequest, fr.Assessment);
+               var request = svc.CreateRequest(fr.Purpose, fr.Amount, fr.Tenor, fr.FacilityType, fr.CRNo, fr.Status, fr.DateOfRequest, fr.Assessment);
            
             if (request is null) 
             {
                 Alert("Encountered issue creating request.", AlertType.warning);
-                return RedirectToAction(nameof(Details), new {Request_No=2});
+                return RedirectToAction(nameof(Details), new {RequestNo=2});
             }
                 Alert($"Request Submitted", AlertType.info);
-                return RedirectToAction(nameof(Details) , new { Request_No = 2});
+                return RedirectToAction(nameof(Details) , new { RequestNo = 2});
             }
 
             // redisplay the form for editing
@@ -155,9 +155,9 @@ namespace SustiVest.Web.Controllers
             return View(table);
         }
 
-    public IActionResult RequestEdit(int request_No)
+    public IActionResult RequestEdit(int requestNo)
         {
-            var financeRequest = svc.GetFinanceRequest(request_No);
+            var financeRequest = svc.GetFinanceRequest(requestNo);
             if (financeRequest == null)
             {
                 Alert("Request Not Found", AlertType.warning);
@@ -167,12 +167,12 @@ namespace SustiVest.Web.Controllers
             return View("RequestEdit", financeRequest);
         }
         [HttpPost]
-        public IActionResult RequestEdit(int request_No, [Bind("Purpose, Amount, Tenor, FacilityType, Status, DateOfRequest, Assessment")] FinanceRequest f)
+        public IActionResult RequestEdit(int requestNo, [Bind("Purpose, Amount, Tenor, FacilityType, Status, DateOfRequest, Assessment")] FinanceRequest f)
         {
             if (ModelState.IsValid)
             {
-                var request = svc.UpdateRequest(request_No, f.Purpose, f.Amount, f.Tenor, f.FacilityType, f.Status, f.DateOfRequest, f.Assessment);
-                return RedirectToAction(nameof(Details), new { request_No = request_No });
+                var request = svc.UpdateRequest(requestNo, f.Purpose, f.Amount, f.Tenor, f.FacilityType, f.Status, f.DateOfRequest, f.Assessment);
+                return RedirectToAction(nameof(Details), new { requestNo = requestNo });
 
             }
             // redisplay the form for editing

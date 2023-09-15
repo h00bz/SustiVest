@@ -7,7 +7,7 @@
     {
         public class Company
     {
-        public string CR_No { get; set; } //Commercial Registration Number
+        public string CRNo { get; set; } //Commercial Registration Number
 
         public string TaxID { get; set; } //Tax ID Number
 

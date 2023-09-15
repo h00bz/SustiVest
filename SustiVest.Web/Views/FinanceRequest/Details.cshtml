@@ -9,7 +9,7 @@
     <!-- Ticket Details Data List -->
     <dl class="row">       
         <dt class="col-4">Request No.</dt>
-        <dd class="col-8">@Model.Request_No</dd>
+        <dd class="col-8">@Model.RequestNo</dd>
         
         <dt class="col-4">Company</dt>
         <dd class="col-8">@Model.Company.CompanyName</dd>
@@ -70,7 +70,7 @@
     </div> *@ 
 
     <div>             
-        <a asp-action="RequestEdit" asp-route-request_No="@Model.Request_No" class="btn btn-sm btn-outline-secondary" aria-label="edit request">
+        <a asp-action="RequestEdit" asp-route-requestNo="@Model.RequestNo" class="btn btn-sm btn-outline-secondary" aria-label="edit request">
                     <i class="bi bi-pen-fill" title="edit request"></i>
                     <span class="ms-1 d-none d-md-inline">Edit</span>
                 </a></div>
