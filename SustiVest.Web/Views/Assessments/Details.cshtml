@@ -1,0 +1,85 @@
+@model Assessments
+
+<partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/Assessments","Assessments"), ("",$"Assessment {Model.RequestNo}-{Model.AnalystNo}") }) />
+
+<div class="card rounded shadow p-4">
+    <!-- Display assessment details -->
+    <div class="row">
+        <!-- Details and Navigation -->
+        <div class="col-8 d-flex flex-column justify-content-between">
+            <!-- Assessment details -->
+            <div>
+                <h2 class="mb-4 text-primary">Assessment @Model.RequestNo - @Model.AnalystNo Details</h2>
+                <dl class="row">
+                    <dt class="col-4 pb-1">Request No.</dt>
+                    <dd class="col-8 pb-1">@Model.RequestNo</dd>
+
+                    <dt class="col-4 pb-1">Analyst No.</dt>
+                    <dd class="col-8 pb-1">@Model.AnalystNo</dd>
+ 
+                    <dt class="col-4 pb-1">Company Name</dt>
+                    <dd class="col-8 pb-1">@Model.Company.CompanyName</dd>
+
+                    <dt class="col-4 pb-1">Sales</dt>
+                    <dd class="col-8 pb-1">@Model.Sales</dd>
+
+                    <dt class="col-4 pb-1">EBITDA</dt>
+                    <dd class="col-8 pb-1">@Model.EBITDA</dd>
+
+                    <dt class="col-4 pb-1">DSR</dt>
+                    <dd class="col-8 pb-1">@Model.DSR</dd>
+
+                    <dt class="col-4 pb-1">CCC</dt>
+                    <dd class="col-8 pb-1">@Model.CCC</dd>
+
+                    <dt class="col-4 pb-1">Net Equity</dt>
+                    <dd class="col-8 pb-1">@Model.NetEquity</dd>
+
+                    <dt class="col-4 pb-1">Risk Rating</dt>
+                    <dd class="col-8 pb-1">@Model.RiskRating</dd>
+
+                    <dt class="col-4 pb-1">Market Position</dt>
+                    <dd class="col-8 pb-1">@Model.MarketPosition</dd>
+
+                    <dt class="col-4 pb-1">Repayment Status</dt>
+                    <dd class="col-8 pb-1">@Model.RepaymentStatus</dd>
+
+                    <dt class="col-4 pb-1">Financial Leverage</dt>
+                    <dd class="col-8 pb-1">@Model.FinancialLeverage</dd>
+
+                    <dt class="col-4 pb-1">Working Capital</dt>
+                    <dd class="col-8 pb-1">@Model.WorkingCapital</dd>
+
+                    <dt class="col-4 pb-1">Operating Assets</dt>
+                    <dd class="col-8 pb-1">@Model.OperatingAssets</dd>
+
+                    <dt class="col-4 pb-1">CR No</dt>
+                    <dd class="col-8 pb-1">@Model.CRNo</dd>
+
+                    <dt class="col-4 pb-1">Total Assets</dt>
+                    <dd class="col-8 pb-1">@Model.TotalAssets</dd>
+                </dl>
+            </div>
+
+            <!-- Navigation links -->
+            <div>
+                <a asp-action="Index" class="btn btn-sm btn-outline-primary" aria-label="assessment list">
+                    <i class="bi bi-list" title="assessment list"></i>
+                    <span class="ms-1 d-none d-md-inline">List</span>
+                </a>
+
+                <a asp-action="Edit" asp-route-requestNo="@Model.RequestNo" asp-route-analystNo="@Model.AnalystNo"
+                    class="btn btn-sm btn-outline-secondary" aria-label="edit assessment">
+                    <i class="bi bi-pen-fill" title="edit assessment"></i>
+                    <span class="ms-1 d-none d-md-inline">Edit</span>
+                </a>
+
+                <button type="button" class="btn btn-sm btn-outline-danger" aria-label="delete assessment"
+                    data-bs-toggle="modal" data-bs-target="#deleteAssessmentModal">
+                    <i class="bi bi-trash" title="delete assessment"></i>
+                    <span class="ms-1 d-none d-md-inline">Delete</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

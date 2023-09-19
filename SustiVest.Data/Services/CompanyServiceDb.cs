@@ -77,14 +77,15 @@ namespace SustiVest.Data.Services
         // Add a new company
         public Company AddCompany(Company c)
         {
-            // check if company with name exists           
-            var exists = GetCompanyByName(c.CompanyName);
-            if (exists != null)
+            // Check if a company with the same CompanyName or CRNo already exists
+            var existsByName = GetCompanyByName(c.CompanyName);
+            var existsByCRNo = GetCompany(c.CRNo);
+
+            if (existsByName != null || existsByCRNo != null)
             {
-                return null;
+                return null; // You might want to handle this case differently, e.g., return an error response.
             }
 
-            // create new company
             var company = new Company
             {
                 CRNo = c.CRNo,
@@ -97,10 +98,11 @@ namespace SustiVest.Data.Services
                 ShareholderStructure = c.ShareholderStructure,
             };
 
-            ctx.Companies.Add(company); // add company to the list
+            ctx.Companies.Add(company);
             ctx.SaveChanges();
-            return company; // return newly added company
+            return company;
         }
+
 
         // Delete the company identified by Id returning true if 
         // deleted and false if not found
@@ -189,7 +191,7 @@ namespace SustiVest.Data.Services
         }
 
 
-        public FinanceRequest UpdateRequest(int requestNo, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment )
+        public FinanceRequest UpdateRequest(int requestNo, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment)
         {
             var financeRequest = GetFinanceRequest(requestNo);
             if (financeRequest == null) return null;
@@ -199,37 +201,37 @@ namespace SustiVest.Data.Services
             financeRequest.Tenor = tenor;
             financeRequest.FacilityType = facilityType;
             financeRequest.Status = status;
-            financeRequest.DateOfRequest = dateOfRequest; 
-            financeRequest.Assessment=assessment;
+            financeRequest.DateOfRequest = dateOfRequest;
+            financeRequest.Assessment = assessment;
 
             ctx.SaveChanges(); // write to database
             return financeRequest;
         }
-        
+
         public FinanceRequest ResubmitRequest(int requestNo, DateOnly dateOfRequest, bool assessment)
         {
             var financeRequest = GetFinanceRequest(requestNo);
             if (financeRequest == null) return null;
 
-            financeRequest.Assessment= assessment;
-            financeRequest.DateOfRequest = dateOfRequest; 
+            financeRequest.Assessment = assessment;
+            financeRequest.DateOfRequest = dateOfRequest;
 
             ctx.SaveChanges(); // write to database
             return financeRequest;
         }
-        
-        public FinanceRequest CloseRequest(int requestNo, string status) 
+
+        public FinanceRequest CloseRequest(int requestNo, string status)
         {
             var financeRequest = GetFinanceRequest(requestNo);
             if (financeRequest == null) return null;
 
-            financeRequest.Assessment= true;
+            financeRequest.Assessment = true;
             financeRequest.Status = status;
 
             ctx.SaveChanges(); // write to database
             return financeRequest;
         }
-       
+
         public bool DeleteRequest(int requestNo)
         {
             var financeRequest = GetFinanceRequest(requestNo);
@@ -239,7 +241,7 @@ namespace SustiVest.Data.Services
             ctx.SaveChanges();
             return true;
         }
-       
+
         public IList<FinanceRequest> GetOpenRequests()
         {
             // return open tickets with associated students
@@ -250,43 +252,43 @@ namespace SustiVest.Data.Services
         }
     }
 }
-        // perform a search of the tickets based on a query and
-        // an active range 'ALL', 'OPEN', 'CLOSED'
-    //     public IList<FinanceRequest> SearchTickets(TicketRange range, string query, string orderBy = "id", string direction = "asc")
-    //     {
-    //         // ensure query is not null    
-    //         query = query == null ? "" : query.ToLower();
+// perform a search of the tickets based on a query and
+// an active range 'ALL', 'OPEN', 'CLOSED'
+//     public IList<FinanceRequest> SearchTickets(TicketRange range, string query, string orderBy = "id", string direction = "asc")
+//     {
+//         // ensure query is not null    
+//         query = query == null ? "" : query.ToLower();
 
-    //         // search ticket issue, active status and student name
-    //         var search = db.Tickets
-    //                         .Include(t => t.Student)
-    //                         .OrderBy(t => t.Student.Name)
-    //                         .Where(t => (t.Issue.ToLower().Contains(query) ||
-    //                                      t.Student.Name.ToLower().Contains(query)
-    //                                     ) &&
-    //                                     (range == TicketRange.OPEN && t.Active ||
-    //                                      range == TicketRange.CLOSED && !t.Active ||
-    //                                      range == TicketRange.ALL
-    //                                     )
+//         // search ticket issue, active status and student name
+//         var search = db.Tickets
+//                         .Include(t => t.Student)
+//                         .OrderBy(t => t.Student.Name)
+//                         .Where(t => (t.Issue.ToLower().Contains(query) ||
+//                                      t.Student.Name.ToLower().Contains(query)
+//                                     ) &&
+//                                     (range == TicketRange.OPEN && t.Active ||
+//                                      range == TicketRange.CLOSED && !t.Active ||
+//                                      range == TicketRange.ALL
+//                                     )
 
-    //                         );
-    //         return Ordered(search, orderBy, direction).ToList();
-    //     }
+//                         );
+//         return Ordered(search, orderBy, direction).ToList();
+//     }
 
-    //     private IQueryable<Ticket> Ordered(IQueryable<Ticket> query, string orderby, string direction)
-    //     {
-    //         query = (orderby, direction) switch
-    //         {
-    //             ("id", "asc") => query.OrderBy(t => t.Id),
-    //             ("id", "desc") => query.OrderByDescending(t => t.Id),
-    //             ("name", "asc") => query.OrderBy(t => t.Student.Name),
-    //             ("name", "desc") => query.OrderByDescending(t => t.Student.Name),
-    //             ("createdon", "asc") => query.OrderBy(t => t.CreatedOn),
-    //             ("createdon", "desc") => query.OrderByDescending(t => t.CreatedOn),
-    //             _ => query
-    //         };
-    //         return query;
-    //     }
+//     private IQueryable<Ticket> Ordered(IQueryable<Ticket> query, string orderby, string direction)
+//     {
+//         query = (orderby, direction) switch
+//         {
+//             ("id", "asc") => query.OrderBy(t => t.Id),
+//             ("id", "desc") => query.OrderByDescending(t => t.Id),
+//             ("name", "asc") => query.OrderBy(t => t.Student.Name),
+//             ("name", "desc") => query.OrderByDescending(t => t.Student.Name),
+//             ("createdon", "asc") => query.OrderBy(t => t.CreatedOn),
+//             ("createdon", "desc") => query.OrderByDescending(t => t.CreatedOn),
+//             _ => query
+//         };
+//         return query;
+//     }
 
 
-    // }
+// }

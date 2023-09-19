@@ -22,6 +22,8 @@ builder.Services.AddDbContext<DatabaseContext>( options => {
 builder.Services.AddTransient<IUserService,UserServiceDb>();
 builder.Services.AddTransient<IMailService,SmtpMailService>();
 builder.Services.AddTransient<ICompanyService,CompanyServiceDb>();
+builder.Services.AddTransient<IAssessmentsService,AssessmentServiceDb>();
+builder.Services.AddTransient<IAnalystsService,AnalystServiceDb>();
 
 // ** Required to enable asp-authorize Taghelper **            
 builder.Services.AddHttpContextAccessor(); 
@@ -38,15 +40,18 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
    app.UseHsts();
 }
-else 
-{
-    // seed users in development mode - using service provider to get UserService from DI
-    using var scope = app.Services.CreateScope();
-    Seeder.Seed(
-        scope.ServiceProvider.GetService<IUserService>(),
-        scope.ServiceProvider.GetService<ICompanyService>()
-    );
-}
+// else 
+// {
+//     // seed users in development mode - using service provider to get UserService from DI
+//     using var scope = app.Services.CreateScope();
+//     Seeder.Seed(
+//         scope.ServiceProvider.GetService<IUserService>(),
+//         scope.ServiceProvider.GetService<ICompanyService>(),
+//         scope.ServiceProvider.GetService<IAnalystsService>(),
+//         scope.ServiceProvider.GetService<IAssessmentService>()
+
+//     );
+// }
 //app.UseHttpsRedirection();
 app.UseStaticFiles();
 
