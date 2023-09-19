@@ -71,13 +71,13 @@
                     <td>@assessment.NetEquity</td>
                     <td>@assessment.AnalystNo</td>
                     <td>
-                        <a asp-action="Details" asp-route-requestNo="@assessment.RequestNo">
+                        <a asp-action="Details" asp-route-requestNo="@assessment.RequestNo" asp-route-analystNo="@assessment.AnalystNo">
                             <i class="bi bi-display-fill me-2" title="view assessment" aria-label="view assessment"></i>
                         </a>
-                        <a asp-action="Edit" asp-route-requestNo="@assessment.RequestNo">
+                        <a asp-action="Edit" asp-route-requestNo="@assessment.RequestNo" asp-route-analystNo="@assessment.AnalystNo">
                             <i class="bi bi-pencil-fill me-2" title="edit assessment" aria-label="edit assessment"></i>
                         </a>
-                        <a asp-action="Delete" asp-route-requestNo="@assessment.RequestNo">
+                        <a asp-action="Delete" asp-route-requestNo="@assessment.RequestNo" asp-route-analystNo="@assessment.AnalystNo">
                             <i class="bi bi-trash-fill me-2" title="delete assessment" aria-label="delete assessment"></i>
                         </a>
                     </td>

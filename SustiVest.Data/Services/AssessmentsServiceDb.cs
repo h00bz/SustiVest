@@ -90,36 +90,38 @@ namespace SustiVest.Data.Services
             return assessment;
         }
 
-        public Assessments UpdateAssessment(Assessments updated)
+        public Assessments UpdateAssessment(int requestNo, int analystNo, int sales, int ebitda, double dsr, double ccc, int riskRating, string marketPosition, string repaymentStatus, double financialLeverage, int workingCapital, int operatingAssets, string crNo, int totalAssets, int netEquity)
         {
-            var assessment = GetAssessment(updated.RequestNo, updated.AnalystNo);
+            var assessment = GetAssessment(requestNo, analystNo);
             if (assessment == null)
             {
                 return null;
             }
 
             // Check if an assessment with the same RequestNo and AnalystNo exists
-            var exists = GetAssessment(updated.RequestNo, updated.AnalystNo);
-            if (exists != null && exists.RequestNo != updated.RequestNo)
+            var exists = GetAssessment(assessment.RequestNo, assessment.AnalystNo);
+            if (exists != null && exists.RequestNo != requestNo && exists.AnalystNo != analystNo)
             {
                 return null; // Assessment with the same RequestNo and AnalystNo already exists
             }
+      
 
             // Update the assessment properties
-            assessment.Sales = updated.Sales;
-            assessment.EBITDA = updated.EBITDA;
-            assessment.DSR = updated.DSR;
-            assessment.CCC = updated.CCC;
-            assessment.RiskRating = updated.RiskRating;
-            assessment.MarketPosition = updated.MarketPosition;
-            assessment.RepaymentStatus = updated.RepaymentStatus;
-            assessment.FinancialLeverage = updated.FinancialLeverage;
-            assessment.WorkingCapital = updated.WorkingCapital;
-            assessment.OperatingAssets = updated.OperatingAssets;
-            assessment.CRNo = updated.CRNo;
-            assessment.TotalAssets = updated.TotalAssets;
-            assessment.NetEquity = updated.NetEquity;
+            assessment.Sales = sales;
+            assessment.EBITDA = ebitda;
+            assessment.DSR = dsr;
+            assessment.CCC = ccc;
+            assessment.RiskRating = riskRating;
+            assessment.MarketPosition = marketPosition;
+            assessment.RepaymentStatus = repaymentStatus;
+            assessment.FinancialLeverage = financialLeverage;
+            assessment.WorkingCapital = workingCapital;
+            assessment.OperatingAssets = operatingAssets;
+            assessment.CRNo = crNo;
+            assessment.TotalAssets = totalAssets;
+            assessment.NetEquity = netEquity;
             // Update other properties as needed
+    
 
             ctx.SaveChanges();
             return assessment;

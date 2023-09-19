@@ -75,11 +75,11 @@ namespace SustiVest.Data.Services
         }
 
         // Add a new company
-        public Company AddCompany(Company c)
+        public Company AddCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure)
         {
             // Check if a company with the same CompanyName or CRNo already exists
-            var existsByName = GetCompanyByName(c.CompanyName);
-            var existsByCRNo = GetCompany(c.CRNo);
+            var existsByName = GetCompanyByName(companyName);
+            var existsByCRNo = GetCompany(crNo);
 
             if (existsByName != null || existsByCRNo != null)
             {
@@ -88,14 +88,14 @@ namespace SustiVest.Data.Services
 
             var company = new Company
             {
-                CRNo = c.CRNo,
-                TaxID = c.TaxID,
-                CompanyName = c.CompanyName,
-                Industry = c.Industry,
-                DateOfEstablishment = c.DateOfEstablishment,
-                Activity = c.Activity,
-                Type = c.Type,
-                ShareholderStructure = c.ShareholderStructure,
+                CRNo = crNo,
+                TaxID = taxID,
+                CompanyName = companyName,
+                Industry = industry,
+                DateOfEstablishment = dateOfEstablishment,
+                Activity = activity,
+                Type = type,
+                ShareholderStructure = shareholderStructure,
             };
 
             ctx.Companies.Add(company);
@@ -119,29 +119,31 @@ namespace SustiVest.Data.Services
         }
 
         // Update the company with the details in updated 
-        public Company UpdateCompany(Company updated)
+        public Company UpdateCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure)
         {
             // verify the commpany exists 
-            var company = GetCompany(updated.CRNo);
+            var company = GetCompany(crNo);
             if (company == null)
             {
                 return null;
             }
 
             // verify name is still unique
-            var exists = GetCompanyByName(updated.CompanyName);
-            if (exists != null && exists.CRNo != updated.CRNo)
+            var exists = GetCompanyByName(company.CompanyName);
+            if (exists != null && exists.CRNo != company.CRNo)
             {
                 return null;
             }
 
             // update the details of the company retrieved and save
-            company.CompanyName = updated.CompanyName;
-            company.Industry = updated.Industry;
-            company.DateOfEstablishment = updated.DateOfEstablishment;
-            company.Activity = updated.Activity;
-            company.Type = updated.Type;
-            company.ShareholderStructure = updated.ShareholderStructure;
+            company.CompanyName = companyName;
+            company.Industry = industry;
+            company.DateOfEstablishment = dateOfEstablishment;
+            company.Activity = activity;
+            company.Type = type;
+            company.ShareholderStructure = shareholderStructure;
+            company.CRNo = crNo;
+
 
             ctx.SaveChanges();
             return company;

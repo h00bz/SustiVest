@@ -19,8 +19,7 @@ namespace SustiVest.Data.Repositories
 
         public DbSet<Assessments> Assessments { get; set; }
 
-        public DbSet<Analysts
-        > Analysts { get; set; }
+        public DbSet<Analysts> Analysts { get; set; }
 
         public DbSet<ForgotPassword> ForgotPasswords { get; set; }
 

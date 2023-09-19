@@ -100,17 +100,21 @@ namespace SustiVest.Web.Controllers
         // Commented out the [Authorize(Roles = "admin,support")] attribute
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Edit(int requestNo, int analystNo, [Bind("Sales, EBITDA, DSR, CCC, RiskRating, MarketPosition, RepaymentStatus, FinancialLeverage, WorkingCapital, OperatingAssets, TotalAssets, NetEquity")] Assessments a)
+        public IActionResult Edit(int requestNo, int analystNo, [Bind("Sales, EBITDA, DSR, CCC, RiskRating, MarketPosition, RepaymentStatus, FinancialLeverage, WorkingCapital, OperatingAssets, CRNo, TotalAssets, NetEquity")] Assessments a)
         {
+            var assessment = _svc.GetAssessment(requestNo, analystNo);
 
             // Check if an assessment with the same RequestNo and AnalystNo exists
             if (ModelState.IsValid)
             {
-                var assessment = _svc.UpdateAssessment(a);
+                var updated = _svc.UpdateAssessment(requestNo, analystNo, a.Sales, a.EBITDA, a.DSR, a.CCC, a.RiskRating, a.MarketPosition, a.RepaymentStatus, a.FinancialLeverage, a.WorkingCapital, a.OperatingAssets, a.CRNo, a.TotalAssets, a.NetEquity);
 
-                if (assessment != null)
+                if (updated != null)
                 {
-                    return RedirectToAction(nameof(Details), new { requestNo = assessment.RequestNo, analystNo = assessment.AnalystNo });
+                    Alert("Assessment Updated", AlertType.success);
+
+                    return RedirectToAction(nameof(Details), new { requestNo = updated.RequestNo, updated.AnalystNo });
+
                 }
 
                 Alert("Encountered an issue while updating the assessment.", AlertType.warning);

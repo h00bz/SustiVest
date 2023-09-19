@@ -11,8 +11,8 @@ namespace SustiVest.Data.Services
         Paged<Company> GetCompanies(int page = 1, int size = 10, string orderBy = "companyname", string direction = "asc");
         Company GetCompany(string CRNo);
         Company GetCompanyByName(string CompanyName);
-        Company AddCompany(Company c);
-        Company UpdateCompany(Company updated);
+        Company AddCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure);
+        Company UpdateCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure);
         bool DeleteCompany(string CRNo);
         IList<FinanceRequest> GetFinanceRequests();
         IList<FinanceRequest> GetOpenRequests();

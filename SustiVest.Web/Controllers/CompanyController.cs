@@ -68,7 +68,7 @@ namespace SustiVest.Web.Controllers
             if (ModelState.IsValid)
             {
                 // call service AddCompany method using data in s
-                var company = _svc.AddCompany(c);
+                var company = _svc.AddCompany(c.CRNo, c.TaxID, c.CompanyName, c.Industry, c.DateOfEstablishment, c.Activity, c.Type, c.ShareholderStructure);
                 if (company is null)
                 {
                     Alert("Encountered issue creating company profile.", AlertType.warning);
@@ -94,7 +94,6 @@ namespace SustiVest.Web.Controllers
                 Alert("Company not found", AlertType.warning);
                 return RedirectToAction(nameof(CompanyIndex));
             }
-
             // pass company to view for editing
             return View(company);
         }
@@ -103,31 +102,32 @@ namespace SustiVest.Web.Controllers
         [ValidateAntiForgeryToken]
         // [Authorize(Roles="admin,support")]
         [HttpPost]
-        public IActionResult Edit(int id, [Bind("CompanyName, Industry, DateOfEstablishment, Activity, Type, ShareholderStructure")] Company c)
+        public IActionResult Edit(string crNo, string taxID,  [Bind("CompanyName, Industry, DateOfEstablishment, Activity, Type, ShareholderStructure")] Company c)
         {
-            // check if email exists and is not owned by company being edited 
-            var exists = _svc.GetCompanyByName(c.CompanyName);
-            if (exists != null && c.CRNo != exists.CRNo)
-            {
-                ModelState.AddModelError(nameof(c.CompanyName), "The company name entered is not unique.");
-            }
+            // check if company name already exists and is not owned by company being edited 
+            var company = _svc.GetCompany(crNo);
 
-            // complete POST action to save company changes
+            // Check if the ModelState is valid (i.e., no validation errors)
             if (ModelState.IsValid)
             {
-                var company = _svc.UpdateCompany(c);
-                if (company is null)
+                // Complete POST action to save company changes
+                var updated = _svc.UpdateCompany(crNo, taxID, c.CompanyName, c.Industry, c.DateOfEstablishment, c.Activity, c.Type, c.ShareholderStructure);
+
+                if (updated is null)
                 {
                     Alert("Encountered issue while updating company", AlertType.warning);
                 }
-
-                // redirect back to view the company details
-                return RedirectToAction(nameof(CompanyDetails), new { CRNo = c.CRNo });
+                else
+                {
+                    // Redirect back to view the company details
+                    return RedirectToAction(nameof(CompanyDetails), new { crNo =  updated.CRNo });
+                }
             }
 
-            // redisplay the form for editing as validation errors
+            // Redisplay the form for editing as validation errors
             return View(c);
         }
+
 
         // GET / company/delete/{id}
         // [Authorize(Roles="admin")]      

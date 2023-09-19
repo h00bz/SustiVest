@@ -117,6 +117,10 @@
                                 <a asp-action="Edit" asp-route-crNo=@c.CRNo>
                                     <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i>
                                 </a>
+                                <a asp-action="Delete" asp-route-crNo=@c.CRNo>
+                                    <i class="bi bi-trash-fill me-2" title="delete company" aria-label="delete company"></i>
+                                </a>
+                                
                             </td>
                         </tr>
                     }
