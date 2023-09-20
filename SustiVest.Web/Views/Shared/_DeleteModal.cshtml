@@ -1,0 +1,44 @@
+@* _DeleteModal.cshtml *@
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this item?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" id="deleteForm">
+                    <input type="hidden" id="deleteItemId" name="itemId" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        // When the modal is shown, update the form action and hidden input based on the data attributes
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var itemId = button.data('item-id'); // Get the item ID from the data attributes
+
+            // Update the form action and hidden input value
+            var form = $('#deleteForm');
+            var hiddenInput = $('#deleteItemId');
+            
+            // Replace 'item_id' with the actual property name you want to use
+            hiddenInput.attr('name', 'item_id');
+            hiddenInput.val(itemId);
+            
+            // Update the form action based on the delete action URL
+            form.attr('action', button.data('delete-action'));
+        });
+    });
+</script>

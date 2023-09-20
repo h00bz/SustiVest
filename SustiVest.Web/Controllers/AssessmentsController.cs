@@ -141,8 +141,8 @@ namespace SustiVest.Web.Controllers
 
         // POST /assessments/delete/{requestNo}/{analystNo]
         // Commented out the [Authorize(Roles = "admin,support")] attribute
-        [HttpPost]
         [ValidateAntiForgeryToken]
+        [HttpPost]
         public IActionResult DeleteConfirm(int requestNo, int analystNo)
         {
             var deleted = _svc.DeleteAssessment(requestNo, analystNo);
