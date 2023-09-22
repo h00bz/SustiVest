@@ -23,14 +23,15 @@
                     <span class="ms-1 d-none d-md-inline">List</span>
                 </a>
 
-                <a asp-action="Edit" asp-route-requestNo="@Model.RequestNo" asp-route-analystNo="@Model.AnalystNo"
+                <a asp-action="Edit" asp-route-assessmentNo="@Model.AssessmentNo"
                     class="btn btn-sm btn-outline-secondary" aria-label="edit assessment">
                     <i class="bi bi-pen-fill" title="edit assessment"></i>
                     <span class="ms-1 d-none d-md-inline">Edit</span>
                 </a>
 
-                <form method="post" asp-action="DeleteConfirm" asp-route-requestNo="@Model.RequestNo"
-                    asp-route-analystNo="@Model.AnalystNo" class="d-inline">
+                <form method="post" asp-action="DeleteConfirm" asp-route-assessmentNo="@Model.AssessmentNo"
+                    class="d-inline">
+                    
                     <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="delete assessment">
                         <i class="bi bi-trash-fill" title="delete assessment"></i>
                         <span class="ms-1 d-none d-md-inline">Delete</span>
@@ -58,10 +59,9 @@
     document.getElementById("deleteAssessmentButton").addEventListener("click", function () {
         if (confirm("Are you sure you want to delete this assessment?")) {
             // Replace placeholders with actual values
-            var requestNo = '@Model.RequestNo'; // Wrap in single quotes
-            var analystNo = '@Model.AnalystNo'; // Wrap in single quotes
+            var assessmentNo = '@Model.AssessmentNo'; // Wrap in single quotes
             // Redirect to the DeleteConfirm action
-            window.location.href = `/assessments/deleteconfirm?requestNo=${requestNo}&analystNo=${analystNo}`;
+            window.location.href = `/assessments/deleteconfirm?offerId=${offerId}`;
         }
     });
 

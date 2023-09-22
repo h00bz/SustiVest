@@ -9,24 +9,28 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCookieAuthentication();
 //builder.Services.AddPolicyAuthorisation();
 
-builder.Services.AddDbContext<DatabaseContext>( options => {
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
     // Configure connection string for selected database in appsettings.json
 
-    options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));   
+    options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"),
+     sqliteOptions => sqliteOptions.MigrationsAssembly("SustiVest.Data"));
     //options.UseMySql(builder.Configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySql")));
     //options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
-    //options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
-});  
+    //options.UseSqlServer(Ybuilder.Configuration.GetConnectionString("SqlServer"));
+});
 
 // Add UserService to DI   
-builder.Services.AddTransient<IUserService,UserServiceDb>();
-builder.Services.AddTransient<IMailService,SmtpMailService>();
-builder.Services.AddTransient<ICompanyService,CompanyServiceDb>();
-builder.Services.AddTransient<IAssessmentsService,AssessmentServiceDb>();
-builder.Services.AddTransient<IAnalystsService,AnalystServiceDb>();
+builder.Services.AddTransient<IUserService, UserServiceDb>();
+builder.Services.AddTransient<IMailService, SmtpMailService>();
+builder.Services.AddTransient<ICompanyService, CompanyServiceDb>();
+builder.Services.AddTransient<IAssessmentsService, AssessmentServiceDb>();
+builder.Services.AddTransient<IAnalystsService, AnalystServiceDb>();
+builder.Services.AddTransient<IOfferService, OfferServiceDb>();
+
 
 // ** Required to enable asp-authorize Taghelper **            
-builder.Services.AddHttpContextAccessor(); 
+builder.Services.AddHttpContextAccessor();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -38,7 +42,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-   app.UseHsts();
+    app.UseHsts();
 }
 // else 
 // {

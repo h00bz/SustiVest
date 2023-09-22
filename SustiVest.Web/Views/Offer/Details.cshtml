@@ -1,0 +1,73 @@
+@model Offer
+
+<partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/Offer","Offers"), ("",$"Offer {Model.RequestNo}-{Model.CRNo}") }) />
+
+<div class="card rounded shadow p-4">
+    <!-- Display offer details -->
+    <div class="row">
+        <!-- Details and Navigation -->
+        <div class="col-8 d-flex flex-column justify-content-between">
+            <!-- Offer details -->
+            <div>
+                <h2 class="mb-4 text-primary">Offer @Model.OfferId Details</h2>
+                <dl class="row">
+                    <dt class="col-4 pb-1">Request No.</dt>
+                    <dd class="col-8 pb-1">@Model.RequestNo</dd>
+
+                    <dt class="col-4 pb-1">CR No</dt>
+                    <dd class="col-8 pb-1">@Model.CRNo</dd>
+ 
+                    <dt class="col-4 pb-1">Amount</dt>
+                    <dd class="col-8 pb-1">@Model.Amount</dd>
+
+                    <dt class="col-4 pb-1">Tenor</dt>
+                    <dd class="col-8 pb-1">@Model.Tenor</dd>
+
+                    <dt class="col-4 pb-1">Payback</dt>
+                    <dd class="col-8 pb-1">@Model.Payback</dd>
+
+                    <dt class="col-4 pb-1">Linens</dt>
+                    <dd class="col-8 pb-1">@Model.Linens</dd>
+
+                    <dt class="col-4 pb-1">Undertakings</dt>
+                    <dd class="col-8 pb-1">@Model.Undertakings</dd>
+
+                    <dt class="col-4 pb-1">Covenants</dt>
+                    <dd class="col-8 pb-1">@Model.Covenants</dd>
+
+                    <dt class="col-4 pb-1">ROR</dt>
+                    <dd class="col-8 pb-1">@Model.ROR</dd>
+
+                    <dt class="col-4 pb-1">Facility Type</dt>
+                    <dd class="col-8 pb-1">@Model.FacilityType</dd>
+
+                    <dt class="col-4 pb-1">Utilization Mechanism</dt>
+                    <dd class="col-8 pb-1">@Model.UtilizationMechanism</dd>
+
+                    <dt class="col-4 pb-1">Analyst No.</dt>
+                    <dd class="col-8 pb-1">@Model.AnalystNo</dd>
+                </dl>
+            </div>
+
+            <!-- Navigation links -->
+            <div>
+                <a asp-action="Index" class="btn btn-sm btn-outline-primary" aria-label="offer list">
+                    <i class="bi bi-list" title="offer list"></i>
+                    <span class="ms-1 d-none d-md-inline">List</span>
+                </a>
+
+                <a asp-action="Edit" asp-route-offerId="@Model.OfferId"
+                    class="btn btn-sm btn-outline-secondary" aria-label="edit offer">
+                    <i class="bi bi-pen-fill" title="edit offer"></i>
+                    <span class="ms-1 d-none d-md-inline">Edit</span>
+                </a>
+
+                <a asp-action="Delete" asp-route-offerId="@Model.OfferId">
+                    <button type="button" class="btn btn-sm btn-outline-danger" aria-label="delete offer">
+                        <i class="bi bi-trash-fill me-2" title="delete offer" aria-label="delete offer"></i>Delete
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

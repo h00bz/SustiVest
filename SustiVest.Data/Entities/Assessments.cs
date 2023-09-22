@@ -10,10 +10,9 @@ namespace SustiVest.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int AssessmentNo { get; set; }
         public int RequestNo { get; set; } // PRIMARY KEY
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AnalystNo { get; set; } // PRIMARY KEY
 
         public int Sales { get; set; }
@@ -51,5 +50,7 @@ namespace SustiVest.Data.Entities
 
         [ForeignKey("RequestNo")]
         public FinanceRequest FinanceRequest { get; set; }
+
+        public ICollection<Offer> Offers { get; set; }
     }
 }

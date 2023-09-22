@@ -1,0 +1,88 @@
+@model Paged<Offer>
+
+<partial name="_Breadcrumbs" model=@(new [] { ("/", "Home"), ("", "Offers") }) />
+
+<div class="card border rounded shadow p-4">
+    <!-- Title bar -->
+    <div class="d-flex align-items-center justify-content-between">
+        <h3>Offers</h3>
+        <a class="btn btn-sm btn-primary" asp-action="Create" title="Create Offer" aria-label="Create Offer">
+            <i class="bi bi-plus"></i> Create
+        </a>
+    </div>
+
+    <!-- List of offers -->
+    <table class="table table-hover mt-4">
+        <thead>
+            <tr>
+                 <th>
+                    OfferId
+                    <a asp-action="Index" asp-route-order="offerId" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="offerId" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    CR No
+                    <a asp-action="Index" asp-route-order="crNo" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="crNo" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Amount
+                    <a asp-action="Index" asp-route-order="amount" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="amount" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Tenor
+                    <a asp-action="Index" asp-route-order="tenor" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="tenor" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    ROR
+                    <a asp-action="Index" asp-route-order="ror" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="ror" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Facility Type
+                    <a asp-action="Index" asp-route-order="facilityType" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="facilityType" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var offer in Model.Data)
+            {
+                <tr>
+                    <td>@offer.OfferId</td>
+                    <td>@offer.CRNo</td>
+                    <td>@offer.Amount</td>
+                    <td>@offer.Tenor</td>
+                    <td>@offer.ROR</td>
+                    <td>@offer.FacilityType</td>
+                    <td>
+                        <a asp-action="Details" asp-route-offerId= "@offer.OfferId">
+                            <i class="bi bi-display-fill me-2" title="View Offer" aria-label="View Offer"></i>
+                        </a>
+                        <a asp-action="Edit" asp-route-offerId= "@offer.OfferId">
+                            <i class="bi bi-pencil-fill me-2" title="Edit Offer" aria-label="Edit Offer"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-offerId= "@offer.OfferId">
+                            <i class="bi bi-trash-fill me-2" title="Delete Offer" aria-label="Delete Offer"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

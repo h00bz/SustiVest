@@ -18,6 +18,7 @@ namespace SustiVest.Data.Repositories
         public DbSet<FinanceRequest> FinanceRequests { get; set; }
 
         public DbSet<Assessments> Assessments { get; set; }
+        public DbSet<Offer> Offers { get; set; }
 
         public DbSet<Analysts> Analysts { get; set; }
 
@@ -44,9 +45,12 @@ namespace SustiVest.Data.Repositories
             modelBuilder.Entity<FinanceRequest>().ToTable("FinanceRequest");
             modelBuilder.Entity<FinanceRequest>().HasKey(f => f.RequestNo);
             modelBuilder.Entity<Assessments>().ToTable("Assessments");
-            modelBuilder.Entity<Assessments>().HasKey(a => new { a.RequestNo, a.AnalystNo });
+            modelBuilder.Entity<Assessments>().HasKey(a => a.AssessmentNo);
             modelBuilder.Entity<Analysts>().ToTable("Analysts");
             modelBuilder.Entity<Analysts>().HasKey(an => an.AnalystNo);
+            modelBuilder.Entity<Offer>().ToTable("Offer");
+            modelBuilder.Entity<Offer>().HasKey(o => o.OfferId);
+
         }
 
         // Convenience method to recreate the database thus ensuring the new database takes 

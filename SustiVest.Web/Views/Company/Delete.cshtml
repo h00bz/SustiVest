@@ -28,10 +28,15 @@
                     <span class="ms-1 d-none d-md-inline">Edit</span>
                 </a>
 
-                <a class="btn btn-sm btn-outline-danger" aria-label="delete company" id="deleteCompanyButton">
-                    <i class="bi bi-trash-fill" title="delete company"></i>
-                    <span class="ms-1 d-none d-md-inline">Delete</span>
-                </a>
+                <form method="post" asp-action="DeleteConfirm" asp-route-assessmentNo="@Model.CRNo"
+                    class="d-inline">
+                    
+                    <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="delete company">
+                        <i class="bi bi-trash-fill" title="delete company"></i>
+                        <span class="ms-1 d-none d-md-inline">Delete</span>
+                    </button>
+                </form>
+
 
                 <a asp-controller="FinanceRequest" asp-action="CreateRequest" asp-route-crNo="@Model.CRNo"
                     class="btn btn-sm btn-outline-primary" aria-label="request finance">

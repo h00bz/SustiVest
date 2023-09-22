@@ -31,9 +31,9 @@ namespace SustiVest.Web.Controllers
         }
 
         // GET /assessments/details/{requestNo}/{analystNo}
-        public IActionResult Details(int requestNo, int analystNo)
+        public IActionResult Details(int assessmentNo)
         {
-            var assessment = _svc.GetAssessment(requestNo, analystNo);
+            var assessment = _svc.GetAssessment(assessmentNo);
 
             if (assessment == null)
             {
@@ -56,14 +56,14 @@ namespace SustiVest.Web.Controllers
         // Commented out the [Authorize(Roles = "admin,support")] attribute
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Create([Bind("RequestNo, AnalystNo, Sales, EBITDA, DSR, CCC, RiskRating, MarketPosition, RepaymentStatus, FinancialLeverage, WorkingCapital, OperatingAssets, CRNo, TotalAssets, NetEquity")] Assessments a)
+        public IActionResult Create(int AssessmentNo, [Bind("RequestNo, AnalystNo, Sales, EBITDA, DSR, CCC, RiskRating, MarketPosition, RepaymentStatus, FinancialLeverage, WorkingCapital, OperatingAssets, CRNo, TotalAssets, NetEquity")] Assessments a)
         {
             // Check if an assessment with the same RequestNo and AnalystNo exists
 
-            if (_svc.GetAssessment(a.RequestNo, a.AnalystNo) != null)
-            {
-                ModelState.AddModelError("", "An assessment with the same RequestNo and AnalystNo already exists.");
-            }
+            // if (_svc.GetAssessment(a.RequestNo, a.AnalystNo) != null)
+            // {
+            //     ModelState.AddModelError("", "An assessment with the same RequestNo and AnalystNo already exists.");
+            // }
 
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace SustiVest.Web.Controllers
 
                 if (assessment != null)
                 {
-                    return RedirectToAction(nameof(Details), new { requestNo = assessment.RequestNo, analystNo = assessment.AnalystNo });
+                    return RedirectToAction(nameof(Details), new { assessmentNo = assessment.AssessmentNo });
                 }
 
                 Alert("Encountered an issue while creating the assessment.", AlertType.warning);
@@ -83,9 +83,9 @@ namespace SustiVest.Web.Controllers
 
         // GET /assessments/edit/{requestNo}/{analystNo]
         // Commented out the [Authorize(Roles = "admin,support")] attribute
-        public IActionResult Edit(int requestNo, int analystNo)
+        public IActionResult Edit(int assessmentNo)
         {
-            var assessment = _svc.GetAssessment(requestNo, analystNo);
+            var assessment = _svc.GetAssessment(assessmentNo);
 
             if (assessment == null)
             {
@@ -100,14 +100,14 @@ namespace SustiVest.Web.Controllers
         // Commented out the [Authorize(Roles = "admin,support")] attribute
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Edit(int requestNo, int analystNo, [Bind("Sales, EBITDA, DSR, CCC, RiskRating, MarketPosition, RepaymentStatus, FinancialLeverage, WorkingCapital, OperatingAssets, CRNo, TotalAssets, NetEquity")] Assessments a)
+        public IActionResult Edit(int assessmentNo, [Bind("RequestNo, AnalystNo, Sales, EBITDA, DSR, CCC, RiskRating, MarketPosition, RepaymentStatus, FinancialLeverage, WorkingCapital, OperatingAssets, CRNo, TotalAssets, NetEquity")] Assessments a)
         {
-            var assessment = _svc.GetAssessment(requestNo, analystNo);
+            var assessment = _svc.GetAssessment(assessmentNo);
 
             // Check if an assessment with the same RequestNo and AnalystNo exists
             if (ModelState.IsValid)
             {
-                var updated = _svc.UpdateAssessment(requestNo, analystNo, a.Sales, a.EBITDA, a.DSR, a.CCC, a.RiskRating, a.MarketPosition, a.RepaymentStatus, a.FinancialLeverage, a.WorkingCapital, a.OperatingAssets, a.CRNo, a.TotalAssets, a.NetEquity);
+                var updated = _svc.UpdateAssessment(assessmentNo, a.RequestNo, a.AnalystNo, a.Sales, a.EBITDA, a.DSR, a.CCC, a.RiskRating, a.MarketPosition, a.RepaymentStatus, a.FinancialLeverage, a.WorkingCapital, a.OperatingAssets, a.CRNo, a.TotalAssets, a.NetEquity);
 
                 if (updated != null)
                 {
@@ -126,9 +126,9 @@ namespace SustiVest.Web.Controllers
 
         // GET /assessments/delete/{requestNo}/{analystNo]
         // Commented out the [Authorize(Roles = "admin,support")] attribute
-        public IActionResult Delete(int requestNo, int analystNo)
+        public IActionResult Delete(int assessmentNo)
         {
-            var assessment = _svc.GetAssessment(requestNo, analystNo);
+            var assessment = _svc.GetAssessment(assessmentNo);
 
             if (assessment == null)
             {
@@ -143,9 +143,9 @@ namespace SustiVest.Web.Controllers
         // Commented out the [Authorize(Roles = "admin,support")] attribute
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult DeleteConfirm(int requestNo, int analystNo)
+        public IActionResult DeleteConfirm(int assessmentNo)
         {
-            var deleted = _svc.DeleteAssessment(requestNo, analystNo);
+            var deleted = _svc.DeleteAssessment(assessmentNo);
 
             if (deleted)
             {

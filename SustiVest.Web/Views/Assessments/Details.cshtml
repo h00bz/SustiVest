@@ -9,7 +9,7 @@
         <div class="col-8 d-flex flex-column justify-content-between">
             <!-- Assessment details -->
             <div>
-                <h2 class="mb-4 text-primary">Assessment @Model.RequestNo - @Model.AnalystNo Details</h2>
+                <h2 class="mb-4 text-primary">Assessment @Model.AssessmentNo Details</h2>
                 <dl class="row">
                     <dt class="col-4 pb-1">Request No.</dt>
                     <dd class="col-8 pb-1">@Model.RequestNo</dd>
@@ -68,13 +68,13 @@
                     <span class="ms-1 d-none d-md-inline">List</span>
                 </a>
 
-                <a asp-action="Edit" asp-route-requestNo="@Model.RequestNo" asp-route-analystNo="@Model.AnalystNo"
+                <a asp-action="Edit" asp-route-assessmentNo="@Model.AssessmentNo"
                     class="btn btn-sm btn-outline-secondary" aria-label="edit assessment">
                     <i class="bi bi-pen-fill" title="edit assessment"></i>
                     <span class="ms-1 d-none d-md-inline">Edit</span>
                 </a>
 
-                <a asp-action="Delete" asp-route-requestNo="@Model.RequestNo" asp-route-analystNo="@Model.AnalystNo">
+                <a asp-action="Delete" asp-route-assessmentNo="@Model.AssessmentNo">
                     <button type="button" class="btn btn-sm btn-outline-danger" aria-label="delete assessment">
                         <i class="bi bi-trash-fill me-2" title="delete assessment" aria-label="delete assessment"></i>Delete
                     </button>

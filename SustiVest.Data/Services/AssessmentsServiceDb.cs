@@ -48,18 +48,18 @@ namespace SustiVest.Data.Services
             return results.Include(a => a.Company).ToPaged(page, size, orderBy, direction);
         }
 
-        public Assessments GetAssessment(int requestNo, int analystNo)
+        public Assessments GetAssessment(int assessmentNo)
         {
             return ctx.Assessments
             .Include(a => a.Company)
             .Include(a => a.Analyst)
-            .FirstOrDefault(a => a.RequestNo == requestNo && a.AnalystNo == analystNo);
+            .FirstOrDefault(a => a.AssessmentNo == assessmentNo);
         }
 
         public Assessments AddAssessment(Assessments a)
         {
             // Check if an assessment with the same RequestNo and AnalystNo exists
-            var exists = GetAssessment(a.RequestNo, a.AnalystNo);
+            var exists = GetAssessment(a.AssessmentNo);
             if (exists != null)
             {
                 return null; // Assessment with the same RequestNo and AnalystNo already exists
@@ -90,17 +90,17 @@ namespace SustiVest.Data.Services
             return assessment;
         }
 
-        public Assessments UpdateAssessment(int requestNo, int analystNo, int sales, int ebitda, double dsr, double ccc, int riskRating, string marketPosition, string repaymentStatus, double financialLeverage, int workingCapital, int operatingAssets, string crNo, int totalAssets, int netEquity)
+        public Assessments UpdateAssessment(int assessmentNo, int requestNo, int analystNo, int sales, int ebitda, double dsr, double ccc, int riskRating, string marketPosition, string repaymentStatus, double financialLeverage, int workingCapital, int operatingAssets, string crNo, int totalAssets, int netEquity)
         {
-            var assessment = GetAssessment(requestNo, analystNo);
+            var assessment = GetAssessment(assessmentNo);
             if (assessment == null)
             {
                 return null;
             }
 
             // Check if an assessment with the same RequestNo and AnalystNo exists
-            var exists = GetAssessment(assessment.RequestNo, assessment.AnalystNo);
-            if (exists != null && exists.RequestNo != requestNo && exists.AnalystNo != analystNo)
+            var exists = GetAssessment(assessment.AssessmentNo);
+            if (exists != null && exists.AssessmentNo != assessmentNo)
             {
                 return null; // Assessment with the same RequestNo and AnalystNo already exists
             }
@@ -128,9 +128,9 @@ namespace SustiVest.Data.Services
         }
 
 
-        public bool DeleteAssessment(int requestNo, int analystNo)
+        public bool DeleteAssessment(int assessmentNo)
         {
-            var assessment = GetAssessment(requestNo, analystNo);
+            var assessment = GetAssessment(assessmentNo);
             if (assessment == null)
             {
                 return false;
