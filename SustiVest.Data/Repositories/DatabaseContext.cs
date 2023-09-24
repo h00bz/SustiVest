@@ -33,6 +33,7 @@ namespace SustiVest.Data.Repositories
         {
             // remove in production 
             optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging();
+            
         }
 
         public static DbContextOptionsBuilder<DatabaseContext> OptionsBuilder => new();
@@ -41,6 +42,7 @@ namespace SustiVest.Data.Repositories
             modelBuilder.Entity<Company>().ToTable("Company");
             modelBuilder.Entity<Company>()
            .HasKey(c => c.CRNo);
+            modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<User>().HasKey(u => u.Id);
             modelBuilder.Entity<FinanceRequest>().ToTable("FinanceRequest");
             modelBuilder.Entity<FinanceRequest>().HasKey(f => f.RequestNo);

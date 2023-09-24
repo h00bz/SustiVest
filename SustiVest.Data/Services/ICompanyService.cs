@@ -17,11 +17,12 @@ namespace SustiVest.Data.Services
         IList<FinanceRequest> GetFinanceRequests();
         IList<FinanceRequest> GetOpenRequests();
         FinanceRequest GetFinanceRequest(int requestNo);
-        FinanceRequest CreateRequest(string purpose, int amount, int tenor, string facilityType, string crNo, string status, DateOnly dateOfRequest, bool assessment);
+        FinanceRequest CreateRequest(FinanceRequest fr);
         FinanceRequest CloseRequest(int requestNo, string status);
         FinanceRequest UpdateRequest(int requestNo, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment);
         FinanceRequest ResubmitRequest(int requestNo, DateOnly dateOfRequest, bool assessment);
         bool DeleteRequest(int RequestNo);
+        public bool IsUserAuthorizedToEditCompanyProfile(string crNo, int userId);
 
     }
 }

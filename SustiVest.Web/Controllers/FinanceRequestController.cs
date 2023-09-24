@@ -112,37 +112,44 @@ namespace SustiVest.Web.Controllers
         }
 
         // GET /ticket/create
-        // [Authorize(Roles = "admin,support")]
+        [Authorize(Roles = "admin, analyst, borrower")]
         [HttpGet]
-        public IActionResult CreateRequest()
+        public IActionResult CreateRequest(String crNo)
         {
-            // var companies = svc.GetCompanies();
-            // populate viewmodel select list property
-            // var rvm = new RequestFinanceViewModel
-            // {
-            //     Companies= new SelectList(companies, nameof(Company.CR_No), nameof(Company.CompanyName))
-            // };
 
-            // render blank form
-            return View();
+            {
+                if (string.IsNullOrEmpty(crNo))
+                {
+                    // Handle the case where CRNo is not provided.
+                    // You can show an error message or redirect as needed.
+                    return RedirectToAction(nameof(CompanyController.CompanyIndex)); // Example redirect.
+                }
+
+                // You can use the crNo parameter to pre-populate the CRNo field in your form.
+                var model = new FinanceRequest { CRNo = crNo };
+
+                return View();
+            }
         }
 
         // // POST /ticket/create
         [HttpPost]
         // [Authorize(Roles = "admin,support")]
-        public IActionResult CreateRequest( [Bind("Purpose, Amount, Tenor, FacilityType, CRNo, Status, DateOfRequest, Assessment")] FinanceRequest fr)
+        public IActionResult CreateRequest([Bind("Purpose, Amount, Tenor, FacilityType, CRNo, Status, DateOfRequest, Assessment")] FinanceRequest fr)
         {
+
+
             if (ModelState.IsValid)
             {
-               var request = svc.CreateRequest(fr.Purpose, fr.Amount, fr.Tenor, fr.FacilityType, fr.CRNo, fr.Status, fr.DateOfRequest, fr.Assessment);
-           
-            if (request is null) 
-            {
-                Alert("Encountered issue creating request.", AlertType.warning);
-                return RedirectToAction(nameof(Details), new {RequestNo=2});
-            }
+                var request = svc.CreateRequest(fr);
+
+                if (request is null)
+                {
+                    Alert("Encountered issue creating request.", AlertType.warning);
+                    return RedirectToAction(nameof(CompanyController.CompanyDetails), new { crNo = fr.CRNo });
+                }
                 Alert($"Request Submitted", AlertType.info);
-                return RedirectToAction(nameof(Details) , new { RequestNo = 2});
+                return RedirectToAction(nameof(Details));
             }
 
             // redisplay the form for editing
@@ -155,7 +162,7 @@ namespace SustiVest.Web.Controllers
             return View(table);
         }
 
-    public IActionResult RequestEdit(int requestNo)
+        public IActionResult RequestEdit(int requestNo)
         {
             var financeRequest = svc.GetFinanceRequest(requestNo);
             if (financeRequest == null)

@@ -5,8 +5,7 @@ using SustiVest.Data.Security;
 using SustiVest.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Npgsql.Internal.TypeHandlers.NetworkHandlers;
-
+using System.Security.Claims;
 namespace SustiVest.Data.Services
 {
 
@@ -163,20 +162,20 @@ namespace SustiVest.Data.Services
             .ToList();
         }
 
-        public FinanceRequest CreateRequest(string purpose, int amount, int tenor, string facilityType, string crNo, string status, DateOnly dateOfRequest, bool assessment)
+        public FinanceRequest CreateRequest(FinanceRequest fr)
         {
-            var company = GetCompany(crNo);
-            if (company == null) return null;
+            var exists = GetFinanceRequest(fr.RequestNo);
+            if (exists != null) return null;
 
             var financeRequest = new FinanceRequest
             {
-                Purpose = purpose,
-                Amount = amount,
-                Tenor = tenor,
-                FacilityType = facilityType,
-                CRNo = crNo,
-                Status = status,
-                DateOfRequest = dateOfRequest,
+                Purpose = fr.Purpose,
+                Amount = fr.Amount,
+                Tenor = fr.Tenor,
+                FacilityType = fr.FacilityType,
+                CRNo = fr.CRNo,
+                Status = fr.Status,
+                DateOfRequest = fr.DateOfRequest,
                 Assessment = false,
             };
 
@@ -252,8 +251,19 @@ namespace SustiVest.Data.Services
                      .Where(t => t.Assessment == false)
                      .ToList();
         }
+        public bool IsUserAuthorizedToEditCompanyProfile(string crNo, int userId)
+        {
+          var company = GetCompany(crNo);
+          if (company.RepId == userId)
+          {
+            return true;
+          }
+            return false;
+        }
+
     }
 }
+
 // perform a search of the tickets based on a query and
 // an active range 'ALL', 'OPEN', 'CLOSED'
 //     public IList<FinanceRequest> SearchTickets(TicketRange range, string query, string orderBy = "id", string direction = "asc")

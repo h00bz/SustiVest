@@ -1,8 +1,12 @@
-﻿using System;
-namespace SustiVest.Data.Entities
+﻿    using System.ComponentModel.DataAnnotations;
+    using Microsoft.EntityFrameworkCore;
+    using SustiVest.Data.Entities;
+    using System.ComponentModel.DataAnnotations.Schema;
+    
+    namespace SustiVest.Data.Entities
 {
     // Add User roles relevant to your application
-    public enum Role { admin, manager, guest }
+    public enum Role { admin, borrower, investor, analyst, guest }
     
     public class User
     {

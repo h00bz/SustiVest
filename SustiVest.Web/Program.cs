@@ -13,8 +13,8 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 {
     // Configure connection string for selected database in appsettings.json
 
-    options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"),
-     sqliteOptions => sqliteOptions.MigrationsAssembly("SustiVest.Data"));
+    options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
+    //  sqliteOptions => sqliteOptions.MigrationsAssembly("SustiVest.Data"));
     //options.UseMySql(builder.Configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySql")));
     //options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
     //options.UseSqlServer(Ybuilder.Configuration.GetConnectionString("SqlServer"));
@@ -67,6 +67,7 @@ app.UseRouting();
 // ** turn on authentication/authorisation **
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

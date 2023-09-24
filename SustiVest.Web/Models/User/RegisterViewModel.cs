@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using SustiVest.Data.Entities;
+using SustiVest.Data.Services;
 
 namespace SustiVest.Web.Models.User;
 

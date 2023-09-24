@@ -41,13 +41,16 @@ namespace SustiVest.Test
         {
             // arrange
             service.AddUser("admin", "admin@mail.com", "admin", Role.admin );
+            service.AddUser("borrower", "borrower@mail.com", "admin", Role.borrower );
+            service.AddUser("investor", "investor@mail.com", "admin", Role.investor );
+            service.AddUser("analyst", "analyst@mail.com", "admin", Role.analyst );
             service.AddUser("guest", "guest@mail.com", "guest", Role.guest);
 
             // act
             var users = service.GetUsers();
 
             // assert
-            Assert.Equal(2, users.Count);
+            Assert.Equal(5, users.Count);
         }
 
         [Fact]
@@ -55,14 +58,16 @@ namespace SustiVest.Test
         {
             // act
             service.AddUser("admin", "admin@mail.com", "admin", Role.admin );
-            service.AddUser("manager", "manager@mail.com", "manager", Role.manager);
+            service.AddUser("borrower", "borrower@mail.com", "admin", Role.borrower );
+            service.AddUser("investor", "investor@mail.com", "admin", Role.investor );
+            service.AddUser("analyst", "analyst@mail.com", "admin", Role.analyst );
             service.AddUser("guest", "guest@mail.com", "guest", Role.guest);
 
             // return first page with 2 users per page
             var pagedUsers = service.GetUsers(1,2);
 
             // assert
-            Assert.Equal(2, pagedUsers.TotalPages);
+            Assert.Equal(4, pagedUsers.TotalPages);
         }
 
         [Fact]
@@ -70,7 +75,9 @@ namespace SustiVest.Test
         {
             // act
             service.AddUser("admin", "admin@mail.com", "admin", Role.admin );
-            service.AddUser("manager", "manager@mail.com", "manager", Role.manager);
+            service.AddUser("borrower", "borrower@mail.com", "admin", Role.borrower );
+            service.AddUser("investor", "investor@mail.com", "admin", Role.investor );
+            service.AddUser("analyst", "analyst@mail.com", "admin", Role.analyst );
             service.AddUser("guest", "guest@mail.com", "guest", Role.guest);
 
             var pagedUsers = service.GetUsers(1,2);

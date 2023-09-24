@@ -5,7 +5,6 @@ using SustiVest.Data.Security;
 using SustiVest.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Npgsql.Internal.TypeHandlers.NetworkHandlers;
 
 namespace SustiVest.Data.Services
 {

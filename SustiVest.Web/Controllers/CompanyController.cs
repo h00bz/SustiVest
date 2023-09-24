@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-
 using SustiVest.Data.Entities;
 using SustiVest.Data.Services;
 using Microsoft.AspNetCore.Authorization;
 using SustiVest.Data.Security;
-// using SustiVest.Web.Models.User;
+using SustiVest.Web.Models.User;
+using System.Security.Claims;
+using SustiVestShared;
 
 namespace SustiVest.Web.Controllers
 {
@@ -45,7 +46,7 @@ namespace SustiVest.Web.Controllers
         }
 
         // GET: /company/create
-        // [Authorize(Roles="admin,support")]
+        [Authorize(Roles = "admin, borrower, analyst")]
         public IActionResult Create()
         {
             // display blank form to create company
@@ -54,6 +55,7 @@ namespace SustiVest.Web.Controllers
 
         // POST /company/create
         // [Authorize(Roles="admin,support")]
+        [Authorize(Roles = "admin, borrower, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Create([Bind("CRNo, TaxID, CompanyName, Industry, DateOfEstablishment, Activity, Type, ShareholderStructure")] Company c)
@@ -82,7 +84,7 @@ namespace SustiVest.Web.Controllers
         }
 
         // GET /company/edit/{id}
-        // [Authorize(Roles="admin,support")]
+        [Authorize(Roles = "admin, borrower, analyst")]
         public IActionResult Edit(string crNo)
         {
             // load the company using the service
@@ -94,15 +96,22 @@ namespace SustiVest.Web.Controllers
                 Alert("Company not found", AlertType.warning);
                 return RedirectToAction(nameof(CompanyIndex));
             }
-            // pass company to view for editing
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+
+            if (!IsUserAuthorizedToEditCompany(crNo, userId))
+            {
+                return RedirectToAction(nameof(CompanyIndex));
+            }
+
+            // // Pass the company to the view for editing
             return View(company);
         }
 
         // POST /company/edit/{id}
         [ValidateAntiForgeryToken]
-        // [Authorize(Roles="admin,support")]
+        [Authorize(Roles = "admin, borrower, analyst")]
         [HttpPost]
-        public IActionResult Edit(string crNo, string taxID,  [Bind("CompanyName, Industry, DateOfEstablishment, Activity, Type, ShareholderStructure")] Company c)
+        public IActionResult Edit(string crNo, string taxID, [Bind("CompanyName, Industry, DateOfEstablishment, Activity, Type, ShareholderStructure")] Company c)
         {
             // check if company name already exists and is not owned by company being edited 
             var company = _svc.GetCompany(crNo);
@@ -120,7 +129,7 @@ namespace SustiVest.Web.Controllers
                 else
                 {
                     // Redirect back to view the company details
-                    return RedirectToAction(nameof(CompanyDetails), new { crNo =  updated.CRNo });
+                    return RedirectToAction(nameof(CompanyDetails), new { crNo = updated.CRNo });
                 }
             }
 
@@ -130,7 +139,7 @@ namespace SustiVest.Web.Controllers
 
 
         // GET / company/delete/{id}
-        // [Authorize(Roles="admin")]      
+        [Authorize(Roles = "admin, analyst")]
         public IActionResult Delete(string crNo)
         {
             // load the company using the service
@@ -148,6 +157,7 @@ namespace SustiVest.Web.Controllers
 
         // [Authorize(Roles="admin")]
         // POST /company/delete/{id}
+        [Authorize(Roles = "admin, analyst")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirm(string crNo)
@@ -166,6 +176,20 @@ namespace SustiVest.Web.Controllers
             // redirect to the index view
             return RedirectToAction(nameof(CompanyIndex));
         }
+
+        private bool IsUserAuthorizedToEditCompany(string crNo, int userId)
+        {
+            var company= _svc.GetCompany(crNo);
+            
+            if (userId != company.RepId && !User.IsInRole("admin"))
+            {
+                Alert($"Sorry, you are not authorized to edit this company's profile", AlertType.warning);
+                return false;
+            }
+
+            return true;
+        }
+
 
 
     }

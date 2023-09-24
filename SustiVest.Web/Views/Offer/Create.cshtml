@@ -9,7 +9,7 @@
 
 <div class="card rounded shadow p-4">
     <h3>Create Offer</h3>
-    <form asp-action="Create" method="post">
+    <form asp-action="Create" asp-route-crNo="@Model.CRNo">
        
         <div class="mt-3">
             <label asp-for="RequestNo" class="form-label">Request No</label>
