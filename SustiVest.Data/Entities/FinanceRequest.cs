@@ -31,7 +31,7 @@ namespace SustiVest.Data.Entities
         //     IPO,
         // }
 
-        public string FacilityType { get; set; }   
+        public string FacilityType { get; set; }
         public string CRNo { get; set; }
         public string Status { get; set; }
 
@@ -39,7 +39,29 @@ namespace SustiVest.Data.Entities
 
         public bool Assessment { get; set; }
 
+
         [ForeignKey("CRNo")]
         public Company Company { get; set; }
+        [NotMapped]
+        public int RepId
+        {
+            get { return Company.RepId; }
+            set { Company.RepId = value; }
+        }
+
+        [NotMapped]
+        public User Rep
+        {
+            get { return Company.Rep; }
+            set { Company.Rep = value; }
+        }
+
+        public FinanceRequest()
+        {
+            if (Company != null)
+            {
+                Rep = Company.Rep;
+            }
+        }
     }
 }

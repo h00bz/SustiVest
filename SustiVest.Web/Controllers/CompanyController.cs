@@ -8,6 +8,7 @@ using SustiVest.Data.Security;
 using SustiVest.Web.Models.User;
 using System.Security.Claims;
 using SustiVestShared;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace SustiVest.Web.Controllers
 {
@@ -15,10 +16,12 @@ namespace SustiVest.Web.Controllers
     public class CompanyController : BaseController
     {
         private readonly ICompanyService _svc;
+        private readonly Permissions _permissions;
 
-        public CompanyController(ICompanyService svc)
+        public CompanyController(ICompanyService svc, Permissions permissions)
         {
             _svc = svc;
+            _permissions = permissions;
         }
 
         // GET /company
@@ -32,7 +35,7 @@ namespace SustiVest.Web.Controllers
         }
 
         // GET /company/details/{CR_No}
-        public IActionResult CompanyDetails(String crNo)
+        public IActionResult CompanyDetails(string crNo)
         {
             var company = _svc.GetCompany(crNo);
 
@@ -98,9 +101,10 @@ namespace SustiVest.Web.Controllers
             }
             var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
 
-            if (!IsUserAuthorizedToEditCompany(crNo, userId))
+            if (!_permissions.IsUserAuthorizedToEditCompany(crNo, userId, httpContext: HttpContext))
             {
-                return RedirectToAction(nameof(CompanyIndex));
+                Alert("You are not authorized to edit this company profile", AlertType.warning);
+                return RedirectToAction(nameof(CompanyDetails), new { crNo = crNo });
             }
 
             // // Pass the company to the view for editing
@@ -143,12 +147,18 @@ namespace SustiVest.Web.Controllers
         public IActionResult Delete(string crNo)
         {
             // load the company using the service
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
             var company = _svc.GetCompany(crNo);
             // check the returned company is not null and if so return NotFound()
             if (company == null)
             {
                 Alert("Company not found", AlertType.warning);
                 return RedirectToAction(nameof(CompanyIndex));
+            }
+
+            if (!_permissions.IsUserAuthorizedToEditCompany(crNo, userId, httpContext: HttpContext))
+            {
+                return RedirectToAction(nameof(CompanyDetails), new { crNo = crNo});
             }
 
             // pass company to view for deletion confirmation
@@ -177,18 +187,18 @@ namespace SustiVest.Web.Controllers
             return RedirectToAction(nameof(CompanyIndex));
         }
 
-        private bool IsUserAuthorizedToEditCompany(string crNo, int userId)
-        {
-            var company= _svc.GetCompany(crNo);
+        // public bool  IsUserAuthorizedToEditCompany(string crNo, int userId)
+        // {
+        //     var company= _svc.GetCompany(crNo);
             
-            if (userId != company.RepId && !User.IsInRole("admin"))
-            {
-                Alert($"Sorry, you are not authorized to edit this company's profile", AlertType.warning);
-                return false;
-            }
+        //     if (userId != company.RepId && !User.IsInRole("admin"))
+        //     {
+        //         Alert($"Sorry, you are not authorized to edit this company's profile", AlertType.warning);
+        //         return false;
+        //     }
 
-            return true;
-        }
+        //     return true;
+        // }
 
 
 

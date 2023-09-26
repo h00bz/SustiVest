@@ -1,4 +1,4 @@
-@model SustiVest.Web.Models.RequestFinanceViewModel
+@model FinanceRequest
 
 <partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ($"/home/index","FinanceRequests"), ("","Submit Request")
     }) />
@@ -11,7 +11,8 @@
         <!-- and a text area to include the issue -->
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-       
+        
+        <input type="hidden" asp-for="RequestNo"/>
         <input type="hidden" asp-for="CRNo"/>
 
         <div class="mt-3">

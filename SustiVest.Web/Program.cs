@@ -28,6 +28,8 @@ builder.Services.AddTransient<IAssessmentsService, AssessmentServiceDb>();
 builder.Services.AddTransient<IAnalystsService, AnalystServiceDb>();
 builder.Services.AddTransient<IOfferService, OfferServiceDb>();
 
+builder.Services.AddScoped<Permissions>();
+
 
 // ** Required to enable asp-authorize Taghelper **            
 builder.Services.AddHttpContextAccessor();

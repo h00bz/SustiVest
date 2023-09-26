@@ -14,10 +14,17 @@ namespace SustiVest.Web.Controllers
         // set alert message
         public void Alert(string message, AlertType type = AlertType.info)
         {
-            TempData["Alert.Message"] = message;
-            TempData["Alert.Type"] = type.ToString();
+
+            if (TempData != null)
+            {
+                TempData["Alert.Message"] = message;
+                TempData["Alert.Type"] = type.ToString();
+                // }
+                // TempData["Alert.Message"] = message;
+                // TempData["Alert.Type"] = type.ToString();
+            }
+
         }
 
     }
- 
 }

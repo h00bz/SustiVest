@@ -33,7 +33,16 @@
         <dd class="col-8">@Model.DateOfRequest</dd>
 
         <dt class="col-4">Assessment</dt>
-        <dd class="col-8">@Model.Assessment</dd>
+        <dd class="col-8">
+            @if (Model.Assessment)
+            {
+                <a asp-controller= "Assessments" asp-action="Details" asp-route-requestNo="@Model.RequestNo">View Assessment</a>
+            }
+            else
+            {
+                <span>Pending</span>
+            }
+        </dd>
 
     </dl>
 

@@ -55,6 +55,14 @@ namespace SustiVest.Data.Services
             .FirstOrDefault(a => a.AssessmentNo == assessmentNo);
         }
 
+        public Assessments GetAssessmentByRequestNo(int requestNo)
+        {
+            return ctx.Assessments
+            .Include(a => a.FinanceRequest)
+            .Include(a => a.Analyst)
+            .FirstOrDefault(a => a.RequestNo == requestNo);
+        }
+
         public Assessments AddAssessment(Assessments a)
         {
             // Check if an assessment with the same RequestNo and AnalystNo exists
@@ -140,12 +148,14 @@ namespace SustiVest.Data.Services
             return true;
         }
 
-        public IList<Assessments> GetAssessmentByCompanyName(string companyName)
+        public IList<Assessments> GetAssessmentsByCompanyName(string companyName)
         {
             return ctx.Assessments
                 .Where(a => a.Company.CompanyName == companyName)
                 .ToList();
         }
+
+
 
 
     }

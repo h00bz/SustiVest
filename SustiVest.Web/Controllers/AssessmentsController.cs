@@ -17,10 +17,12 @@ namespace SustiVest.Web.Controllers
     public class AssessmentsController : BaseController
     {
         private readonly IAssessmentsService _svc;
+        private readonly ICompanyService _companyService;
 
-        public AssessmentsController(IAssessmentsService svc)
+        public AssessmentsController(IAssessmentsService svc, ICompanyService companyService)
         {
             _svc = svc;
+           _companyService = companyService;
         }
 
         // GET /assessments
@@ -31,9 +33,21 @@ namespace SustiVest.Web.Controllers
         }
 
         // GET /assessments/details/{requestNo}/{analystNo}
-        public IActionResult Details(int assessmentNo)
+        public IActionResult Details(int? assessmentNo, int? requestNo)
         {
-            var assessment = _svc.GetAssessment(assessmentNo);
+
+            Assessments assessment = null;
+
+            if (assessmentNo.HasValue)
+            {
+                // Try to get the assessment by assessment number.
+                assessment = _svc.GetAssessment(assessmentNo.Value);
+            }
+            else if (requestNo.HasValue)
+            {
+                // Try to get the assessment by request number.
+                assessment = _svc.GetAssessmentByRequestNo(requestNo.Value);
+            }
 
             if (assessment == null)
             {
@@ -41,8 +55,24 @@ namespace SustiVest.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            var company = _companyService.GetCompany(assessment.CRNo);
+
             return View(assessment);
         }
+
+
+        //  public IActionResult Details(int requestNo)
+        // {
+        //     var assessment = _svc.GetAssessmentByRequestNo(requestNo);
+
+        //     if (assessment == null)
+        //     {
+        //         Alert("Assessment not found", AlertType.warning);
+        //         return RedirectToAction(nameof(Index));
+        //     }
+
+        //     return View(assessment);
+        // }
 
         // GET: /assessments/create
         // Commented out the [Authorize(Roles = "admin,support")] attribute
@@ -113,7 +143,7 @@ namespace SustiVest.Web.Controllers
                 {
                     Alert("Assessment Updated", AlertType.success);
 
-                    return RedirectToAction(nameof(Details), new { requestNo = updated.RequestNo, updated.AnalystNo });
+                    return RedirectToAction(nameof(Details), new { assessmentNo = updated.AssessmentNo });
 
                 }
 

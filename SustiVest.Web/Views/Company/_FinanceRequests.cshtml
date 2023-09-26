@@ -50,7 +50,7 @@
                         <a asp-controller="FinanceRequest" asp-action="Details" asp-route-requestNo="@f.RequestNo">
                             <i class="bi bi-display-fill me-2" title="view request" arial-label="view request"></i>
                         </a>
-                        <a asp-action="Edit" asp-route-requestNo="@f.RequestNo">
+                        <a asp-controller="FinanceRequest" asp-action="RequestEdit" asp-route-requestNo="@f.RequestNo">
                             <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i>
                         </a>
                     </td>

@@ -164,6 +164,7 @@ namespace SustiVest.Data.Services
 
         public FinanceRequest CreateRequest(FinanceRequest fr)
         {
+            var company = GetCompany(fr.CRNo);
             var exists = GetFinanceRequest(fr.RequestNo);
             if (exists != null) return null;
 
