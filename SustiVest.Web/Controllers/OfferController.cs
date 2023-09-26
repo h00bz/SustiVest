@@ -16,16 +16,18 @@ namespace SustiVest.Web.Controllers
 {
     public class OfferController : BaseController
     {
-        private readonly IOfferService svc;
+        private readonly IOfferService _svc;
 
-        public OfferController(IOfferService offerService)
+        private readonly Permissions _permissions;
+
+        public OfferController(IOfferService offerService, Permissions permissions )
         {
-            svc = offerService;
+            _svc = offerService;
         }
-
+        [Authorize(Roles = "admin, analyst, borrower, investor")]
         public IActionResult Details(int offerId)
         {
-            var offer = svc.GetOffer(offerId);
+            var offer = _svc.GetOffer(offerId);
             if (offer == null)
             {
                 Alert("Offer Not Found", AlertType.warning);
@@ -35,19 +37,22 @@ namespace SustiVest.Web.Controllers
             return View(offer);
         }
 
+        [Authorize(Roles = "admin, analyst")]
         [HttpGet]
         public IActionResult Create()
         {
             // You can add logic to populate any necessary data for the create view here.
             return View();
         }
+        
+        [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Create(int offerId, [Bind("OfferId, RequestNo, CRNo, Amount, Tenor, Payback, Linens, Undertakings, Covenants, ROR, FacilityType, UtilizationMechanism, AnalystNo")] Offer o)
         {
             if (ModelState.IsValid)
             {
-                var offer = svc.CreateOffer(offerId, o.RequestNo, o.CRNo, o.Amount, o.Tenor, o.Payback, o.Linens, o.Undertakings, o.Covenants, o.ROR, o.FacilityType, o.UtilizationMechanism, o.AnalystNo);
+                var offer = _svc.CreateOffer(offerId, o.RequestNo, o.CRNo, o.Amount, o.Tenor, o.Payback, o.Linens, o.Undertakings, o.Covenants, o.ROR, o.FacilityType, o.UtilizationMechanism, o.AnalystNo);
 
                 if (offer == null)
                 {
@@ -66,7 +71,7 @@ namespace SustiVest.Web.Controllers
         [HttpGet]
         public IActionResult Edit(int OfferId)
         {
-            var offer = svc.GetOffer(OfferId);
+            var offer = _svc.GetOffer(OfferId);
             if (offer == null)
             {
                 Alert("Offer Not Found", AlertType.warning);
@@ -82,7 +87,7 @@ namespace SustiVest.Web.Controllers
             
             if (ModelState.IsValid)
             {
-                var updated = svc.UpdateOffer(offerId, o.RequestNo, o.CRNo, o.Amount, o.Tenor, o.Payback, o.Linens, o.Undertakings, o.Covenants, o.ROR, o.FacilityType, o.UtilizationMechanism, o.AnalystNo);
+                var updated = _svc.UpdateOffer(offerId, o.RequestNo, o.CRNo, o.Amount, o.Tenor, o.Payback, o.Linens, o.Undertakings, o.Covenants, o.ROR, o.FacilityType, o.UtilizationMechanism, o.AnalystNo);
 
                 if (updated == null)
                 {
@@ -100,7 +105,7 @@ namespace SustiVest.Web.Controllers
 
         public IActionResult Delete(int offerId)
         {
-            var offer = svc.GetOffer(offerId);
+            var offer = _svc.GetOffer(offerId);
 
             if (offer == null)
             {
@@ -114,7 +119,7 @@ namespace SustiVest.Web.Controllers
         [HttpPost]
         public IActionResult DeleteConfirm(int offerId)
         {
-            var deleted = svc.DeleteOffer(offerId);
+            var deleted = _svc.DeleteOffer(offerId);
 
             if (deleted)
             {
@@ -129,7 +134,7 @@ namespace SustiVest.Web.Controllers
 
             public IActionResult Index(int page = 1, int size = 20, string orderBy = "OfferId", string direction = "asc")
             {
-                var offers = svc.GetOffers(page, size, orderBy, direction);
+                var offers = _svc.GetOffers(page, size, orderBy, direction);
                 return View(offers);
             }
         }

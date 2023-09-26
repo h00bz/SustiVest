@@ -11,14 +11,20 @@ using SustiVest.Web.Controllers;
 
 namespace SustiVest.Web
 {
-
+    [Authorize]
     public class Permissions : BaseController
     {
         private readonly ICompanyService _companyService;
+        private readonly IAssessmentsService _assessmentsService;
+        private readonly IOfferService _offerService
+        ;
 
-        public Permissions(ICompanyService companyService)
+
+        public Permissions(ICompanyService companyService, IAssessmentsService assessmentsService, IOfferService offerService)
         {
             _companyService = companyService;
+            _assessmentsService = assessmentsService;
+            _offerService = offerService;
         }
 
         // public bool IsUserAuthorizedToEditCompany(string crNo, int userId)
@@ -54,7 +60,6 @@ namespace SustiVest.Web
         // }
 
         // public bool IsUserAuthorizedToEditCompany(string crNo, int userId, HttpContext httpContext)
-        [Authorize(Roles = "admin, borrower, analyst")]
         public bool IsUserAuthorizedToEditCompany(string crNo, int userId, HttpContext httpContext)
         {
             var company = _companyService.GetCompany(crNo);
@@ -66,9 +71,48 @@ namespace SustiVest.Web
             }
 
             if (httpContext != null && httpContext.User.Identity.IsAuthenticated && userId != company.RepId && !httpContext.User.IsInRole("admin"))
-         
+
             {
                 Alert($"Sorry, you are not authorized to edit this company's profile", AlertType.warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool IsUserAuthorizedToEditAssessment(int assessmentNo, int userId, HttpContext httpContext)
+        {
+            var assessment = _assessmentsService.GetAssessment(assessmentNo);
+
+            if (assessment == null)
+            {
+                Alert("Assessment Not Found", AlertType.warning);
+                return false;
+            }
+
+            if (httpContext != null && httpContext.User.Identity.IsAuthenticated && userId != assessment.AnalystNo && !httpContext.User.IsInRole("admin"))
+
+            {
+                Alert($"Sorry, you are not authorized to edit this assessment", AlertType.warning);
+                return false;
+            }
+
+            return true;
+        }
+        public bool IsUserAuthorizedToEditOffer(int OfferId, int userId, HttpContext httpContext)
+        {
+            var offer =_offerService.GetOffer(OfferId);
+
+            if (offer == null)
+            {
+                Alert("Offer Not Found", AlertType.warning);
+                return false;
+            }
+
+            if (httpContext != null && httpContext.User.Identity.IsAuthenticated && userId != offer.AnalystNo && !httpContext.User.IsInRole("admin"))
+
+            {
+                Alert($"Sorry, you are not authorized to edit this offer", AlertType.warning);
                 return false;
             }
 

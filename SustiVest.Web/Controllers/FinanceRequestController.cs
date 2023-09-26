@@ -77,6 +77,7 @@ namespace SustiVest.Web.Controllers
         // }
 
         // GET/ticket/{id}
+        [Authorize(Roles = "admin, analyst, borrower")]
         public IActionResult Details(int requestNo)
         {
             var financeRequest = svc.GetFinanceRequest(requestNo);
@@ -105,10 +106,10 @@ namespace SustiVest.Web.Controllers
             // close ticket via service
             var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
             if (!_permissions.IsUserAuthorizedToEditCompany(f.CRNo, userId, httpContext: HttpContext))
-                {
-                    Alert("You are not authorized to delete this request", AlertType.warning);
-                    return RedirectToAction("CompanyDetails", "Company", new { crNo = f.CRNo });
-                }
+            {
+                Alert("You are not authorized to delete this request", AlertType.warning);
+                return RedirectToAction("CompanyDetails", "Company", new { crNo = f.CRNo });
+            }
 
             var financeRequest = svc.CloseRequest(f.RequestNo, f.Status);
             if (financeRequest == null)
@@ -155,76 +156,77 @@ namespace SustiVest.Web.Controllers
                     Alert("You are not authorized to create a request for this company", AlertType.warning);
                     return RedirectToAction("CompanyDetails", "Company", new { crNo = crNo });
                 }
-                    var model = new FinanceRequest { CRNo = crNo };
+                var model = new FinanceRequest { CRNo = crNo };
 
-                    return View(model);
-                
+                return View(model);
+
             }
         }
 
-            // // POST /ticket/create
-            [HttpPost]
-            [Authorize(Roles = "admin, analyst, borrower")]
-            public IActionResult CreateRequest([Bind("Purpose, Amount, Tenor, FacilityType, CRNo, Status, DateOfRequest, Assessment")] FinanceRequest fr)
+        // // POST /ticket/create
+        [HttpPost]
+        [Authorize(Roles = "admin, analyst, borrower")]
+        public IActionResult CreateRequest([Bind("Purpose, Amount, Tenor, FacilityType, CRNo, Status, DateOfRequest, Assessment")] FinanceRequest fr)
+        {
+
+
+            if (ModelState.IsValid)
             {
+                var request = svc.CreateRequest(fr);
 
-
-                if (ModelState.IsValid)
+                if (request is null)
                 {
-                    var request = svc.CreateRequest(fr);
-
-                    if (request is null)
-                    {
-                        Alert("Encountered issue creating request.", AlertType.warning);
-                        return RedirectToAction("CompanyDetails", "Company", new { crNo = fr.CRNo });
-                    }
-                    Alert($"Request Submitted", AlertType.info);
-                    return RedirectToAction(nameof(Details), new { requestNo = request.RequestNo });
+                    Alert("Encountered issue creating request.", AlertType.warning);
+                    return RedirectToAction("CompanyDetails", "Company", new { crNo = fr.CRNo });
                 }
-
-                // redisplay the form for editing
-                return View(fr);
+                Alert($"Request Submitted", AlertType.info);
+                return RedirectToAction(nameof(Details), new { requestNo = request.RequestNo });
             }
 
-            public IActionResult Index()
+            // redisplay the form for editing
+            return View(fr);
+        }
+
+        [Authorize(Roles = "admin, analyst, borrower")]
+        public IActionResult Index()
+        {
+            var table = svc.GetFinanceRequests();
+            return View(table);
+        }
+
+        public IActionResult RequestEdit(int requestNo)
+        {
+            var financeRequest = svc.GetFinanceRequest(requestNo);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+
+            if (financeRequest == null)
             {
-                var table = svc.GetFinanceRequests();
-                return View(table);
+                Alert("Request Not Found", AlertType.warning);
+                return RedirectToAction(nameof(Details));
+            }
+            if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext))
+            {
+                Alert("You are not authorized to edit this request", AlertType.warning);
+                return RedirectToAction("CompanyDetails", "Company", new { crNo = financeRequest.CRNo });
             }
 
-            public IActionResult RequestEdit(int requestNo)
+            return View("RequestEdit", financeRequest);
+        }
+        [HttpPost]
+        public IActionResult RequestEdit(int requestNo, [Bind("Purpose, Amount, Tenor, FacilityType, Status, DateOfRequest, Assessment")] FinanceRequest f)
+        {
+            if (ModelState.IsValid)
             {
-                var financeRequest = svc.GetFinanceRequest(requestNo);
-                var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+                var request = svc.UpdateRequest(requestNo, f.Purpose, f.Amount, f.Tenor, f.FacilityType, f.Status, f.DateOfRequest, f.Assessment);
+                return RedirectToAction(nameof(Details), new { requestNo = requestNo });
 
-                if (financeRequest == null)
-                {
-                    Alert("Request Not Found", AlertType.warning);
-                    return RedirectToAction(nameof(Details));
-                }
-                if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext))
-                {
-                    Alert("You are not authorized to edit this request", AlertType.warning);
-                    return RedirectToAction("CompanyDetails", "Company", new { crNo = financeRequest.CRNo });
-                }
-
-                return View("RequestEdit", financeRequest);
             }
-            [HttpPost]
-            public IActionResult RequestEdit(int requestNo, [Bind("Purpose, Amount, Tenor, FacilityType, Status, DateOfRequest, Assessment")] FinanceRequest f)
-            {
-                if (ModelState.IsValid)
-                {
-                    var request = svc.UpdateRequest(requestNo, f.Purpose, f.Amount, f.Tenor, f.FacilityType, f.Status, f.DateOfRequest, f.Assessment);
-                    return RedirectToAction(nameof(Details), new { requestNo = requestNo });
-
-                }
-                // redisplay the form for editing
-                return View(f);
-            }
-
+            // redisplay the form for editing
+            return View(f);
         }
 
     }
+
+}
 
 

@@ -13,19 +13,22 @@ using Microsoft.AspNetCore;
 
 namespace SustiVest.Web.Controllers
 {
-    //[Authorize]
+    // [Authorize]
     public class AssessmentsController : BaseController
     {
         private readonly IAssessmentsService _svc;
         private readonly ICompanyService _companyService;
+        private readonly Permissions _permissions;
 
-        public AssessmentsController(IAssessmentsService svc, ICompanyService companyService)
+        public AssessmentsController(IAssessmentsService svc, ICompanyService companyService, Permissions permissions)
         {
             _svc = svc;
-           _companyService = companyService;
+            _companyService = companyService;
+            _permissions = permissions;
         }
 
         // GET /assessments
+        [Authorize(Roles = "admin, analyst")]
         public ActionResult Index(int page = 1, int size = 10, string orderBy = "CompanyName", string direction = "asc")
         {
             var table = _svc.GetAssessments(page, size, orderBy, direction);
@@ -33,10 +36,12 @@ namespace SustiVest.Web.Controllers
         }
 
         // GET /assessments/details/{requestNo}/{analystNo}
+        // [Authorize(Roles = "admin, analyst, borrower")]
         public IActionResult Details(int? assessmentNo, int? requestNo)
         {
 
             Assessments assessment = null;
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.Sid).Value);
 
             if (assessmentNo.HasValue)
             {
@@ -57,6 +62,12 @@ namespace SustiVest.Web.Controllers
 
             var company = _companyService.GetCompany(assessment.CRNo);
 
+            if (!_permissions.IsUserAuthorizedToEditCompany(company.CRNo, userId, httpContext: HttpContext) && !_permissions.IsUserAuthorizedToEditAssessment(assessment.AssessmentNo, userId, httpContext: HttpContext) && !User.IsInRole("admin"))
+            {
+                Alert("You are not authorized to view this assessment", AlertType.warning);
+                return RedirectToAction("Details", "FinanceRequest", new { requestNo = assessment.RequestNo});
+            }
+
             return View(assessment);
         }
 
@@ -76,6 +87,7 @@ namespace SustiVest.Web.Controllers
 
         // GET: /assessments/create
         // Commented out the [Authorize(Roles = "admin,support")] attribute
+        [Authorize(Roles = "admin, analyst")]
         public IActionResult Create()
         {
             // Display a blank form to create an assessment
@@ -84,6 +96,7 @@ namespace SustiVest.Web.Controllers
 
         // POST /assessments/create
         // Commented out the [Authorize(Roles = "admin,support")] attribute
+        [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Create(int AssessmentNo, [Bind("RequestNo, AnalystNo, Sales, EBITDA, DSR, CCC, RiskRating, MarketPosition, RepaymentStatus, FinancialLeverage, WorkingCapital, OperatingAssets, CRNo, TotalAssets, NetEquity")] Assessments a)
@@ -113,9 +126,11 @@ namespace SustiVest.Web.Controllers
 
         // GET /assessments/edit/{requestNo}/{analystNo]
         // Commented out the [Authorize(Roles = "admin,support")] attribute
+        [Authorize(Roles = "admin, analyst")]
         public IActionResult Edit(int assessmentNo)
         {
             var assessment = _svc.GetAssessment(assessmentNo);
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.Sid).Value);
 
             if (assessment == null)
             {
@@ -123,11 +138,18 @@ namespace SustiVest.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            if (!_permissions.IsUserAuthorizedToEditAssessment(assessment.AssessmentNo, userId, httpContext: HttpContext))
+            {
+                Alert("You are not authorized to edit this assessment", AlertType.warning);
+                return RedirectToAction(nameof(Index));
+            }
             return View(assessment);
         }
 
+
         // POST /assessments/edit/{requestNo}/{analystNo]
         // Commented out the [Authorize(Roles = "admin,support")] attribute
+        [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Edit(int assessmentNo, [Bind("RequestNo, AnalystNo, Sales, EBITDA, DSR, CCC, RiskRating, MarketPosition, RepaymentStatus, FinancialLeverage, WorkingCapital, OperatingAssets, CRNo, TotalAssets, NetEquity")] Assessments a)
@@ -156,21 +178,28 @@ namespace SustiVest.Web.Controllers
 
         // GET /assessments/delete/{requestNo}/{analystNo]
         // Commented out the [Authorize(Roles = "admin,support")] attribute
+        [Authorize(Roles = "admin, analyst")]
         public IActionResult Delete(int assessmentNo)
         {
             var assessment = _svc.GetAssessment(assessmentNo);
-
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.Sid).Value);
             if (assessment == null)
             {
                 Alert("Assessment not found", AlertType.warning);
                 return RedirectToAction(nameof(Index));
             }
-
+            if (!_permissions.IsUserAuthorizedToEditAssessment(assessment.AssessmentNo, userId, httpContext: HttpContext))
+            {
+                Alert("You are not authorized to delete this assessment", AlertType.warning);
+                return RedirectToAction(nameof(Index));
+            }
             return View(assessment);
+
         }
 
         // POST /assessments/delete/{requestNo}/{analystNo]
         // Commented out the [Authorize(Roles = "admin,support")] attribute
+        [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult DeleteConfirm(int assessmentNo)

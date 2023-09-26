@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using SustiVest.Data.Security;
 using SustiVest.Web.Models.User;
 using System.Security.Claims;
-using SustiVestShared;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace SustiVest.Web.Controllers
