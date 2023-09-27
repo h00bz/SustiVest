@@ -15,14 +15,16 @@ namespace SustiVest.Data.Services
         Company UpdateCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure);
         bool DeleteCompany(string CRNo);
         IList<FinanceRequest> GetFinanceRequests();
-        IList<FinanceRequest> GetOpenRequests();
+
+        Paged<FinanceRequest> GetFinanceRequests(int page = 1, int size = 20, string orderBy = "Purpose", string direction = "asc");
+        // IList<FinanceRequest> GetOpenRequests();
         FinanceRequest GetFinanceRequest(int requestNo);
         FinanceRequest CreateRequest(FinanceRequest fr);
         FinanceRequest CloseRequest(int requestNo, string status);
         FinanceRequest UpdateRequest(int requestNo, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment);
         FinanceRequest ResubmitRequest(int requestNo, DateOnly dateOfRequest, bool assessment);
         bool DeleteRequest(int RequestNo);
-        public bool IsUserAuthorizedToEditCompanyProfile(string crNo, int userId);
+        // public bool IsUserAuthorizedToEditCompanyProfile(string crNo, int userId);
 
     }
 }

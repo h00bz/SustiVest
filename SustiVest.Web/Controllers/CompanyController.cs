@@ -25,7 +25,7 @@ namespace SustiVest.Web.Controllers
 
         // GET /company
         //editted from Index to CompanyIndex
-        public ActionResult CompanyIndex(int page = 1, int size = 10, string order = "companyname", string direction = "asc")
+        public IActionResult CompanyIndex(int page = 1, int size = 10, string order = "companyname", string direction = "asc")
         {
             // load Companies using service and pass to view
             var table = _svc.GetCompanies(page, size, order, direction);

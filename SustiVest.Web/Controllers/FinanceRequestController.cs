@@ -188,9 +188,9 @@ namespace SustiVest.Web.Controllers
         }
 
         [Authorize(Roles = "admin, analyst, borrower")]
-        public IActionResult Index()
+        public ActionResult Index(int page = 1, int size = 20, string order = "Purpose", string direction = "asc")
         {
-            var table = svc.GetFinanceRequests();
+            var table = svc.GetFinanceRequests(page, size, order, direction);   
             return View(table);
         }
 
@@ -207,7 +207,7 @@ namespace SustiVest.Web.Controllers
             if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext))
             {
                 Alert("You are not authorized to edit this request", AlertType.warning);
-                return RedirectToAction("CompanyDetails", "Company", new { crNo = financeRequest.CRNo });
+                return RedirectToAction(nameof(Details), new { requestNo = financeRequest.RequestNo });
             }
 
             return View("RequestEdit", financeRequest);

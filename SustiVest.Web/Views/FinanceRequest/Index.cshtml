@@ -1,0 +1,94 @@
+@model Paged<FinanceRequest>
+
+<partial name="_Breadcrumbs" model=@(new [] { ("/", "Home"), ("", "Finance Requests") }) />
+
+<div class="card border rounded shadow p-4">
+    <!-- Title bar -->
+    <div class="d-flex align-items-center justify-content-between">
+        <h3>Finance Requests</h3>
+
+    </div>
+
+    <!-- List of finance requests -->
+    <table class="table table-hover mt-4">
+        <thead>
+            <tr>
+                <th>
+                    Purpose
+                    <a asp-action="Index" asp-route-order="Purpose" asp-route-direction=@Model.Direction asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="Purpose" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Amount
+                    <a asp-action="Index" asp-route-order="Amount" asp-route-direction=@Model.Direction asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="Amount" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Tenor
+                    <a asp-action="Index" asp-route-order="Tenor" asp-route-direction=@Model.Direction asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="Tenor" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Facility Type
+                    <a asp-action="Index" asp-route-order="FacilityType" asp-route-direction=@Model.Direction asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="FacilityType" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    CRNo
+                    <a asp-action="Index" asp-route-order="CRNo" asp-route-direction=@Model.Direction asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="CRNo" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Status
+                    <a asp-action="Index" asp-route-order="Status" asp-route-direction=@Model.Direction asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="Status" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Date Of Request
+                    <a asp-action="Index" asp-route-order="DateOfRequest" asp-route-direction=@Model.Direction asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="DateOfRequest" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Assessment
+                    <a asp-action="Index" asp-route-order="Assessment" asp-route-direction=@Model.Direction asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="Assessment" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var financeRequest in Model.Data)
+            {
+                <tr>
+                    <td>@financeRequest.Purpose</td>
+                    <td>@financeRequest.Amount</td>
+                    <td>@financeRequest.Tenor</td>
+                    <td>@financeRequest.FacilityType</td>
+                    <td>@financeRequest.CRNo</td>
+                    <td>@financeRequest.Status</td>
+                    <td>@financeRequest.DateOfRequest.ToShortDateString()</td>
+                    <td>@financeRequest.Assessment</td>
+                    <td>
+                        <a asp-action="Details" asp-route-requestNo="@financeRequest.RequestNo">
+                            <i class="bi bi-display-fill me-2" title="View Finance Request" aria-label="View Finance Request"></i>
+                        </a>
+                        <a asp-action="RequestEdit" asp-route-requestNo="@financeRequest.RequestNo">
+                            <i class="bi bi-pencil-fill me-2" title="Edit Finance Request" aria-label="Edit Finance Request"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-requestNo="@financeRequest.RequestNo">
+                            <i class="bi bi-trash-fill me-2" title="Delete Finance Request" aria-label="Delete Finance Request"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,6 +1,6 @@
     @model Company
 
-    <partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/compamy","companies"), ("",$"{Model.CompanyName}") }) />
+    <partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/company/companyindex","companies"), ("",$"{Model.CompanyName}") }) />
 
     <div class="card rounded shadow p-4">
         <!-- Display student details -->

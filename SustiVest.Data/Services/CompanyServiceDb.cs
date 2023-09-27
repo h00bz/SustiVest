@@ -162,6 +162,40 @@ namespace SustiVest.Data.Services
             .ToList();
         }
 
+        public Paged<FinanceRequest> GetFinanceRequests(int page = 1, int size = 20, string orderBy = "Purpose", string direction = "asc")
+        {
+            var results = (orderBy.ToLower(), direction.ToLower()) switch
+            {
+                ("Purpose", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.Purpose),
+                ("Purpose", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.Purpose),
+
+                ("Amount", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.Amount),
+                ("Amount", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.Amount),
+
+                ("Tenor", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.Tenor),
+                ("Tenor", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.Tenor),
+
+                ("FacilityType", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.FacilityType),
+                ("FacilityType", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.FacilityType),
+
+                ("CRNo", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.CRNo),
+                ("CRNo", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.CRNo),
+
+                ("Status", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.Status),
+                ("Status", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.Status),
+
+                ("DateOfRequest", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.DateOfRequest),
+                ("DateOfRequest", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.DateOfRequest),
+
+                ("Assessment", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.Assessment),
+                ("Assessment", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.Assessment),
+
+                _ => ctx.FinanceRequests.OrderBy(fr => fr.Purpose)
+            };
+            return results.ToPaged(page, size, orderBy, direction);
+        }
+
+
         public FinanceRequest CreateRequest(FinanceRequest fr)
         {
             var company = GetCompany(fr.CRNo);
@@ -244,23 +278,23 @@ namespace SustiVest.Data.Services
             return true;
         }
 
-        public IList<FinanceRequest> GetOpenRequests()
-        {
-            // return open tickets with associated students
-            return ctx.FinanceRequests
-                     .Include(t => t.Company)
-                     .Where(t => t.Assessment == false)
-                     .ToList();
-        }
-        public bool IsUserAuthorizedToEditCompanyProfile(string crNo, int userId)
-        {
-          var company = GetCompany(crNo);
-          if (company.RepId == userId)
-          {
-            return true;
-          }
-            return false;
-        }
+        // public IList<FinanceRequest> GetOpenRequests()
+        // {
+        //     // return open tickets with associated students
+        //     return ctx.FinanceRequests
+        //              .Include(t => t.Company)
+        //              .Where(t => t.Assessment == false)
+        //              .ToList();
+        // // }
+        // public bool IsUserAuthorizedToEditCompanyProfile(string crNo, int userId)
+        // {
+        //     var company = GetCompany(crNo);
+        //     if (company.RepId == userId)
+        //     {
+        //         return true;
+        //     }
+        //     return false;
+        // }
 
     }
 }

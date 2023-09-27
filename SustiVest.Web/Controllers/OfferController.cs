@@ -50,11 +50,11 @@ namespace SustiVest.Web.Controllers
         [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Create ([Bind("OfferId, RequestNo, CRNo, Amount, Tenor, Payback, Linens, Undertakings, Covenants, ROR, FacilityType, UtilizationMechanism, AnalystNo")] Offer o)
+        public IActionResult Create([Bind("OfferId, RequestNo, CRNo, Amount, Tenor, Payback, Linens, Undertakings, Covenants, ROR, FacilityType, UtilizationMechanism, AnalystNo")] Offer o)
         {
             if (ModelState.IsValid)
             {
-                var offer = _svc.CreateOffer( o.RequestNo, o.CRNo, o.Amount, o.Tenor, o.Payback, o.Linens, o.Undertakings, o.Covenants, o.ROR, o.FacilityType, o.UtilizationMechanism, o.AnalystNo, o.AssessmentNo);
+                var offer = _svc.CreateOffer(o.RequestNo, o.CRNo, o.Amount, o.Tenor, o.Payback, o.Linens, o.Undertakings, o.Covenants, o.ROR, o.FacilityType, o.UtilizationMechanism, o.AnalystNo, o.AssessmentNo);
 
                 if (offer == null)
                 {
@@ -74,7 +74,7 @@ namespace SustiVest.Web.Controllers
         public IActionResult Edit(int offerId)
         {
             var offer = _svc.GetOffer(offerId);
-            
+
             var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
 
             if (offer == null)
@@ -90,14 +90,15 @@ namespace SustiVest.Web.Controllers
 
             return View(offer);
         }
-
+        [Authorize(Roles = "admin, analyst")]
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Edit(int offerId, int requestNo, string crNo, int analystNo, int assessmentNo, [Bind("Amount, Tenor, Payback, Linens, Undertakings, Covenants, ROR, FacilityType, UtilizationMechanism")] Offer o)
         {
 
             if (ModelState.IsValid)
             {
-                var updated = _svc.UpdateOffer(offerId, requestNo, crNo, o.Amount, o.Tenor, o.Payback, o.Linens, o.Undertakings, o.Covenants, o.ROR, o.FacilityType, o.UtilizationMechanism,  analystNo, assessmentNo);
+                var updated = _svc.UpdateOffer(offerId, requestNo, crNo, o.Amount, o.Tenor, o.Payback, o.Linens, o.Undertakings, o.Covenants, o.ROR, o.FacilityType, o.UtilizationMechanism, analystNo, assessmentNo);
 
                 if (updated == null)
                 {
@@ -112,14 +113,21 @@ namespace SustiVest.Web.Controllers
             // Redisplay the form for editing with validation errors
             return View(o);
         }
-
+        [Authorize(Roles = "admin, analyst")]
         public IActionResult Delete(int offerId)
         {
             var offer = _svc.GetOffer(offerId);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
 
             if (offer == null)
             {
                 Alert("Offer not found", AlertType.warning);
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (!_permissions.IsUserAuthorizedToEditOffer(offer.OfferId, userId, httpContext: HttpContext))
+            {
+                Alert("You are not authorized to edit this offer", AlertType.warning);
                 return RedirectToAction(nameof(Index));
             }
 

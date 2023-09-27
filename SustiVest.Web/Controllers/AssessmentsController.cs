@@ -36,7 +36,7 @@ namespace SustiVest.Web.Controllers
         }
 
         // GET /assessments/details/{requestNo}/{analystNo}
-        // [Authorize(Roles = "admin, analyst, borrower")]
+        [Authorize(Roles = "admin, analyst, borrower")]
         public IActionResult Details(int? assessmentNo, int? requestNo)
         {
 
@@ -62,11 +62,11 @@ namespace SustiVest.Web.Controllers
 
             var company = _companyService.GetCompany(assessment.CRNo);
 
-            if (!_permissions.IsUserAuthorizedToEditCompany(company.CRNo, userId, httpContext: HttpContext) && !_permissions.IsUserAuthorizedToEditAssessment(assessment.AssessmentNo, userId, httpContext: HttpContext) && !User.IsInRole("admin"))
-            {
-                Alert("You are not authorized to view this assessment", AlertType.warning);
-                return RedirectToAction("Details", "FinanceRequest", new { requestNo = assessment.RequestNo});
-            }
+            // if (!_permissions.IsUserAuthorizedToEditCompany(company.CRNo, userId, httpContext: HttpContext) && !_permissions.IsUserAuthorizedToEditAssessment(assessment.AssessmentNo, userId, httpContext: HttpContext) && !User.IsInRole("admin"))
+            // {
+            //     Alert("You are not authorized to view this assessment", AlertType.warning);
+            //     return RedirectToAction("Details", "FinanceRequest", new { requestNo = assessment.RequestNo});
+            // }
 
             return View(assessment);
         }
