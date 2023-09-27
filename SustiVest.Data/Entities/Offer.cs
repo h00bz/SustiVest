@@ -41,9 +41,7 @@
             // public Company Company { get; set;}
 
             // public FinanceRequest FinanceRequest { get; set; }
-
-            [ForeignKey ("AssessmentNo")]
-            public IList<Assessments> Assessments { get; set; } = new List<Assessments>();
-
+            [ForeignKey("AssessmentNo")]
+            public Assessments Assessments { get; set; }
         }
     }

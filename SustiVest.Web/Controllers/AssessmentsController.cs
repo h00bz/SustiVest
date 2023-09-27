@@ -13,7 +13,7 @@ using Microsoft.AspNetCore;
 
 namespace SustiVest.Web.Controllers
 {
-    // [Authorize]
+    [Authorize]
     public class AssessmentsController : BaseController
     {
         private readonly IAssessmentsService _svc;

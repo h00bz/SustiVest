@@ -11,7 +11,7 @@ using SustiVest.Web.Controllers;
 
 namespace SustiVest.Web
 {
-    [Authorize]
+    // [Authorize]
     public class Permissions : BaseController
     {
         private readonly ICompanyService _companyService;
@@ -99,15 +99,15 @@ namespace SustiVest.Web
 
             return true;
         }
-        public bool IsUserAuthorizedToEditOffer(int OfferId, int userId, HttpContext httpContext)
+        public bool IsUserAuthorizedToEditOffer(int offerId, int userId, HttpContext httpContext)
         {
-            var offer =_offerService.GetOffer(OfferId);
-
+            var offer = _offerService.GetOffer(offerId);
             if (offer == null)
             {
                 Alert("Offer Not Found", AlertType.warning);
                 return false;
             }
+
 
             if (httpContext != null && httpContext.User.Identity.IsAuthenticated && userId != offer.AnalystNo && !httpContext.User.IsInRole("admin"))
 

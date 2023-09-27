@@ -12,7 +12,7 @@ namespace SustiVest.Data.Services
     {
         private readonly DatabaseContext ctx;
 
-        private readonly ICompanyService _companySVC;
+        // private readonly ICompanyService _companySVC;
 
         public OfferServiceDb(DatabaseContext ctx)
         {
@@ -27,14 +27,16 @@ namespace SustiVest.Data.Services
         }
         public Offer GetOffer(int offerId)
         {
+ 
             return ctx.Offers
                 // .Include(o => o.Company)
                 // .Include(o => o.FinanceRequest)
                 .FirstOrDefault(o => o.OfferId == offerId);
+           
         }
 
 
-        public Offer CreateOffer(int offerId, int requestNo, string crNo, int amount, int tenor, string payback, string linens, string undertakings, string covenants, double ror, string facilityType, string utilizationMechanism, int analystNo)
+        public Offer CreateOffer(int requestNo, string crNo, int amount, int tenor, string payback, string linens, string undertakings, string covenants, double ror, string facilityType, string utilizationMechanism, int analystNo, int assessmentNo)
         {
             // var company = _companySVC.GetCompany(crNo);
             // if (company == null)
@@ -42,7 +44,7 @@ namespace SustiVest.Data.Services
 
             var offer = new Offer
             {
-                OfferId = offerId,
+            
                 RequestNo = requestNo,
                 CRNo = crNo,
                 Amount = amount,
@@ -55,6 +57,7 @@ namespace SustiVest.Data.Services
                 FacilityType = facilityType,
                 UtilizationMechanism = utilizationMechanism,
                 AnalystNo = analystNo,
+                AssessmentNo=assessmentNo
 
             };
 
@@ -63,11 +66,12 @@ namespace SustiVest.Data.Services
             return offer;
         }
 
-        public Offer UpdateOffer( int offerId, int requestNo, string crNo, int amount, int tenor, string payback, string linens, string undertakings, string covenants, double ror, string facilityType, string utilizationMechanism, int analystNo)
+        public Offer UpdateOffer( int offerId, int requestNo, string crNo, int amount, int tenor, string payback, string linens, string undertakings, string covenants, double ror, string facilityType, string utilizationMechanism, int analystNo, int assessmentNo)
         {
             var offer = GetOffer(offerId);
             if (offer == null)
             {
+
                 return null;
             }
 
@@ -88,6 +92,7 @@ namespace SustiVest.Data.Services
             offer.FacilityType = facilityType;
             offer.UtilizationMechanism = utilizationMechanism;
             offer.AnalystNo = analystNo;
+            offer.AssessmentNo = assessmentNo;
 
             ctx.SaveChanges();
             return offer;
@@ -103,7 +108,7 @@ namespace SustiVest.Data.Services
             ctx.SaveChanges();
             return true;
         }
-        public Paged<Offer> GetOffers(int page = 1, int size = 20, string orderBy = "OfferId", string direction = "doc")
+        public Paged<Offer> GetOffers(int page = 1, int size = 20, string orderBy = "OfferId", string direction = "desc")
         {
             var results = (orderBy.ToLower(), direction.ToLower()) switch
             {

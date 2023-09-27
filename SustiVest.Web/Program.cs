@@ -25,7 +25,7 @@ builder.Services.AddTransient<IUserService, UserServiceDb>();
 builder.Services.AddTransient<IMailService, SmtpMailService>();
 builder.Services.AddTransient<ICompanyService, CompanyServiceDb>();
 builder.Services.AddTransient<IAssessmentsService, AssessmentServiceDb>();
-builder.Services.AddTransient<IAnalystsService, AnalystServiceDb>();
+// builder.Services.AddTransient<IAnalystsService, AnalystServiceDb>();
 builder.Services.AddTransient<IOfferService, OfferServiceDb>();
 
 builder.Services.AddScoped<Permissions>();

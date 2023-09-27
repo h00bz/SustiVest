@@ -20,7 +20,7 @@ namespace SustiVest.Data.Repositories
         public DbSet<Assessments> Assessments { get; set; }
         public DbSet<Offer> Offers { get; set; }
 
-        public DbSet<Analysts> Analysts { get; set; }
+        // public DbSet<Analysts> Analysts { get; set; }
 
         public DbSet<ForgotPassword> ForgotPasswords { get; set; }
 
@@ -48,8 +48,8 @@ namespace SustiVest.Data.Repositories
             modelBuilder.Entity<FinanceRequest>().HasKey(f => f.RequestNo);
             modelBuilder.Entity<Assessments>().ToTable("Assessments");
             modelBuilder.Entity<Assessments>().HasKey(a => a.AssessmentNo);
-            modelBuilder.Entity<Analysts>().ToTable("Analysts");
-            modelBuilder.Entity<Analysts>().HasKey(an => an.AnalystNo);
+            // modelBuilder.Entity<Analysts>().ToTable("Analysts");
+            // modelBuilder.Entity<Analysts>().HasKey(an => an.AnalystNo);
             modelBuilder.Entity<Offer>().ToTable("Offer");
             modelBuilder.Entity<Offer>().HasKey(o => o.OfferId);
 
