@@ -157,7 +157,7 @@ namespace SustiVest.Web.Controllers
 
             if (!_permissions.IsUserAuthorizedToEditCompany(crNo, userId, httpContext: HttpContext))
             {
-                return RedirectToAction(nameof(CompanyDetails), new { crNo = crNo});
+                return RedirectToAction(nameof(CompanyDetails), new { crNo = crNo });
             }
 
             // pass company to view for deletion confirmation
@@ -186,20 +186,63 @@ namespace SustiVest.Web.Controllers
             return RedirectToAction(nameof(CompanyIndex));
         }
 
-        // public bool  IsUserAuthorizedToEditCompany(string crNo, int userId)
-        // {
-        //     var company= _svc.GetCompany(crNo);
-            
-        //     if (userId != company.RepId && !User.IsInRole("admin"))
-        //     {
-        //         Alert($"Sorry, you are not authorized to edit this company's profile", AlertType.warning);
-        //         return false;
-        //     }
+        [HttpGet("/Company/Search")]
+        public IActionResult Search(string query)
+        {
+            var companies = _svc.GetCompanies().Where(c =>
+                c.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                c.CRNo.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                c.Industry.Contains(query, StringComparison.OrdinalIgnoreCase)
+            // Add more conditions for other properties you want to search
+            ).ToList();
 
-        //     return true;
+            return Json(companies);
+        }
+
+        // [HttpGet("/company/search")]
+        // public IActionResult Search(string query)
+        // {
+        //     var companies = _svc.SearchCompanies(query); // ticket service
+        //                                                          // map tickets to list of custom DTO objects
+        //     var data = companies.Select(c => new
+        //     {
+        //         CRNo = c.CRNo,
+        //         TaxID = c.TaxID,
+        //         CompanyName = c.CompanyName,
+        //         Industry = c.Industry,
+        //         DateofEstablishment = c.DateOfEstablishment,
+        //         Activity = c.Activity,
+        //         Type = c.Type,
+        //         ShareholderStructure = c.ShareholderStructure,
+        //         RepId = c.RepId
+        //     });
+
+        //     return Ok(companies); // return json containing custom tickets list
         // }
 
+        // public IActionResult Search()
+        // {
+        //     return View();
 
-
+        // }
     }
 }
+
+
+
+// public bool  IsUserAuthorizedToEditCompany(string crNo, int userId)
+// {
+//     var company= _svc.GetCompany(crNo);
+
+//     if (userId != company.RepId && !User.IsInRole("admin"))
+//     {
+//         Alert($"Sorry, you are not authorized to edit this company's profile", AlertType.warning);
+//         return false;
+//     }
+
+//     return true;
+// }
+
+
+
+

@@ -1,23 +1,34 @@
 @model Paged<Company>
 
-<partial name="_BreadCrumbs" model=@(new [] {
-    ("/","Home"),
-    ("","Companies")
-}) />
+<partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("","Companies") }) />
 
 <div class="card border rounded shadow p-4">
- 
+
     <!-- Title bar -->
     <div class="d-flex align-items-center justify-content-between">
         <h3>Company</h3>
-        
-        @* <a asp-condition=@User.HasOneOfRoles("admin") class="btn btn-sm btn-primary" asp-action="create" title="add student" aria-label="add student">
-           <i class="bi bi-plus"></i> Create
-        </a> *@
-           <a class="btn btn-sm btn-primary" asp-action="create" title="add company" aria-label="add company">
-           <i class="bi bi-plus"></i> Create
+
+        <a class="btn btn-sm btn-primary" asp-action="create" title="add company" aria-label="add company">
+            <i class="bi bi-plus"></i> Create
         </a>
-        
+
+    </div>
+
+    <!-- Search bar -->
+
+    <form id="searchForm" class="form-inline mt-3">
+        <div class="input-group">
+            <input type="text" id="searchQuery" class="form-control"
+                placeholder="Search by Company Name, CRNo, Industry, etc." />
+            <div class="input-group-append">
+                <button type="button" id="searchButton" class="btn btn-primary"><i class="bi bi-search"></i>
+                    Search</button>
+            </div>
+        </div>
+    </form>
+
+    <div id="searchResults" class="mt-4">
+        <!-- Search results will be displayed here -->
     </div>
 
     <!-- List of companies -->
@@ -28,101 +39,139 @@
                     <tr>
                         <th>
                             Commercial Registration
-                            <a asp-action="CompanyIndex" 
-                                asp-route-order="crNo" 
-                                asp-route-direction=@Model.Direction 
-                                asp-route-page=@Model.CurrentPage 
-                                asp-route-size=@Model.PageSize >
-                                <vc:sort-order field="crNo" orderby=@Model.OrderBy direction=@Model.Direction />  
-                            </a>  
+                            <a asp-action="CompanyIndex" asp-route-order="crNo" asp-route-direction=@Model.Direction
+                                asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                                <vc:sort-order field="crNo" orderby=@Model.OrderBy direction=@Model.Direction />
+                            </a>
                         </th>
                         <th>
                             Name
-                            <a asp-action="CompanyIndex" 
-                                asp-route-order="companyname" 
-                                asp-route-direction=@Model.Direction 
-                                asp-route-page=@Model.CurrentPage 
-                                asp-route-size=@Model.PageSize >
-                                <vc:sort-order field="companyname" orderby=@Model.OrderBy direction=@Model.Direction />  
-                            </a>  
+                            <a asp-action="CompanyIndex" asp-route-order="companyname"
+                                asp-route-direction=@Model.Direction asp-route-page=@Model.CurrentPage
+                                asp-route-size=@Model.PageSize>
+                                <vc:sort-order field="companyname" orderby=@Model.OrderBy direction=@Model.Direction />
+                            </a>
                         </th>
                         <th>
                             Industry
-                            <a asp-action="CompanyIndex" 
-                                asp-route-order="industry" 
-                                asp-route-direction=@Model.Direction 
-                                asp-route-page=@Model.CurrentPage 
-                                asp-route-size=@Model.PageSize >
-                                <vc:sort-order field="industry" orderby=@Model.OrderBy direction=@Model.Direction />  
-                            </a>  
+                            <a asp-action="CompanyIndex" asp-route-order="industry" asp-route-direction=@Model.Direction
+                                asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                                <vc:sort-order field="industry" orderby=@Model.OrderBy direction=@Model.Direction />
+                            </a>
                         </th>
                         <th>
                             Established
-                            <a asp-action="CompanyIndex" 
-                                asp-route-order="dateofestablishment" 
-                                asp-route-direction=@Model.Direction 
-                                asp-route-page=@Model.CurrentPage 
-                                asp-route-size=@Model.PageSize >
-                                <vc:sort-order field="dateofestablishment" orderby=@Model.OrderBy direction=@Model.Direction />  
-                            </a>  
+                            <a asp-action="CompanyIndex" asp-route-order="dateofestablishment"
+                                asp-route-direction=@Model.Direction asp-route-page=@Model.CurrentPage
+                                asp-route-size=@Model.PageSize>
+                                <vc:sort-order field="dateofestablishment" orderby=@Model.OrderBy
+                                    direction=@Model.Direction />
+                            </a>
                         </th>
                         <th>
                             Activity
-                            <a asp-action="CompanyIndex" 
-                                asp-route-order="activity" 
-                                asp-route-direction=@Model.Direction 
-                                asp-route-page=@Model.CurrentPage 
-                                asp-route-size=@Model.PageSize >
-                                <vc:sort-order field="activity" orderby=@Model.OrderBy direction=@Model.Direction />  
-                            </a>  
+                            <a asp-action="CompanyIndex" asp-route-order="activity" asp-route-direction=@Model.Direction
+                                asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                                <vc:sort-order field="activity" orderby=@Model.OrderBy direction=@Model.Direction />
+                            </a>
                         </th>
                         <th>
                             Type
-                            <a asp-action="CompanyIndex" 
-                                asp-route-order="type" 
-                                asp-route-direction=@Model.Direction 
-                                asp-route-page=@Model.CurrentPage 
-                                asp-route-size=@Model.PageSize >
-                                <vc:sort-order field="type" orderby=@Model.OrderBy direction=@Model.Direction />  
-                            </a>  
+                            <a asp-action="CompanyIndex" asp-route-order="type" asp-route-direction=@Model.Direction
+                                asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                                <vc:sort-order field="type" orderby=@Model.OrderBy direction=@Model.Direction />
+                            </a>
                         </th>
                         <th>
                             Shareholders
-                            <a asp-action="CompanyIndex" 
-                                asp-route-order="shareholderstructure" 
-                                asp-route-direction=@Model.Direction 
-                                asp-route-page=@Model.CurrentPage 
-                                asp-route-size=@Model.PageSize >
-                                <vc:sort-order field="shareholderstructure" orderby=@Model.OrderBy direction=@Model.Direction />  
-                            </a>  
-                        </th>   
+                            <a asp-action="CompanyIndex" asp-route-order="shareholderstructure"
+                                asp-route-direction=@Model.Direction asp-route-page=@Model.CurrentPage
+                                asp-route-size=@Model.PageSize>
+                                <vc:sort-order field="shareholderstructure" orderby=@Model.OrderBy
+                                    direction=@Model.Direction />
+                            </a>
+                        </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach(var c in Model.Data)
+        <tbody>
+                    @foreach (var c in Model.Data)
                     {
-                        <tr>
-                            <td>@c.CRNo</td>
-                            <td>@c.CompanyName</td>
-                            <td>@c.Industry</td>
-                            <td>@c.DateOfEstablishment</td>
-                            <td>@c.Activity</td>
-                            <td>@c.Type</td>
-                            <td>@c.ShareholderStructure</td>
-                            <td>                       
-                                <a asp-action="CompanyDetails" asp-route-crNo="@c.CRNo">
-                                    <i class="bi bi-display-fill me-2" title="view company" arial-label="view company"></i>
-                                </a>
-                                <a asp-action="Edit" asp-route-crNo=@c.CRNo>
-                                    <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i>
-                                </a>
-                                <a asp-action="Delete" asp-route-crNo=@c.CRNo>
-                                    <i class="bi bi-trash-fill me-2" title="delete company" aria-label="delete company"></i>
-                                </a>
-                                
-                            </td>
-                        </tr>
+                <tr>
+                    <td>@c.CRNo</td>
+                    <td>@c.CompanyName</td>
+                    <td>@c.Industry</td>
+                    <td>@c.DateOfEstablishment</td>
+                    <td>@c.Activity</td>
+                    <td>@c.Type</td>
+                    <td>@c.ShareholderStructure</td>
+                    <td>
+                        <a asp-action="CompanyDetails" asp-route-crNo="@c.CRNo">
+                            <i class="bi bi-display-fill me-2" title="view company" arial-label="view company"></i>
+                        </a>
+                        <a asp-action="Edit" asp-route-crNo=@c.CRNo>
+                            <i class="bi bi-pencil-fill me-2" title="edit company" aria-label="edit company"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-crNo=@c.CRNo>
+                            <i class="bi bi-trash-fill me-2" title="delete company" aria-label="delete company"></i>
+                        </a>
+
+                    </td>
+                </tr>
                     }
-                </tbody>
-            </table>
+        </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    @section scripts {
+        <script>
+            $(document).ready(function () {
+                // Function to perform the search and update the search results
+                function performSearch(query) {
+                    $.ajax({
+                        url: '/Company/Search',
+                        type: 'GET',
+                        data: { query: query },
+                        success: function (data) {
+                            // Clear the search results container
+                            $('#searchResults').empty();
+
+                            // Check if there are results
+                            if (data.length === 0) {
+                                $('#searchResults').html('<p>No results found.</p>');
+                            } else {
+                                // Create a table to display the search results
+                                var table = $('<table class="table table-hover"></table>');
+                                var headerRow = $('<tr><th>Company Name</th><th>CRNo</th><th>Industry</th></tr>');
+                                table.append(headerRow);
+
+                                // Populate the table with search results
+                                $.each(data, function (index, company) {
+                                    var row = $('<tr></tr>');
+                                    row.append('<td><a href="/Company/CompanyDetails/?crNo=' + company.crNo + '">' + company.companyName + '</a></td>');
+                                    row.append('<td>' + company.crNo + '</td>');
+                                    row.append('<td>' + company.industry + '</td>');
+                                    // Add more columns as needed
+
+                                    table.append(row);
+                                });
+
+                                // Append the table to the search results container
+                                $('#searchResults').append(table);
+                            }
+                        },
+                        error: function () {
+                            $('#searchResults').html('<p>Error occurred while searching.</p>');
+                        }
+                    });
+                }
+
+                // Handle the search button click event
+                $('#searchButton').click(function () {
+                    var query = $('#searchQuery').val();
+                    performSearch(query);
+                });
+            });
+        </script>
+    }

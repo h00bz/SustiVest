@@ -24,6 +24,7 @@ namespace SustiVest.Data.Services
         FinanceRequest UpdateRequest(int requestNo, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment);
         FinanceRequest ResubmitRequest(int requestNo, DateOnly dateOfRequest, bool assessment);
         bool DeleteRequest(int RequestNo);
+        // IList<Company> SearchCompanies(string query, string orderBy = "companyname", string direction = "asc");
         // public bool IsUserAuthorizedToEditCompanyProfile(string crNo, int userId);
 
     }

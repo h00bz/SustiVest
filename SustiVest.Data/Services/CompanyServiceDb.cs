@@ -296,8 +296,6 @@ namespace SustiVest.Data.Services
         //     return false;
         // }
 
-    }
-}
 
 // perform a search of the tickets based on a query and
 // an active range 'ALL', 'OPEN', 'CLOSED'
@@ -322,20 +320,37 @@ namespace SustiVest.Data.Services
 //         return Ordered(search, orderBy, direction).ToList();
 //     }
 
-//     private IQueryable<Ticket> Ordered(IQueryable<Ticket> query, string orderby, string direction)
-//     {
-//         query = (orderby, direction) switch
-//         {
-//             ("id", "asc") => query.OrderBy(t => t.Id),
-//             ("id", "desc") => query.OrderByDescending(t => t.Id),
-//             ("name", "asc") => query.OrderBy(t => t.Student.Name),
-//             ("name", "desc") => query.OrderByDescending(t => t.Student.Name),
-//             ("createdon", "asc") => query.OrderBy(t => t.CreatedOn),
-//             ("createdon", "desc") => query.OrderByDescending(t => t.CreatedOn),
-//             _ => query
-//         };
-//         return query;
-//     }
+    // public IList<Company> SearchCompanies(string query, string orderBy = "companyname", string direction = "asc")
+    // {
+    //     // ensure query is not null    
+    //     query = query == null ? "" : query.ToLower();
 
+    //     // search ticket issue, active status and student name
+    //     var search = ctx.Companies
+    //                     .OrderBy(c => c.CompanyName)
+    //                     .Where(c => (c.CompanyName.ToLower().Contains(query) ||
+    //                                  c.CRNo.ToLower().Contains(query) || 
+    //                                  c.Industry.ToLower().Contains(query)
+    //                                 ) 
+    //                     );
+    //     return Ordered(search, orderBy, direction).ToList();
+    // }
 
-// }
+    // private IQueryable<Company> Ordered(IQueryable<Company> query, string orderby, string direction)
+    // {
+    //     query = (orderby, direction) switch
+    //     {
+    //         ("crNO", "asc") => query.OrderBy(c => c.CRNo),
+    //         ("crNo", "desc") => query.OrderByDescending(c => c.CRNo),
+    //         ("companyName", "asc") => query.OrderBy(c => c.CompanyName),
+    //         ("companyName", "desc") => query.OrderByDescending(c => c.CompanyName),
+    //         // ("createdon", "asc") => query.OrderBy(t => t.CreatedOn),
+    //         // ("createdon", "desc") => query.OrderByDescending(t => t.CreatedOn),
+    //         _ => query
+    //     };
+    //     return query;
+    // }
+
+    }
+}
+
