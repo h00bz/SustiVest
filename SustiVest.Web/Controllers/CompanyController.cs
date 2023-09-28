@@ -187,17 +187,39 @@ namespace SustiVest.Web.Controllers
         }
 
         [HttpGet("/Company/Search")]
-        public IActionResult Search(string query)
+        public IActionResult Search(string query, string property)
         {
             var companies = _svc.GetCompanies().Where(c =>
-                c.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                c.CRNo.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                c.Industry.Contains(query, StringComparison.OrdinalIgnoreCase)
-            // Add more conditions for other properties you want to search
-            ).ToList();
+            {
+                switch (property.ToLower()) // Convert property to lowercase for case-insensitive comparison
+                {
+                    case "crno":
+                        return c.CRNo.Contains(query, StringComparison.OrdinalIgnoreCase);
+
+                    case "taxid":
+                        return c.TaxID.Contains(query, StringComparison.OrdinalIgnoreCase);
+
+                    case "companyname":
+                        return c.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase);
+
+                    case "industry":
+                        return c.Industry.Contains(query, StringComparison.OrdinalIgnoreCase);
+                    case "type":
+                        return c.Type.Contains(query, StringComparison.OrdinalIgnoreCase);
+                    // Add more cases for other properties you want to search
+                    default:
+                        // If an invalid property is selected, search in all properties as a fallback
+                        return  c.CRNo.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                                c.TaxID.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                                c.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                                c.Industry.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                                c.Type.Contains(query, StringComparison.OrdinalIgnoreCase);
+                }
+            }).ToList();
 
             return Json(companies);
         }
+
 
         // [HttpGet("/company/search")]
         // public IActionResult Search(string query)

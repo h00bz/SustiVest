@@ -18,12 +18,19 @@
 
     <form id="searchForm" class="form-inline mt-3">
         <div class="input-group">
-            <input type="text" id="searchQuery" class="form-control"
-                placeholder="Search by Company Name, CRNo, Industry, etc." />
-            <div class="input-group-append">
+            <select id="searchProperty" class="form-select">
+                <option value="all">All Properties</option>
+                <option value="crNo">CRNo</option>
+                <option value="taxid">Tax ID</option>
+                <option value="companyname">Company Name</option>
+                <option value="industry">Industry</option>
+                <option value="type">Type</option>
+            </select>
+
+                <input type="text" id="searchQuery" class="form-control"
+                    placeholder="Search by Company Name, CRNo, Industry, etc." aria-label="Search" />
                 <button type="button" id="searchButton" class="btn btn-primary"><i class="bi bi-search"></i>
                     Search</button>
-            </div>
         </div>
     </form>
 
@@ -128,11 +135,11 @@
         <script>
             $(document).ready(function () {
                 // Function to perform the search and update the search results
-                function performSearch(query) {
+                function performSearch(query, property) {
                     $.ajax({
                         url: '/Company/Search',
                         type: 'GET',
-                        data: { query: query },
+                        data: { query: query, property: property },
                         success: function (data) {
                             // Clear the search results container
                             $('#searchResults').empty();
@@ -149,7 +156,7 @@
                                 // Populate the table with search results
                                 $.each(data, function (index, company) {
                                     var row = $('<tr></tr>');
-                                    row.append('<td><a href="/Company/CompanyDetails/?crNo=' + company.crNo + '">' + company.companyName + '</a></td>');
+                                    row.append('<td><a href="/Company/CompanyDetails/?crNo' + company.crNo + '">' + company.companyName + '</a></td>');
                                     row.append('<td>' + company.crNo + '</td>');
                                     row.append('<td>' + company.industry + '</td>');
                                     // Add more columns as needed
@@ -168,10 +175,33 @@
                 }
 
                 // Handle the search button click event
+
                 $('#searchButton').click(function () {
+                    event.preventDefault(); // Prevent form submission
                     var query = $('#searchQuery').val();
-                    performSearch(query);
+                    var property = $('#searchProperty').val();
+
+                    if (query.length === 0) {
+                        $('#searchResults').html('<p>Please enter a search word.</p>');
+                        return;
+                    }
+                    performSearch(query, property);
                 });
+
+                // Handle the enter button event
+                $('#searchQuery').on('keydown', function (event) {
+                    if (event.keyCode === 13) { // Check for Enter key
+                        event.preventDefault(); // Prevent form submission
+                        var query = $('#searchQuery').val();
+                        var property = $('#searchProperty').val();
+                        if (query.length === 0) {
+                            $('#searchResults').html('<p>Please enter a search word.</p>');
+                            return;
+                        }
+                        performSearch(query, property);
+                    }
+                });
+
             });
         </script>
     }
