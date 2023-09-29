@@ -29,7 +29,7 @@ builder.Services.AddTransient<IAssessmentsService, AssessmentServiceDb>();
 builder.Services.AddTransient<IOfferService, OfferServiceDb>();
 
 builder.Services.AddScoped<Permissions>();
-
+builder.Services.AddScoped<GlobalSearch>();
 
 // ** Required to enable asp-authorize Taghelper **            
 builder.Services.AddHttpContextAccessor();

@@ -16,8 +16,13 @@
 
     <!-- Search bar -->
 
-    <form id="searchForm" class="form-inline mt-3">
+    @* <form id="searchForm" class="form-inline mt-3">
         <div class="input-group">
+            <select id="searchEntity" class="form-select">
+                <option value="company">Company</option>
+                <option value="financeRequest">Finance Request</option>
+                <!-- Add more options for other entities as needed -->
+            </select>
             <select id="searchProperty" class="form-select">
                 <option value="all">All Properties</option>
                 <option value="crNo">CRNo</option>
@@ -27,16 +32,16 @@
                 <option value="type">Type</option>
             </select>
 
-                <input type="text" id="searchQuery" class="form-control"
-                    placeholder="Search by Company Name, CRNo, Industry, etc." aria-label="Search" />
-                <button type="button" id="searchButton" class="btn btn-primary"><i class="bi bi-search"></i>
-                    Search</button>
+            <input type="text" id="searchQuery" class="form-control"
+                placeholder="Search by Company Name, CRNo, Industry, etc." aria-label="Search" />
+            <button type="button" id="searchButton" class="btn btn-primary"><i class="bi bi-search"></i>
+                Search</button>
         </div>
-    </form>
+    </form> *@
 
-    <div id="searchResults" class="mt-4">
+    @* <div id="searchResults" class="mt-4">
         <!-- Search results will be displayed here -->
-    </div>
+    </div> *@
 
     <!-- List of companies -->
     <table class="table table-hover mt-4">
@@ -129,9 +134,9 @@
         </tbody>
     </table>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    @section scripts {
+    @* @section scripts {
         <script>
             $(document).ready(function () {
                 // Function to perform the search and update the search results
@@ -204,4 +209,4 @@
 
             });
         </script>
-    }
+    } *@

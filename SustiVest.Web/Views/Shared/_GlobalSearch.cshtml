@@ -1,0 +1,123 @@
+<!-- Include jQuery -->
+@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
+
+<!-- Your shared search bar form -->
+<form id="searchForm" class="form-inline mt-3">
+    <div class="input-group">
+        <select id="searchEntity" class="form-select">
+            <option value="company">Company</option>
+            <option value="financerequest">Finance Request</option>
+
+            <!-- Add more options for other entities -->
+        </select>
+        @* @if (ViewBag.searchEntity == "company")
+        { *@
+        <select id="searchProperty" class="form-select">
+            <option value="crNo">CRNo</option>
+            <option value="taxid">Tax ID</option>
+            <option value="companyname">Company Name</option>
+            <option value="industry">Industry</option>
+            <option value="type">Type</option>
+        </select>
+        
+        <input type="text" id="searchQuery" class="form-control" placeholder="Search..." aria-label="Search" />
+        <button type="button" id="searchButton" class="btn btn-primary"><i class="bi bi-search"></i> Search</button>
+    </div>
+</form>
+@* } *@
+@* else if (ViewBag.searchEntity == "financerequest")
+{
+<select id="searchProperty" class="form-select">
+<option value="requestno">CRNo</option>
+<option value="company.companyname">Tax ID</option>
+<option value="amount">Company Name</option>
+<option value="tenor">Industry</option>
+<option value="facilitytype">Type</option>
+<option value="status">Type</option>
+
+<!-- Add options for specific properties of each entity -->
+</select>
+} *@
+@* else
+{
+<select id="searchProperty" class="form-select">
+<option value="crNo">CRNo</option>
+<option value="taxid">Tax ID</option>
+<option value="companyname">Company Name</option>
+<option value="industry">Industry</option>
+<option value="type">Type</option>
+<!-- Add options for specific properties of each entity -->
+</select>
+}
+<select id="searchProperty" class="form-select">
+<option value="crNo">CRNo</option>
+<option value="taxid">Tax ID</option>
+<option value="companyname">Company Name</option>
+<option value="industry">Industry</option>
+<option value="type">Type</option>
+<!-- Add options for specific properties of each entity -->
+</select> *@
+
+
+
+<!-- Container to display search results -->
+<div id="searchResultsContainer">
+    <!-- Search results will be displayed here -->
+</div>
+
+@* @section scripts {
+<script>
+
+$(document).ready(function () {
+// Function to perform the search and update the search results
+function performSearch() {
+var entity = $('#searchEntity').val();
+var query = $('#searchQuery').val();
+var property = $('#searchProperty').val();
+
+$.ajax({
+url: '/GlobalSearch/Search',
+type: 'GET',
+data: { entity: entity, query: query, property: property },
+success: function (data) {
+// Clear the search results container
+$('#searchResultsContainer').empty();
+
+// Check if there are results
+if (data.length === 0) {
+$('#searchResultsContainer').html('<p>No results found.</p>');
+} else {
+// Create a table or format the results as needed
+// For example, you can use a loop to display data
+var resultsHtml = '<table class="table
+table-hover"><thead><tr><th>Entity</th><th>Property</th><th>Value</th></tr></thead><tbody>';
+$.each(data, function (index, result) {
+resultsHtml += '<tr><td>' + entity + '</td><td>' + property + '</td><td>' + result + '</td></tr>';
+});
+resultsHtml += '</tbody></table>';
+
+// Append the table to the search results container
+$('#searchResultsContainer').html(resultsHtml);
+}
+},
+error: function () {
+$('#searchResultsContainer').html('<p>Error occurred while searching.</p>');
+}
+});
+}
+
+// Handle the search button click event
+$('#searchButton').click(function () {
+performSearch();
+});
+
+// Handle the enter button event
+$('#searchQuery').on('keydown', function (event) {
+if (event.keyCode === 13) { // Check for Enter key
+performSearch();
+}
+});
+});
+
+</script>
+} *@
