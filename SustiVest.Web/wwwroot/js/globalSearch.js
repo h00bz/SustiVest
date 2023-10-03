@@ -1,5 +1,49 @@
 
 $(document).ready(function () {
+   // Define properties for each entity
+   var properties = {
+    'company': [
+        { value: 'crNo', text: 'CRNo' },
+        { value: 'taxid', text: 'Tax ID' },
+        { value: 'companyname', text: 'Company Name' },
+        { value: 'industry', text: 'Industry' },
+        { value: 'type', text: 'Type' }
+    ],
+    'financerequest': [
+        { value: 'requestno', text: 'Request No' },
+        { value: 'financerequest.company.companyname', text: 'Name' },
+        { value: 'amount', text: 'Amount' },
+        { value: 'tenor', text: 'Tenor' },
+        { value: 'facilitytype', text: 'Facility' },
+        { value: 'status', text: 'Status' }
+    ]
+};
+
+// Function to update properties based on the selected entity
+function updateProperties() {
+    var selectedEntity = $('#searchEntity').val();
+    var propertySelect = $('#searchProperty');
+
+    // Clear existing options
+    propertySelect.empty();
+
+    // Add options for the selected entity
+    properties[selectedEntity].forEach(function (property) {
+        propertySelect.append($('<option>', {
+            value: property.value,
+            text: property.text
+        }));
+    });
+}
+
+// Handle the change event of the searchEntity select element
+$('#searchEntity').change(function () {
+    updateProperties();
+});
+
+// Initial call to set properties based on the initial entity value
+updateProperties();
+
     // Function to perform the search and update the search results
     function performSearch(query, property, entity) {
         // var entity = $('#searchEntity').val();
@@ -14,11 +58,7 @@ $(document).ready(function () {
             data: { query: query, property: property, entity: entity },
             success: function (data) {
                 console.log('ZZZZZZZZ top of success function and data is :', data);
-                // Generate HTML table to display search results
-                // ...
-            // },  Conso
-            // data: { query: query, property: property, entity: entity },
-            // success: function (data) {
+
                 // Clear the search results container
                 $('#searchResultsContainer').empty();
 
@@ -31,7 +71,6 @@ $(document).ready(function () {
                     var table = $('<table class="table table-hover"></table>');
                    
                     // Populate the table with search results
-                    // if (entity === 'Company'){
                     
                         var headerRow = $('<tr><th>Name</th><th>CRNo</th><th>TaxID</th><th>Industry</th><th>Type</th></tr>');
                         table.append(headerRow);
@@ -44,20 +83,15 @@ $(document).ready(function () {
                         row.append('<td>' + company.industry + '</td>');
                         row.append('<td>' + company.type+ '</td>');
 
-                        // Add more columns as needed
 
                         table.append(row);
-                        // $('#searchResultsContainer').append(table);
 
                     });
-                    // $('#searchResultsContainer').append(table);
                 } else if (entity=='financerequest'){
                     console.log('oooooooooooooooo inside fr if and data is :', data);
                     var table = $('<table class="table table-hover"></table>');
                    
-                    // Populate the table with search results
-                    // if (entity === 'Company'){
-                    
+
                         var headerRow = $('<tr><th>RequestNo</th><th>Company</th><th>Amount</th><th>Tenor</th><th>Facility</th><th>Status</th></tr>');
                         table.append(headerRow);
     
@@ -73,10 +107,8 @@ $(document).ready(function () {
                         // Add more columns as needed
 
                         table.append(row);
-                        // $('#searchResultsContainer').append(table);
 
                     });
-                    // $('#searchResultsContainer').append(table);
                 }
                 $('#searchResultsContainer').append(table);
                 
@@ -86,26 +118,6 @@ $(document).ready(function () {
             }
         });
     }
-                // }
-            //     else if (entity === 'FinanceRequest'){
-            //         var headerRow = $('<tr><th>Name</th><th>CRNo</th><th>TaxID</th><th>Industry</th><th>Type</th></tr>');
-            //         table.append(headerRow);
-            //         $.each(data, function (index, company) {
-            //         row.append('<td><a href="/FinanceRequest/Details/?requestNo' + financeRequest.requestNo + '">' + financeRequest.companyName + '</a></td>');
-            //         row.append('<td>' + financeRequest.requestNo + '</td>');
-            //         row.append('<td>' + financeRequest.companyName + '</td>');
-            //         row.append('<td>' + financeRequest.facilityType + '</td>');
-            //         row.append('<td>' + financeRequest.amount+ '</td>');
-            //         row.append('<td>' + financeRequest.tenor+ '</td>');
-            //         row.append('<td>' + financeRequest.status+ '</td>');
-            //         table.append(row);
-
-            //     });
-            // }
-
-                    // Append the table to the search results container
-
-
     // Handle the search button click event
 
     $('#searchButton').click(function (event) {
@@ -138,37 +150,5 @@ $(document).ready(function () {
         }
     });
 
-});
-//                     // Create a table or format the results as needed
-//                     // For example, you can use a loop to display data
-//                     var resultsHtml = '<table class="table table-hover"><thead><tr><th>Entity</th><th>Property</th><th>Value</th></tr></thead><tbody>';
-//                     $.each(data, function (_, result) {
-//                         // Check if the property value contains the search query
-//                         if (result[property].toLowerCase().includes(query.toLowerCase())) {
-//                             resultsHtml += '<tr><td>' +''+'</td><td>' + property + '</td><td>' + result + '</td></tr>';
-//                         }
-//                     });
-//                     resultsHtml += '</tbody></table>';
-
-//                     // Append the table to the search results container
-//                     $('#searchResultsContainer').html(resultsHtml);
-//                 }
-//             },
-//             error: function () {
-//                 $('#searchResultsContainer').html('<p>Error occurred while searching.</p>');
-//             }
-//         });
     
-//     }
-//     // Handle the search button click event
-//     $('#searchButton').click(function () {
-//         performSearch();
-//     });
-
-//     // Handle the enter button event
-//     $('#searchQuery').on('keydown', function (event) {
-//         if (event.keyCode === 13) { // Check for Enter key
-//             performSearch();
-//         }
-//     });
-// });
+});

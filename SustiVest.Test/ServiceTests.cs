@@ -12,6 +12,7 @@ namespace SustiVest.Test
     public class ServiceTests
     {
         private readonly IUserService service;
+        private readonly ICompanyService companyService;
 
         public ServiceTests()
         {
@@ -23,6 +24,8 @@ namespace SustiVest.Test
 
             // create service with new context
             service = new UserServiceDb(new DatabaseContext(options));
+            companyService= new CompanyServiceDb(new DatabaseContext(options));
+                
             // service.Initialise();
         }
 
@@ -235,6 +238,7 @@ namespace SustiVest.Test
             // assert
             Assert.Empty(tokens);
         }
+
 
     }
 }
