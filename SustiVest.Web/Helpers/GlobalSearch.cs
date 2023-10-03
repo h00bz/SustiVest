@@ -25,16 +25,19 @@ namespace SustiVest.Web
 
         public IActionResult Search(string query, string property, string entity)
         {
-            Console.WriteLine("=================Search for Company being called===================");
+            Console.WriteLine("=================Search  being called===================");
+            Console.WriteLine($"=================propertyName={property} and query={query}===================");
 
             if (string.IsNullOrWhiteSpace(query) || string.IsNullOrWhiteSpace(property))
             {
+             Console.WriteLine("=================String is null/white===================");
+
                 return View("_GlobalSearch", new List<Company>());
             }
 
             // Normalize property name to lowercase
             var propertyName = property.ToLower();
-            
+
 
             Console.WriteLine($"=================propertyName={propertyName} and query={query}===================");
             if (entity == "company")
@@ -48,32 +51,50 @@ namespace SustiVest.Web
                 (propertyName == "industry" && c.Industry.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
                 (propertyName == "type" && c.Type.Contains(query, StringComparison.OrdinalIgnoreCase)))
                 .ToList();
-                Console.WriteLine($"=================result?={results}");
+                Console.WriteLine($"IN COMP IF======={propertyName} and query={query}==========result?={results}");
+               
+                return Json(results);
+            }
+
+            if (entity == "financerequest")
+            {
+                var results = _companyService.GetFinanceRequests()
+                .Where(fr =>
+            (propertyName == "requestno" && fr.RequestNo.ToString().Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+            // (propertyName == "companyname" && fr.Company.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "amount" && fr.Amount.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "tenor" && fr.Tenor.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "facilitytype" && fr.FacilityType.Contains(query, StringComparison.OrdinalIgnoreCase))||
+            (propertyName == "status" && fr.Status.Contains(query, StringComparison.OrdinalIgnoreCase)))
+            .ToList();
+                Console.WriteLine($"IN FR IF ======={propertyName} and query={query}==========result?={results}");
 
                 return Json(results);
             }
+
+
             Console.WriteLine("________did not enter if");
             return View("_GlobalSearch");
-        }
-            // }
+            }
+        // }
 
-            // if (entity == "financerequest")
-            // {
-            //     var results = _companyService.GetFinanceRequests()
-            // // Convert to a list to enable client-side evaluation
-            // .Where(fr =>
+        // if (entity == "financerequest")
+        // {
+        //     var results = _companyService.GetFinanceRequests()
+        // // Convert to a list to enable client-side evaluation
+        // .Where(fr =>
 
-            //     (propertyName == "requestno" && fr.RequestNo.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
-            //     (propertyName == "companyname" && fr.Company.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
-            //     (propertyName == "amount" && fr.Amount.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
-            //     (propertyName == "tenor" && fr.Tenor.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
-            //     (propertyName == "facilitytype" && fr.FacilityType.Equals(query, StringComparison.OrdinalIgnoreCase)))
-            //     .ToList();
-            //     Console.WriteLine($"=================result?={results}");
+        //     (propertyName == "requestno" && fr.RequestNo.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
+        //     (propertyName == "companyname" && fr.Company.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+        //     (propertyName == "amount" && fr.Amount.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
+        //     (propertyName == "tenor" && fr.Tenor.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
+        //     (propertyName == "facilitytype" && fr.FacilityType.Equals(query, StringComparison.OrdinalIgnoreCase)))
+        //     .ToList();
+        //     Console.WriteLine($"=================result?={results}");
 
-            //     return Json(results);
-            // }
-        
+        //     return Json(results);
+        // }
+
 
         // [HttpGet("/GlobalSearch/Search")]
         // public IActionResult Search(string entity, string query, string property)

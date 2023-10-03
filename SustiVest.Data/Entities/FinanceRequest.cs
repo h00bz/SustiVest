@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+
 namespace SustiVest.Data.Entities
 {
     public enum FinanceRequestStatus { OPEN, CLOSED, ALL }
@@ -39,7 +40,6 @@ namespace SustiVest.Data.Entities
 
         public bool Assessment { get; set; }
 
-
         [ForeignKey("CRNo")]
         public Company Company { get; set; }
         [NotMapped]
@@ -48,7 +48,7 @@ namespace SustiVest.Data.Entities
             get { return Company.RepId; }
             set { Company.RepId = value; }
         }
-
+        [JsonIgnore]
         [NotMapped]
         public User Rep
         {

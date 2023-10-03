@@ -10,15 +10,24 @@ $(document).ready(function () {
         $.ajax({
             url: '/GlobalSearch/Search',
             type: 'GET',
-            data: { query: query, property: property, entity:entity },
+            dataType: 'json', // Specify JSON dataType
+            data: { query: query, property: property, entity: entity },
             success: function (data) {
+                console.log('ZZZZZZZZ top of success function and data is :', data);
+                // Generate HTML table to display search results
+                // ...
+            // },  Conso
+            // data: { query: query, property: property, entity: entity },
+            // success: function (data) {
                 // Clear the search results container
                 $('#searchResultsContainer').empty();
 
                 // Check if there are results
                 if (data.length === 0) {
                     $('#searchResultsContainer').html('<p>No results found.</p>');
-                } else {
+                } else  if (entity=='company'){
+                    console.log('XXXXXXXXXXXXXXXXX Inside comp if: data passed is', data);
+
                     var table = $('<table class="table table-hover"></table>');
                    
                     // Populate the table with search results
@@ -29,7 +38,7 @@ $(document).ready(function () {
     
                     $.each(data, function (index, company) {
                         var row = $('<tr></tr>');
-                        row.append('<td><a href="/Company/CompanyDetails/?crNo' + company.crNo + '">' + company.companyName + '</a></td>');
+                        row.append('<td><a href="/Company/CompanyDetails/?crNo=' + company.crNo + '">' + company.companyName + '</a></td>');
                         row.append('<td>' + company.crNo + '</td>');
                         row.append('<td>' + company.taxID + '</td>');
                         row.append('<td>' + company.industry + '</td>');
@@ -38,7 +47,45 @@ $(document).ready(function () {
                         // Add more columns as needed
 
                         table.append(row);
+                        // $('#searchResultsContainer').append(table);
+
                     });
+                    // $('#searchResultsContainer').append(table);
+                } else if (entity=='financerequest'){
+                    console.log('oooooooooooooooo inside fr if and data is :', data);
+                    var table = $('<table class="table table-hover"></table>');
+                   
+                    // Populate the table with search results
+                    // if (entity === 'Company'){
+                    
+                        var headerRow = $('<tr><th>RequestNo</th><th>Company</th><th>Amount</th><th>Tenor</th><th>Facility</th><th>Status</th></tr>');
+                        table.append(headerRow);
+    
+                    $.each(data, function (index, financeRequest) {
+                        var row = $('<tr></tr>');
+                        row.append('<td><a href="/Company/CompanyDetails/?crNo=' + financeRequest.crNo + '">' + financeRequest.company.companyName + '</a></td>');
+                        row.append('<td>' + financeRequest.requestNo + '</td>');
+                        row.append('<td>' + financeRequest.company.companyName + '</td>');
+                        row.append('<td>' + financeRequest.amount + '</td>');
+                        row.append('<td>' + financeRequest.tenor + '</td>');
+                        row.append('<td>' + financeRequest.faciltyType + '</td>');
+                        row.append('<td>' + financeRequest.status + '</td>');
+                        // Add more columns as needed
+
+                        table.append(row);
+                        // $('#searchResultsContainer').append(table);
+
+                    });
+                    // $('#searchResultsContainer').append(table);
+                }
+                $('#searchResultsContainer').append(table);
+                
+            },
+            error: function () {
+                $('#searchResultsContainer').html('<p>Error occurred while searching.</p>');
+            }
+        });
+    }
                 // }
             //     else if (entity === 'FinanceRequest'){
             //         var headerRow = $('<tr><th>Name</th><th>CRNo</th><th>TaxID</th><th>Industry</th><th>Type</th></tr>');
@@ -57,14 +104,7 @@ $(document).ready(function () {
             // }
 
                     // Append the table to the search results container
-                 $('#searchResultsContainer').append(table);
-                }
-            },
-            error: function () {
-                $('#searchResultsContainer').html('<p>Error occurred while searching.</p>');
-            }
-        });
-    }
+
 
     // Handle the search button click event
 
@@ -73,6 +113,7 @@ $(document).ready(function () {
         var entity = $('#searchEntity').val();
         var query = $('#searchQuery').val();
         var property = $('#searchProperty').val();
+        console.log('XXXXXXXXXXXXXXXXX Inside search button click and data passed is', entity, query, property);
 
         if (query.length === 0) {
             $('#searchResultsContainer').html('<p>Please enter a search word.</p>');

@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using SustiVest.Data.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
 namespace SustiVest.Data.Entities
 {
     public class Company
@@ -31,7 +33,8 @@ namespace SustiVest.Data.Entities
         public string Type { get; set; } //Refers to company type SME or Startup
         public string ShareholderStructure { get; set; } //Represents Owner Equity Structure of a company
         public int RepId { get; set; }
-
+        
+        [JsonIgnore]
         public IList<FinanceRequest> FinanceRequests { get; set; } = new List<FinanceRequest>();
 
        [ForeignKey("RepId")]
