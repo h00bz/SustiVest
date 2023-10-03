@@ -72,7 +72,7 @@ namespace SustiVest.Web.Controllers
             if (ModelState.IsValid)
             {
                 // call service AddCompany method using data in s
-                var company = _svc.AddCompany(c.CRNo, c.TaxID, c.CompanyName, c.Industry, c.DateOfEstablishment, c.Activity, c.Type, c.ShareholderStructure);
+                var company = _svc.AddCompany(c.CRNo, c.TaxID, c.CompanyName, c.Industry, c.DateOfEstablishment, c.Activity, c.Type, c.ShareholderStructure, c.RepId);
                 if (company is null)
                 {
                     Alert("Encountered issue creating company profile.", AlertType.warning);

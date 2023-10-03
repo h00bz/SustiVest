@@ -170,8 +170,8 @@ namespace SustiVest.Data.Services
             }
 
             // valid token and user so update password, invalidate the token and return the user           
-            reset.ExpiresAt = DateTime.Now;
             user.Password = Hasher.CalculateHash(password);
+            reset.ExpiresAt = DateTime.Now;
             ctx.SaveChanges();
             return user;
         }

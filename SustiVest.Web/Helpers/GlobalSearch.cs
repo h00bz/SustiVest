@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using SustiVest.Data.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SustiVest.Web
 {
@@ -22,7 +23,7 @@ namespace SustiVest.Web
             _companyService = companyService;
             this.ctx = ctx;
         }
-
+        [Authorize(Roles = "admin, analyst")]
         public IActionResult Search(string query, string property, string entity)
         {
             Console.WriteLine("=================Search  being called===================");

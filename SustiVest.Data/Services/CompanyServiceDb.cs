@@ -74,7 +74,7 @@ namespace SustiVest.Data.Services
         }
 
         // Add a new company
-        public Company AddCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure)
+        public Company AddCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure, int repId)
         {
             // Check if a company with the same CompanyName or CRNo already exists
             var existsByName = GetCompanyByName(companyName);
@@ -95,6 +95,7 @@ namespace SustiVest.Data.Services
                 Activity = activity,
                 Type = type,
                 ShareholderStructure = shareholderStructure,
+                RepId= repId
             };
 
             ctx.Companies.Add(company);
