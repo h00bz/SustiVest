@@ -604,13 +604,81 @@ namespace SustiVest.Test
             Assert.Null(_companyService.GetFinanceRequest(requestNo));
         }
 
+        private void Assessment_Add2()
+        {
+            // Arrange
+            Add2CompaniesAnd2Reps();
+            var financeRequest1= _companyService.CreateRequest(new FinanceRequest
+            {
+                CRNo = "CR123",
+                Purpose = "Testing1",
+                Amount = 1111,
+                Tenor = 11,
+                FacilityType = "Credit Line",
+                Status = "Approved",
+                DateOfRequest = new DateOnly(2021, 1, 1),
+                Assessment = true
+            });
+            var financeRequest2= _companyService.CreateRequest(new FinanceRequest
+            {
+                CRNo = "CR456",
+                Purpose = "Testing2",
+                Amount = 22222,
+                Tenor = 22,
+                FacilityType = "Term Loan",
+                Status = "Approved",
+                DateOfRequest = new DateOnly(2021, 1, 1),
+                Assessment = true
+            });
+            var assessment1Values = new Assessments
+            {
+                RequestNo = financeRequest1.RequestNo,
+                AnalystNo = financeRequest1.RepId,
+                Sales = 100000,
+                EBITDA = 50000,
+                DSR = 1.5,
+                CCC = 30.0,
+                RiskRating = 3,
+                MarketPosition = "Good",
+                RepaymentStatus = "On Time",
+                FinancialLeverage = 2.0,
+                WorkingCapital = 50000,
+                OperatingAssets = 100000,
+                CRNo = financeRequest1.CRNo,
+                TotalAssets = 200000,
+                NetEquity = 100000
+            };
 
+            var assessment2Values = new Assessments
+            {
+                RequestNo = financeRequest2.RequestNo,
+                AnalystNo = financeRequest2.RepId,
+                Sales = 200000,
+                EBITDA = 100000,
+                DSR = 2.0,
+                CCC = 60.0,
+                RiskRating = 4,
+                MarketPosition = "Excellent",
+                RepaymentStatus = "Late",
+                FinancialLeverage = 3.0,
+                WorkingCapital = 100000,
+                OperatingAssets = 200000,
+                CRNo = financeRequest1.CRNo,
+                TotalAssets = 400000,
+                NetEquity = 200000
+            };
+
+            // Act
+            var assessment1 = _assessmentsService.AddAssessment(assessment1Values);
+            var assessment2 = _assessmentsService.AddAssessment(assessment2Values);
+        }
 
 
         [Fact]
         public void GetAssessments_ReturnsAllAssessments()
         {
             // Arrange
+            Assessment_Add2();
             var expectedCount = _ctx.Assessments.Count();
 
             // Act
@@ -621,9 +689,11 @@ namespace SustiVest.Test
         }
 
         [Fact]
-        public void GetAssessment_ReturnsAssessmentWithMatchingAssessmentNo()
+        public void GetAssessment_ReturnsAssessmentWithMatchingAssessmentAndRequestNo()
         {
             // Arrange
+            Assessment_Add2();
+            
             var assessmentNo = 1;
             var expectedRequestNo = 1;
 
@@ -639,38 +709,24 @@ namespace SustiVest.Test
         public void AddAssessment_AddsNewAssessmentToDatabase()
         {
             // Arrange
-            var requestNo = 1;
-            var analystNo = 1;
-            var sales = 100000;
-            var ebitda = 50000;
-            var dsr = 1.5;
-            var ccc = 30.0;
-            var riskRating = 3;
-            var marketPosition = "Good";
-            var repaymentStatus = "On Time";
-            var financialLeverage = 2.0;
-            var workingCapital = 50000;
-            var operatingAssets = 100000;
-            var crNo = "1234567890";
-            var totalAssets = 200000;
-            var netEquity = 100000;
+            Assessment_Add2();
             var assessment = new Assessments
             {
-                RequestNo = requestNo,
-                AnalystNo = analystNo,
-                Sales = sales,
-                EBITDA = ebitda,
-                DSR = dsr,
-                CCC = ccc,
-                RiskRating = riskRating,
-                MarketPosition = marketPosition,
-                RepaymentStatus = repaymentStatus,
-                FinancialLeverage = financialLeverage,
-                WorkingCapital = workingCapital,
-                OperatingAssets = operatingAssets,
-                CRNo = crNo,
-                TotalAssets = totalAssets,
-                NetEquity = netEquity
+                RequestNo = 1,
+                AnalystNo = 1,
+                Sales = 100000,
+                EBITDA = 50000,
+                DSR = 1.5,
+                CCC = 30.0,
+                RiskRating = 3,
+                MarketPosition = "Good",
+                RepaymentStatus = "On Time",
+                FinancialLeverage = 2.0,
+                WorkingCapital = 50000,
+                OperatingAssets = 100000,
+                CRNo = "CR123",
+                TotalAssets = 200000,
+                NetEquity = 100000
             };
 
             // Act
@@ -678,27 +734,28 @@ namespace SustiVest.Test
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(requestNo, result.RequestNo);
-            Assert.Equal(analystNo, result.AnalystNo);
-            Assert.Equal(sales, result.Sales);
-            Assert.Equal(ebitda, result.EBITDA);
-            Assert.Equal(dsr, result.DSR);
-            Assert.Equal(ccc, result.CCC);
-            Assert.Equal(riskRating, result.RiskRating);
-            Assert.Equal(marketPosition, result.MarketPosition);
-            Assert.Equal(repaymentStatus, result.RepaymentStatus);
-            Assert.Equal(financialLeverage, result.FinancialLeverage);
-            Assert.Equal(workingCapital, result.WorkingCapital);
-            Assert.Equal(operatingAssets, result.OperatingAssets);
-            Assert.Equal(crNo, result.CRNo);
-            Assert.Equal(totalAssets, result.TotalAssets);
-            Assert.Equal(netEquity, result.NetEquity);
+            Assert.Equal(1, result.RequestNo);
+            Assert.Equal(1, result.AnalystNo);
+            Assert.Equal(100000, result.Sales);
+            Assert.Equal(50000, result.EBITDA);
+            Assert.Equal(1.5, result.DSR);
+            Assert.Equal(30.0, result.CCC);
+            Assert.Equal(3, result.RiskRating);
+            Assert.Equal("Good", result.MarketPosition);
+            Assert.Equal("On Time", result.RepaymentStatus);
+            Assert.Equal(2.0, result.FinancialLeverage);
+            Assert.Equal(50000, result.WorkingCapital);
+            Assert.Equal(100000, result.OperatingAssets);
+            Assert.Equal("CR123", result.CRNo);
+            Assert.Equal(200000, result.TotalAssets);
+            Assert.Equal(100000, result.NetEquity);
         }
 
         [Fact]
         public void UpdateAssessment_UpdatesAssessmentInDatabase()
         {
             // Arrange
+            Assessment_Add2();
             var assessmentNo = 1;
             var sales = 200000;
             var ebitda = 100000;
@@ -712,7 +769,7 @@ namespace SustiVest.Test
             var operatingAssets = 200000;
 
             // Act
-            var result = _assessmentsService.UpdateAssessment(assessmentNo, 1, 1, sales, ebitda, dsr, ccc, riskRating, marketPosition, repaymentStatus, financialLeverage, workingCapital, operatingAssets, "1234567890", 200000, 100000);
+            var result = _assessmentsService.UpdateAssessment(assessmentNo, 1, 1, sales, ebitda, dsr, ccc, riskRating, marketPosition, repaymentStatus, financialLeverage, workingCapital, operatingAssets, "CR123", 200000, 100000);
 
             // Assert
             Assert.NotNull(result);
@@ -732,6 +789,7 @@ namespace SustiVest.Test
         public void DeleteAssessment_RemovesAssessmentFromDatabase()
         {
             // Arrange
+            Assessment_Add2();
             var assessmentNo = 1;
 
             // Act
@@ -746,13 +804,14 @@ namespace SustiVest.Test
         public void GetAssessmentsByCompanyName_ReturnsAssessmentsWithMatchingCompanyName()
         {
             // Arrange
-            var companyName = "Test Company";
+            Assessment_Add2();
+            var companyName = "Company1";
 
             // Act
             var assessments = _assessmentsService.GetAssessmentsByCompanyName(companyName);
 
             // Assert
-            Assert.NotNull(assessments);
+            Assert.True(assessments.Count >0);
             Assert.True(assessments.All(a => a.Company.CompanyName == companyName));
         }
         
