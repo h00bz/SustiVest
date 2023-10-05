@@ -114,7 +114,7 @@ namespace SustiVest.Web.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin, borrower, analyst")]
         [HttpPost]
-        public IActionResult Edit(string crNo, string taxID, [Bind("CompanyName, Industry, DateOfEstablishment, Activity, Type, ShareholderStructure")] Company c)
+        public IActionResult Edit(string crNo, string taxID, int repId, [Bind("CompanyName, Industry, DateOfEstablishment, Activity, Type, ShareholderStructure")] Company c)
         {
             // check if company name already exists and is not owned by company being edited 
             var company = _svc.GetCompany(crNo);
@@ -123,7 +123,7 @@ namespace SustiVest.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Complete POST action to save company changes
-                var updated = _svc.UpdateCompany(crNo, taxID, c.CompanyName, c.Industry, c.DateOfEstablishment, c.Activity, c.Type, c.ShareholderStructure);
+                var updated = _svc.UpdateCompany(crNo, taxID, c.CompanyName, c.Industry, c.DateOfEstablishment, c.Activity, c.Type, c.ShareholderStructure, repId);
 
                 if (updated is null)
                 {

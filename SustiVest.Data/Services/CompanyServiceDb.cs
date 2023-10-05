@@ -119,7 +119,7 @@ namespace SustiVest.Data.Services
         }
 
         // Update the company with the details in updated 
-        public Company UpdateCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure)
+        public Company UpdateCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure, int repId)
         {
             // verify the commpany exists 
             var company = GetCompany(crNo);
@@ -143,6 +143,8 @@ namespace SustiVest.Data.Services
             company.Type = type;
             company.ShareholderStructure = shareholderStructure;
             company.CRNo = crNo;
+            company.TaxID = taxID;
+            company.RepId = repId;  
 
 
             ctx.SaveChanges();

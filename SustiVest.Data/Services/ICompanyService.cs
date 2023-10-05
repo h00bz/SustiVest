@@ -12,7 +12,7 @@ namespace SustiVest.Data.Services
         Company GetCompany(string CRNo);
         Company GetCompanyByName(string CompanyName);
         Company AddCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure, int repId);
-        Company UpdateCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure);
+        Company UpdateCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure, int repId);
         bool DeleteCompany(string CRNo);
         IList<FinanceRequest> GetFinanceRequests();
 

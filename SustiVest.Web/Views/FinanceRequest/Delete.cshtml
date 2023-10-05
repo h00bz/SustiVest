@@ -1,0 +1,58 @@
+@model FinanceRequest
+
+<partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/FinanceRequest/Index","Finance Requests"),
+    ("", "Delete Finance Request")
+}) />
+
+<div class="card rounded shadow p-4">
+    <div class="row">
+        <div class="col-8 d-flex flex-column justify-content-between">
+            <!-- Finance Request details -->
+            <div>
+                <h2 class="mb-4 text-primary">Finance Request No. @Model.RequestNo</h2>
+                <dl class="row">
+                    <dt class="col-sm-4">Purpose:</dt>
+                    <dd class="col-sm-8">@Model.Purpose</dd>
+                    
+                    <dt class="col-sm-4">Amount:</dt>
+                    <dd class="col-sm-8">@Model.Amount</dd>
+                    
+                    <dt class="col-sm-4">Tenor:</dt>
+                    <dd class="col-sm-8">@Model.Tenor</dd>
+                    
+                    <dt class="col-sm-4">Facility Type:</dt>
+                    <dd class="col-sm-8">@Model.FacilityType</dd>
+                    
+                    <dt class="col-sm-4">Status:</dt>
+                    <dd class="col-sm-8">@Model.Status</dd>
+                    
+                    <dt class="col-sm-4">Date of Request:</dt>
+                    <dd class="col-sm-8">@Model.DateOfRequest.ToShortDateString()</dd>
+                    
+                    <dt class="col-sm-4">Assessment:</dt>
+                    <dd class="col-sm-8">@Model.Assessment</dd>
+                </dl>
+            </div>
+            
+            <!-- Navigation links -->
+            <div>
+                <a asp-action="Index" class="btn btn-sm btn-outline-primary" aria-label="finance request list">
+                    <i class="bi bi-list" title="finance request list"></i>
+                    <span class="ms-1 d-none d-md-inline">List</span>
+                </a>
+
+                <a asp-action="Edit" asp-route-requestNo="@Model.RequestNo" class="btn btn-sm btn-outline-secondary" aria-label="edit finance request">
+                    <i class="bi bi-pen-fill" title="edit finance request"></i>
+                    <span class="ms-1 d-none d-md-inline">Edit</span>
+                </a>
+
+                <form method="post" asp-action="DeleteConfirm" asp-route-requestNo="@Model.RequestNo" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="delete finance request">
+                        <i class="bi bi-trash-fill" title="delete finance request"></i>
+                        <span class="ms-1 d-none d-md-inline">Delete</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

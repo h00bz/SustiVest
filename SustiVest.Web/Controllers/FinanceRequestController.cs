@@ -224,6 +224,39 @@ namespace SustiVest.Web.Controllers
             // redisplay the form for editing
             return View(f);
         }
+        [Authorize(Roles = "admin, analyst")]
+        public IActionResult Delete(int requestNo)
+        {
+            var financeRequest = svc.GetFinanceRequest(requestNo);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+
+            if (financeRequest == null)
+            {
+                Alert("Request Not Found", AlertType.warning);
+                return RedirectToAction(nameof(Details));
+            }
+            // if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext))
+            // {
+            //     Alert("You are not authorized to delete this request", AlertType.warning);
+            //     return RedirectToAction(nameof(Details), new { requestNo = financeRequest.RequestNo });
+            // }
+
+            return View("Delete", financeRequest);
+        }
+
+        public IActionResult DeleteConfirm (int requestNo)
+        {
+            var deleted= svc.DeleteRequest(requestNo);
+            if (deleted)
+            {
+                Alert($"Request No. {requestNo} deleted successfully", AlertType.info);
+            }
+            else
+            {
+                Alert($"Request No. {requestNo} could not be deleted", AlertType.warning);
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 
