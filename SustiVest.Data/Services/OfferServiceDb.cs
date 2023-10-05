@@ -36,29 +36,23 @@ namespace SustiVest.Data.Services
         }
 
 
-        public Offer CreateOffer(int requestNo, string crNo, int amount, int tenor, string payback, string linens, string undertakings, string covenants, double ror, string facilityType, string utilizationMechanism, int analystNo, int assessmentNo)
+        public Offer CreateOffer(Offer o)
         {
-            // var company = _companySVC.GetCompany(crNo);
-            // if (company == null)
-            //     return null;
-
             var offer = new Offer
             {
-            
-                RequestNo = requestNo,
-                CRNo = crNo,
-                Amount = amount,
-                Tenor = tenor,
-                Payback = payback,
-                Linens = linens,
-                Undertakings = undertakings,
-                Covenants = covenants,
-                ROR = ror,
-                FacilityType = facilityType,
-                UtilizationMechanism = utilizationMechanism,
-                AnalystNo = analystNo,
-                AssessmentNo=assessmentNo
-
+                RequestNo = o.RequestNo,
+                CRNo = o.CRNo,
+                Amount = o.Amount,
+                Tenor = o.Tenor,
+                Payback = o.Payback,
+                Linens = o.Linens,
+                Undertakings = o.Undertakings,
+                Covenants = o.Covenants,
+                ROR = o.ROR,
+                FacilityType = o.FacilityType,
+                UtilizationMechanism = o.UtilizationMechanism,
+                AnalystNo = o.AnalystNo,
+                AssessmentNo = o.AssessmentNo
             };
 
             ctx.Offers.Add(offer);

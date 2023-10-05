@@ -6,6 +6,7 @@ using SustiVest.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using SustiVest.Data.Repositories;
 using SustiVest.Data.Security;
+using Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.Helpers;
 
 namespace SustiVest.Test
 {
@@ -14,8 +15,8 @@ namespace SustiVest.Test
         private readonly DatabaseContext _ctx;
         private readonly IUserService _userService;
         private readonly ICompanyService _companyService;
-
         private readonly IAssessmentsService _assessmentsService;
+        private readonly IOfferService _offerService;
 
         public ServiceTests()
         {
@@ -30,6 +31,7 @@ namespace SustiVest.Test
             _userService = new UserServiceDb(_ctx);
             _companyService = new CompanyServiceDb(_ctx);
             _assessmentsService = new AssessmentServiceDb(_ctx);
+            _offerService = new OfferServiceDb(_ctx);
 
             _ctx.Database.EnsureCreated();// recreate the database - ensures a clean database for each test
         }
@@ -454,7 +456,7 @@ namespace SustiVest.Test
                 DateOfRequest = new DateOnly(2021, 1, 1),
                 Assessment = true
             };
-            
+
             var request2Values = new FinanceRequest
             {
                 CRNo = "CR456",
@@ -469,7 +471,7 @@ namespace SustiVest.Test
 
             // Act
             var request1 = _companyService.CreateRequest(request1Values);
-            var request2= _companyService.CreateRequest(request2Values);
+            var request2 = _companyService.CreateRequest(request2Values);
         }
 
 
@@ -479,7 +481,7 @@ namespace SustiVest.Test
             // Arrange
             Add2CompaniesAnd2Reps();
             FinanceRequest_Add2();
-            
+
             var expectedCount = _ctx.FinanceRequests.Count();
 
             // Act
@@ -494,7 +496,7 @@ namespace SustiVest.Test
         {
             // Arrange
             Add2CompaniesAnd2Reps();
-            
+
             var request = new FinanceRequest
             {
                 CRNo = "CR123",
@@ -608,7 +610,7 @@ namespace SustiVest.Test
         {
             // Arrange
             Add2CompaniesAnd2Reps();
-            var financeRequest1= _companyService.CreateRequest(new FinanceRequest
+            var financeRequest1 = _companyService.CreateRequest(new FinanceRequest
             {
                 CRNo = "CR123",
                 Purpose = "Testing1",
@@ -619,7 +621,7 @@ namespace SustiVest.Test
                 DateOfRequest = new DateOnly(2021, 1, 1),
                 Assessment = true
             });
-            var financeRequest2= _companyService.CreateRequest(new FinanceRequest
+            var financeRequest2 = _companyService.CreateRequest(new FinanceRequest
             {
                 CRNo = "CR456",
                 Purpose = "Testing2",
@@ -693,7 +695,7 @@ namespace SustiVest.Test
         {
             // Arrange
             Assessment_Add2();
-            
+
             var assessmentNo = 1;
             var expectedRequestNo = 1;
 
@@ -811,10 +813,162 @@ namespace SustiVest.Test
             var assessments = _assessmentsService.GetAssessmentsByCompanyName(companyName);
 
             // Assert
-            Assert.True(assessments.Count >0);
+            Assert.True(assessments.Count > 0);
             Assert.True(assessments.All(a => a.Company.CompanyName == companyName));
         }
-        
+
+        private void Offer_Add2()
+        {
+            Assessment_Add2();
+
+            var offer1Values = new Offer
+            {
+                RequestNo = 1,
+                CRNo = "CR123",
+                Amount = 10000,
+                Tenor = 12,
+                Payback = "Monthly",
+                Linens = "None",
+                Undertakings = "None",
+                Covenants = "None",
+                ROR = 0.05,
+                FacilityType = "Term Loan",
+                UtilizationMechanism = "Direct Payment",
+                AnalystNo = 1,
+                AssessmentNo = 1
+            };
+
+            var offer2Values = new Offer
+            {
+                RequestNo = 2,
+                CRNo = "CR456",
+                Amount = 20000,
+                Tenor = 24,
+                Payback = "Quarterly",
+                Linens = "None",
+                Undertakings = "None",
+                Covenants = "None",
+                ROR = 0.06,
+                FacilityType = "Overdraft",
+                UtilizationMechanism = "Cheque",
+                AnalystNo = 2,
+                AssessmentNo = 2
+            };
+            
+            var offer1=_offerService.CreateOffer(offer1Values);
+            var offer2=_offerService.CreateOffer(offer2Values);
+        }
+
+        [Fact]
+        public void GetOffers_ReturnsAllOffers()
+        {
+            // Arrange
+            Offer_Add2();
+
+            // Act
+            var result = _offerService.GetOffers();
+
+            // Assert
+            Assert.Equal(2, result.Count);
+        }
+
+        [Fact]
+        public void GetOffer_ReturnsOfferById()
+        {
+            // Arrange
+            Offer_Add2();
+            var exprectedOfferId=1;
+            var expectedAssessmentNo=1;
+
+            // Act
+            var result = _offerService.GetOffer(exprectedOfferId);
+
+            // Assert
+            Assert.Equal(exprectedOfferId, result.OfferId);  
+            Assert.Equal(expectedAssessmentNo, result.AssessmentNo);
+
+        }
+
+        [Fact]
+        public void CreateOffer_AddsNewOfferToDatabase()
+        {
+            // Arrange
+            Assessment_Add2();
+            var offer = new Offer { RequestNo = 1, CRNo = "CR123", Amount = 10000, Tenor = 12, Payback = "Monthly", Linens = "None", Undertakings = "None", Covenants = "None", ROR = 0.05, FacilityType = "Term Loan", UtilizationMechanism = "Direct Payment", AnalystNo = 1, AssessmentNo = 1 };
+
+            // Act
+            var result = _offerService.CreateOffer(offer);
+
+            // Assert
+            Assert.Equal(1, _ctx.Offers.Count());
+            Assert.Equal(offer.RequestNo, result.RequestNo);
+            Assert.Equal(offer.CRNo, result.CRNo);
+            Assert.Equal(offer.Amount, result.Amount);
+            Assert.Equal(offer.Tenor, result.Tenor);
+            Assert.Equal(offer.Payback, result.Payback);
+            Assert.Equal(offer.Linens, result.Linens);
+            Assert.Equal(offer.Undertakings, result.Undertakings);
+            Assert.Equal(offer.Covenants, result.Covenants);
+            Assert.Equal(offer.ROR, result.ROR);
+            Assert.Equal(offer.FacilityType, result.FacilityType);
+            Assert.Equal(offer.UtilizationMechanism, result.UtilizationMechanism);
+            Assert.Equal(offer.AnalystNo, result.AnalystNo);
+            Assert.Equal(offer.AssessmentNo, result.AssessmentNo);
+        }
+
+        [Fact]
+        public void UpdateOffer_UpdatesExistingOfferInDatabase()
+        {
+            // Arrange
+            Offer_Add2();
+            var offer = new Offer { Amount = 10000, Tenor = 12, Payback = "Monthly", Linens = "None", Undertakings = "None", Covenants = "None", ROR = 0.05, FacilityType = "Term Loan", UtilizationMechanism = "Direct Payment" };
+
+
+            // Act
+            var result = _offerService.UpdateOffer(1, 1, "CR123", offer.Amount, offer.Tenor, offer.Payback, offer.Linens, offer.Undertakings, offer.Covenants, offer.ROR, offer.FacilityType, offer.UtilizationMechanism, 1, 1);
+
+            // Assert
+
+            Assert.Equal(offer.Amount, result.Amount);
+            Assert.Equal(offer.Tenor, result.Tenor);
+            Assert.Equal(offer.Payback, result.Payback);
+            Assert.Equal(offer.Linens, result.Linens);
+            Assert.Equal(offer.Undertakings, result.Undertakings);
+            Assert.Equal(offer.Covenants, result.Covenants);
+            Assert.Equal(offer.ROR, result.ROR);
+            Assert.Equal(offer.FacilityType, result.FacilityType);
+            Assert.Equal(offer.UtilizationMechanism, result.UtilizationMechanism);
+
+        }
+
+        [Fact]
+        public void DeleteOffer_RemovesOfferFromDatabase()
+        {
+            // Arrange
+            Offer_Add2();
+
+            // Act
+            var result = _offerService.DeleteOffer(1);
+
+            // Assert
+            Assert.True(result);
+            Assert.Equal(1, _ctx.Offers.Count());
+        }
+
+        [Fact]
+        public void GetOffers_ReturnsPagedOffers()
+        {
+            // Arrange
+            Offer_Add2();
+            var records=_offerService.GetOffers();
+
+            // Act
+            var pagedOffers = _offerService.GetOffers(1, 2);
+
+            // Assert
+            Assert.Equal(2, pagedOffers.Data.Count);
+
+        }
         public void Dispose()
         {
             _ctx.Database.EnsureDeleted();

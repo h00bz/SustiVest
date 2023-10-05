@@ -54,7 +54,7 @@ namespace SustiVest.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var offer = _svc.CreateOffer(o.RequestNo, o.CRNo, o.Amount, o.Tenor, o.Payback, o.Linens, o.Undertakings, o.Covenants, o.ROR, o.FacilityType, o.UtilizationMechanism, o.AnalystNo, o.AssessmentNo);
+                var offer = _svc.CreateOffer(o);
 
                 if (offer == null)
                 {
