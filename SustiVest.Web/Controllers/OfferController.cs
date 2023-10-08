@@ -50,7 +50,7 @@ namespace SustiVest.Web.Controllers
         [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Create([Bind("OfferId, RequestNo, CRNo, Amount, Tenor, Payback, Linens, Undertakings, Covenants, ROR, FacilityType, UtilizationMechanism, AnalystNo")] Offer o)
+        public IActionResult Create([Bind("RequestNo, CRNo, Amount, Tenor, Payback, Linens, Undertakings, Covenants, ROR, FacilityType, UtilizationMechanism, AnalystNo, AssessmentNo")] Offer o)
         {
             if (ModelState.IsValid)
             {
@@ -141,11 +141,11 @@ namespace SustiVest.Web.Controllers
 
             if (deleted)
             {
-                Alert("Assessment deleted successfully.", AlertType.success);
+                Alert("Offer deleted successfully.", AlertType.success);
             }
             else
             {
-                Alert("Assessment could not be deleted.", AlertType.warning);
+                Alert("Offer could not be deleted.", AlertType.warning);
             }
             return RedirectToAction(nameof(Index));
         }

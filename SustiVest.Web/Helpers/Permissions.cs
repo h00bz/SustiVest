@@ -27,39 +27,6 @@ namespace SustiVest.Web
             _offerService = offerService;
         }
 
-        // public bool IsUserAuthorizedToEditCompany(string crNo, int userId)
-        // {
-        //     var company = _companyService.GetCompany(crNo);
-
-        //     if (userId != company.RepId && !User.IsInRole("admin"))
-        //     {
-        //         Alert($"Sorry, you are not authorized to edit this company's profile", AlertType.warning);
-        //         return false;
-        //     }
-
-        //     return true;
-        // }
-        // public bool IsUserAuthorizedToEditCompany(string crNo, int userId)
-        // {
-        //     var company = _companyService.GetCompany(crNo);
-
-        //     if (company == null)
-        //     {
-        //         // Handle the case where the company is not found.
-        //         Alert("Company Not Found", AlertType.warning);
-        //         return false;
-        //     }
-
-        //     if (userId != company.RepId && !User.IsInRole("admin"))
-        //     {
-        //         Alert($"Sorry, you are not authorized to edit this company's profile", AlertType.warning);
-        //         return false;
-        //     }
-
-        //     return true;
-        // }
-
-        // public bool IsUserAuthorizedToEditCompany(string crNo, int userId, HttpContext httpContext)
         public bool IsUserAuthorizedToEditCompany(string crNo, int userId, HttpContext httpContext)
         {
             var company = _companyService.GetCompany(crNo);

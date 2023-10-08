@@ -1,10 +1,6 @@
-using System;
 using SustiVest.Data.Entities;
-using SustiVest.Data.Services;
-using SustiVest.Data.Security;
 using SustiVest.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace SustiVest.Data.Services
 {
@@ -51,7 +47,7 @@ namespace SustiVest.Data.Services
         {
             return ctx.Assessments
             .Include(a => a.Company)
-            // .Include(a => a.Analyst)
+    
             .FirstOrDefault(a => a.AssessmentNo == assessmentNo);
         }
 
@@ -59,7 +55,6 @@ namespace SustiVest.Data.Services
         {
             return ctx.Assessments
             .Include(a => a.FinanceRequest)
-            // .Include(a => a.Analyst)
             .FirstOrDefault(a => a.RequestNo == requestNo);
         }
 

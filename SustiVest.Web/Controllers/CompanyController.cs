@@ -1,13 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using SustiVest.Data.Entities;
 using SustiVest.Data.Services;
 using Microsoft.AspNetCore.Authorization;
-using SustiVest.Data.Security;
-using SustiVest.Web.Models.User;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace SustiVest.Web.Controllers
 {
@@ -60,7 +55,7 @@ namespace SustiVest.Web.Controllers
         [Authorize(Roles = "admin, borrower, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Create([Bind("CRNo, TaxID, CompanyName, Industry, DateOfEstablishment, Activity, Type, ShareholderStructure")] Company c)
+        public IActionResult Create([Bind("CRNo, TaxID, CompanyName, Industry, DateOfEstablishment, Activity, Type, ShareholderStructure, RepId")] Company c)
         {
             // validate company name is unique
             if (_svc.GetCompanyByName(c.CompanyName) != null)
@@ -164,7 +159,6 @@ namespace SustiVest.Web.Controllers
             return View(company);
         }
 
-        // [Authorize(Roles="admin")]
         // POST /company/delete/{id}
         [Authorize(Roles = "admin, analyst")]
         [HttpPost]
@@ -185,86 +179,10 @@ namespace SustiVest.Web.Controllers
             // redirect to the index view
             return RedirectToAction(nameof(CompanyIndex));
         }
-
-        // [HttpGet("/Company/Search")]
-        // public IActionResult Search(string query, string property)
-        // {
-        //     Console.WriteLine("=================Company Search being called===================");
-        //     var companies = _svc.GetCompanies().Where(c =>
-        //     {
-        //         switch (property.ToLower()) // Convert property to lowercase for case-insensitive comparison
-        //         {
-        //             case "crno":
-        //                 return c.CRNo.Contains(query, StringComparison.OrdinalIgnoreCase);
-
-        //             case "taxid":
-        //                 return c.TaxID.Contains(query, StringComparison.OrdinalIgnoreCase);
-
-        //             case "companyname":
-        //                 return c.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase);
-
-        //             case "industry":
-        //                 return c.Industry.Contains(query, StringComparison.OrdinalIgnoreCase);
-        //             case "type":
-        //                 return c.Type.Contains(query, StringComparison.OrdinalIgnoreCase);
-        //             // Add more cases for other properties you want to search
-        //             default:
-        //                 // If an invalid property is selected, search in all properties as a fallback
-        //                 return  c.CRNo.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-        //                         c.TaxID.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-        //                         c.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-        //                         c.Industry.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-        //                         c.Type.Contains(query, StringComparison.OrdinalIgnoreCase);
-        //         }
-        //     }).ToList();
-
-        //     return Json(companies);
-        // }
-
-
-        // [HttpGet("/company/search")]
-        // public IActionResult Search(string query)
-        // {
-        //     var companies = _svc.SearchCompanies(query); // ticket service
-        //                                                          // map tickets to list of custom DTO objects
-        //     var data = companies.Select(c => new
-        //     {
-        //         CRNo = c.CRNo,
-        //         TaxID = c.TaxID,
-        //         CompanyName = c.CompanyName,
-        //         Industry = c.Industry,
-        //         DateofEstablishment = c.DateOfEstablishment,
-        //         Activity = c.Activity,
-        //         Type = c.Type,
-        //         ShareholderStructure = c.ShareholderStructure,
-        //         RepId = c.RepId
-        //     });
-
-        //     return Ok(companies); // return json containing custom tickets list
-        // }
-
-        // public IActionResult Search()
-        // {
-        //     return View();
-
-        // }
     }
 }
 
 
-
-// public bool  IsUserAuthorizedToEditCompany(string crNo, int userId)
-// {
-//     var company= _svc.GetCompany(crNo);
-
-//     if (userId != company.RepId && !User.IsInRole("admin"))
-//     {
-//         Alert($"Sorry, you are not authorized to edit this company's profile", AlertType.warning);
-//         return false;
-//     }
-
-//     return true;
-// }
 
 
 

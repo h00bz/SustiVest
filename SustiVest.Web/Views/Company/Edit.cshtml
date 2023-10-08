@@ -1,4 +1,4 @@
-@model Company // Replace 'Company' with your actual model class
+@model Company 
 
 <partial name="_BreadCrumbs" model=@(new [] {
     ("/","Home"),
@@ -52,7 +52,7 @@
         </div>
 
         <div class="mt-3">
-            <button type="submit" name="submit" class="btn btn-primary" aria-label="save">Save</button>
+            <button type="submit" name="submit" class="btn btn-primary" aria-label="save" style= "background-color:#097969;">Save</button>
             <a class="btn btn-secondary" asp-action="CompanyIndex" aria-label="cancel">Cancel</a>
         </div>
 

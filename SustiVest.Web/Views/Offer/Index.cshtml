@@ -6,16 +6,18 @@
     <!-- Title bar -->
     <div class="d-flex align-items-center justify-content-between">
         <h3>Offers</h3>
-        <a class="btn btn-sm btn-primary" asp-action="Create" title="Create Offer" aria-label="Create Offer">
-            <i class="bi bi-plus"></i> Create
+        <a class="btn btn-sm btn-primary" asp-action="Create" title="Create Offer" aria-label="Create Offer"
+            style="background-color: #097969;">
+            <i class="bi bi-plus text-white"></i> Create
         </a>
+
     </div>
 
     <!-- List of offers -->
     <table class="table table-hover mt-4">
         <thead>
             <tr>
-                 <th>
+                <th>
                     OfferId
                     <a asp-action="Index" asp-route-order="offerId" asp-route-direction=@Model.Direction
                         asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
@@ -71,13 +73,13 @@
                     <td>@offer.ROR</td>
                     <td>@offer.FacilityType</td>
                     <td>
-                        <a asp-action="Details" asp-route-offerId= "@offer.OfferId">
+                        <a asp-action="Details" asp-route-offerId="@offer.OfferId">
                             <i class="bi bi-display-fill me-2" title="View Offer" aria-label="View Offer"></i>
                         </a>
-                        <a asp-action="Edit" asp-route-offerId= "@offer.OfferId">
+                        <a asp-action="Edit" asp-route-offerId="@offer.OfferId">
                             <i class="bi bi-pencil-fill me-2" title="Edit Offer" aria-label="Edit Offer"></i>
                         </a>
-                        <a asp-action="Delete" asp-route-offerId= "@offer.OfferId">
+                        <a asp-action="Delete" asp-route-offerId="@offer.OfferId">
                             <i class="bi bi-trash-fill me-2" title="Delete Offer" aria-label="Delete Offer"></i>
                         </a>
                     </td>
@@ -86,3 +88,8 @@
         </tbody>
     </table>
 </div>
+<style>
+    .bi {
+        color: #097969;
+    }
+</style>

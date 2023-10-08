@@ -2,6 +2,7 @@
 
     <partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/company/companyindex","companies"), ("",$"{Model.CompanyName}") }) />
 
+
     <div class="card rounded shadow p-4">
         <!-- Display student details -->
         <div class="row">
@@ -9,8 +10,9 @@
             <div class="col-8 d-flex flex-column justify-content-between">
                 <!-- Company details -->
                 <div>
-                    <h2 class="mb-4 text-primary">@Model.CompanyName Profile</h2>
+                <h2 class="mb-4" style="color: #097969;">@Model.CompanyName Profile</h2>
                     <dl class="row">
+
                         <dt class="col-4 pb-1">CRNo</dt>
                         <dd class="col-8 pb-1">@Model.CRNo</dd>
 
@@ -37,38 +39,20 @@
                 <!-- Navigation links -->
                 <div>
                     <!-- navigation link to Index action -->
-                    <a asp-action="Index" class="btn btn-sm btn-outline-primary" aria-label="company list">
+                    <a asp-action="Index" class="btn btn-sm btn-outline-success" aria-label="company list">
                         <i class="bi bi-list" title="company list"></i>
                         <span class="ms-1 d-none d-md-inline">List</span>
                     </a>
 
-                    <!-- navigation link to Update action, passing the correct route id parameter -->
-                    @* Commented out <a asp-condition=@User.HasOneOfRoles("admin,support") asp-action="Edit"
-                    asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary" aria-label="edit student">
-                    <i class="bi bi-pen-fill" title="edit student"></i>
-                    <span class="ms-1 d-none d-md-inline">Edit</span>
-                    </a> *@
-
-                    <!-- navigation link to Delete action, passing the correct route id parameter -->
-                    @* <a asp-condition=@User.HasOneOfRoles("admin") asp-action="Delete" asp-route-id="@Model.Id" class="btn
-                    btn-sm btn-outline-danger" aria-label="delete student">
-                    <i class="bi bi-trash-fill" title="delete student"></i>
-                    <span class="ms-1 d-none d-md-inline">Delete</span>
-                    </a> *@
 
                     <a asp-action="Edit" asp-route-crNo="@Model.CRNo" class="btn btn-sm btn-outline-secondary" aria-label="edit company">
-                        <i class="bi bi-pen-fill" title="edit company"></i>
+                        <i class="bi bi-pen-fill text-secondary" title="edit company"></i>
                         <span class="ms-1 d-none d-md-inline">Edit</span>
                     </a>
-    @* 
-                    <button class="btn btn-sm btn-outline-danger" aria-label="delete company" data-toggle="modal" data-target="#deleteModal">
-                        <i class="bi bi-trash-fill" title="delete company"></i>
-                        <span class="ms-1 d-none d-md-inline">Delete</span>
-                    </button> *@
 
                     <a asp-controller="FinanceRequest" asp-action="CreateRequest" asp-route-crNo="@Model.CRNo"
-                        class="btn btn-sm btn-outline-primary" aria-label="request finance">
-                        <i class="bi bi-cash-stack" title="request finance"></i>
+                        class="btn btn-sm text-white" aria-label="request finance" style="background-color: #097969;">
+                        <i class="bi bi-cash-stack text-white" title="request finance"></i>
                         <span class="ms-1 d-none d-md-inline">Request Finance</span>
                     </a>
 
@@ -76,20 +60,10 @@
                     <!-- alternate delete modal activation button -->
                     <button type="button" class="btn btn-sm btn-outline-danger" aria-label="delete company"
                             data-bs-toggle="modal" data-bs-target="#deleteCompanyModal">
-                        <i class="bi bi-trash"></i> Delete
+                        <i class="bi bi-trash text-danger"></i> Delete
                     </button>
                 </div>
             </div>
-
-            @* Commented out <!-- Photo -->
-            <div class="col-4">
-            @if (Model.PhotoUrl?.Length > 0)
-            {
-            <img src="@Model.PhotoUrl" class="img-fluid" alt="student photo">
-            } else {
-            <span class="text-info">No photo available</span>
-            }
-            </div> *@
 
         </div>
     </div>
@@ -101,3 +75,8 @@
 
     <!-- Delete Modal -->
     <partial name="_DeleteModal" />
+<style>
+    .bi {
+        color: #097969;
+    }
+</style>

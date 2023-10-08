@@ -1,4 +1,3 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -20,8 +19,6 @@ namespace SustiVest.Data.Repositories
         public DbSet<Assessments> Assessments { get; set; }
         public DbSet<Offer> Offers { get; set; }
 
-        // public DbSet<Analysts> Analysts { get; set; }
-
         public DbSet<ForgotPassword> ForgotPasswords { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
@@ -32,7 +29,7 @@ namespace SustiVest.Data.Repositories
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // remove in production 
-            optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging();
+            // optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging();
             
         }
 
@@ -48,8 +45,7 @@ namespace SustiVest.Data.Repositories
             modelBuilder.Entity<FinanceRequest>().HasKey(f => f.RequestNo);
             modelBuilder.Entity<Assessments>().ToTable("Assessments");
             modelBuilder.Entity<Assessments>().HasKey(a => a.AssessmentNo);
-            // modelBuilder.Entity<Analysts>().ToTable("Analysts");
-            // modelBuilder.Entity<Analysts>().HasKey(an => an.AnalystNo);
+
             modelBuilder.Entity<Offer>().ToTable("Offer");
             modelBuilder.Entity<Offer>().HasKey(o => o.OfferId);
 

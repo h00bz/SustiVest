@@ -6,7 +6,6 @@
 <div class="col card rounded shadow-lg p-4">
     <h3 class="mb-4">Finance Request</h3>
     
-    <!-- Ticket Details Data List -->
     <dl class="row">       
         <dt class="col-4">Request No.</dt>
         <dd class="col-8">@Model.RequestNo</dd>
@@ -46,38 +45,6 @@
 
     </dl>
 
-    @* <!-- Ticket Close Form -->
-    <form asp-action="Resubmit" asp-route-request_no="@Model.Request_No">           
-        <div class="mt-3">
-            <input asp-format="Status" asp-for="Status" class="form-control"></>
-            <span asp-validation-for="Status" class="text-danger"></span>
-           
-        <div class="mt-3 d-flex align justify-content-end gap-2">
-            <input type="submit" value="Confirm" class="btn btn-sm btn-danger" />
-            <button type="button" class="btn btn-sm btn-secondary" onclick="closeRequest()">Cancel</button>           
-        </div>
-    </form> *@
-
-    <!-- Page Controls -->
-
-@*     
-    @* <div class="mt-4 d-flex gap-2" id="closeRequestControls">           
-        @* <button hidden="@(!Model.Assessment)" onclick="closeTicket()" asp-condition=@(User.HasOneOfRoles("admin,support")) class="btn btn-sm btn-danger"> *@
-        @* <button ="@(!Model.Assessment)" onclick="closeTicket()" class="btn btn-sm btn-danger"></button>
-        <i class="bi bi-trash me-2"></i>Close</button> *@
-
-        @* <form asp-action ="Resubmit"  class="form-inline"  asp-action="Re"> 
-            <input type="hidden" name="Request_No" value="@Model.Request_No" />       
-            <button type="submit" class="btn btn-sm btn-primary">
-                <i class="bi bi-envelope-open me-2"></i>Resubmit
-            </button>
-        </form> *@
-
-        @* <a class="btn btn-sm btn-light ms-2" asp-action="Index">
-            <i class="bi bi-list me-2"></i>Requests
-        </a>
-    </div> *@ 
-
     <div>             
         <a asp-action="RequestEdit" asp-route-requestNo="@Model.RequestNo" class="btn btn-sm btn-outline-secondary" aria-label="edit request">
                     <i class="bi bi-pen-fill" title="edit request"></i>
@@ -85,13 +52,3 @@
                 </a></div>
 </div> 
 
-<script>
-    @* toggle display of closeTicketForm and controls div
-    function closeTicket() {
-        const form = document.getElementById("closeTicketForm")
-        const controls = document.getElementById("closeTicketControls")
-        form.hidden = !form.hidden
-        //controls.hidden = !controls.hidden
-        controls.style.visibility = controls.style.visibility == 'hidden' ? '' : 'hidden'
-    } *@
-</script>

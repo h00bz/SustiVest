@@ -31,28 +31,22 @@
 
                 <form method="post" asp-action="DeleteConfirm" asp-route-assessmentNo="@Model.AssessmentNo"
                     class="d-inline">
-                    
+
                     <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="delete assessment">
                         <i class="bi bi-trash-fill" title="delete assessment"></i>
                         <span class="ms-1 d-none d-md-inline">Delete</span>
                     </button>
                 </form>
 
-
-                @* <a asp-controller="FinanceRequest" asp-action="CreateRequest" asp-route-crNo="@Model.CRNo"
-                class="btn btn-sm btn-outline-primary" aria-label="request finance">
-                <i class="bi bi-cash-stack" title="request finance"></i>
-                <span class="ms-1 d-none d-md-inline">Request Finance</span>
-                </a> *@
+                <a asp-controller="FinanceRequest" asp-action="CreateRequest" asp-route-crNo="@Model.CRNo"
+                    class="btn btn-sm btn-outline-primary" aria-label="request finance">
+                    <i class="bi bi-cash-stack" title="request finance"></i>
+                    <span class="ms-1 d-none d-md-inline">Request Finance</span>
+                </a>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Finance Requests -->
-@* <div class="card rounded shadow p-4 mt-4">
-<partial name="_FinanceRequests" />
-</div> *@
 
 <!-- JavaScript to display the delete confirmation dialog -->
 <script>

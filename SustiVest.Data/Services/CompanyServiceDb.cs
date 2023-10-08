@@ -1,11 +1,6 @@
-using System;
 using SustiVest.Data.Entities;
-using SustiVest.Data.Services;
-using SustiVest.Data.Security;
 using SustiVest.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 namespace SustiVest.Data.Services
 {
 
@@ -280,79 +275,6 @@ namespace SustiVest.Data.Services
             ctx.SaveChanges();
             return true;
         }
-
-        // public IList<FinanceRequest> GetOpenRequests()
-        // {
-        //     // return open tickets with associated students
-        //     return ctx.FinanceRequests
-        //              .Include(t => t.Company)
-        //              .Where(t => t.Assessment == false)
-        //              .ToList();
-        // // }
-        // public bool IsUserAuthorizedToEditCompanyProfile(string crNo, int userId)
-        // {
-        //     var company = GetCompany(crNo);
-        //     if (company.RepId == userId)
-        //     {
-        //         return true;
-        //     }
-        //     return false;
-        // }
-
-
-// perform a search of the tickets based on a query and
-// an active range 'ALL', 'OPEN', 'CLOSED'
-//     public IList<FinanceRequest> SearchTickets(TicketRange range, string query, string orderBy = "id", string direction = "asc")
-//     {
-//         // ensure query is not null    
-//         query = query == null ? "" : query.ToLower();
-
-//         // search ticket issue, active status and student name
-//         var search = db.Tickets
-//                         .Include(t => t.Student)
-//                         .OrderBy(t => t.Student.Name)
-//                         .Where(t => (t.Issue.ToLower().Contains(query) ||
-//                                      t.Student.Name.ToLower().Contains(query)
-//                                     ) &&
-//                                     (range == TicketRange.OPEN && t.Active ||
-//                                      range == TicketRange.CLOSED && !t.Active ||
-//                                      range == TicketRange.ALL
-//                                     )
-
-//                         );
-//         return Ordered(search, orderBy, direction).ToList();
-//     }
-
-    // public IList<Company> SearchCompanies(string query, string orderBy = "companyname", string direction = "asc")
-    // {
-    //     // ensure query is not null    
-    //     query = query == null ? "" : query.ToLower();
-
-    //     // search ticket issue, active status and student name
-    //     var search = ctx.Companies
-    //                     .OrderBy(c => c.CompanyName)
-    //                     .Where(c => (c.CompanyName.ToLower().Contains(query) ||
-    //                                  c.CRNo.ToLower().Contains(query) || 
-    //                                  c.Industry.ToLower().Contains(query)
-    //                                 ) 
-    //                     );
-    //     return Ordered(search, orderBy, direction).ToList();
-    // }
-
-    // private IQueryable<Company> Ordered(IQueryable<Company> query, string orderby, string direction)
-    // {
-    //     query = (orderby, direction) switch
-    //     {
-    //         ("crNO", "asc") => query.OrderBy(c => c.CRNo),
-    //         ("crNo", "desc") => query.OrderByDescending(c => c.CRNo),
-    //         ("companyName", "asc") => query.OrderBy(c => c.CompanyName),
-    //         ("companyName", "desc") => query.OrderByDescending(c => c.CompanyName),
-    //         // ("createdon", "asc") => query.OrderBy(t => t.CreatedOn),
-    //         // ("createdon", "desc") => query.OrderByDescending(t => t.CreatedOn),
-    //         _ => query
-    //     };
-    //     return query;
-    // }
 
     }
 }

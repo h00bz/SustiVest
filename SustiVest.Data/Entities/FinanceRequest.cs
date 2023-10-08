@@ -1,8 +1,6 @@
-//using system; commented out 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
 
 namespace SustiVest.Data.Entities
 {
@@ -14,23 +12,13 @@ namespace SustiVest.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RequestNo { get; set; }
 
-        // [Required]
+        [Required]
         public string Purpose { get; set; }
 
-        // [Required]
+        [Required]
         public int Amount { get; set; }
-        // [Required]
+        [Required]
         public int Tenor { get; set; }
-
-        // public enum FaciltyTypes
-        // {
-        //     OVD,
-        //     STL,
-        //     MTL,
-        //     Discounting,
-        //     Bonds,
-        //     IPO,
-        // }
 
         public string FacilityType { get; set; }
         public string CRNo { get; set; }
@@ -64,4 +52,4 @@ namespace SustiVest.Data.Entities
             }
         }
     }
-}
+}           

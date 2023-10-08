@@ -1,15 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using SustiVest.Web.Views;
 using SustiVest.Data.Entities;
 using SustiVest.Data.Services;
 using Microsoft.AspNetCore.Authorization;
-using SustiVest.Data.Security;
-using SustiVest.Web.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore;
 
 namespace SustiVest.Web.Controllers
 {
@@ -62,31 +54,12 @@ namespace SustiVest.Web.Controllers
 
             var company = _companyService.GetCompany(assessment.CRNo);
 
-            // if (!_permissions.IsUserAuthorizedToEditCompany(company.CRNo, userId, httpContext: HttpContext) && !_permissions.IsUserAuthorizedToEditAssessment(assessment.AssessmentNo, userId, httpContext: HttpContext) && !User.IsInRole("admin"))
-            // {
-            //     Alert("You are not authorized to view this assessment", AlertType.warning);
-            //     return RedirectToAction("Details", "FinanceRequest", new { requestNo = assessment.RequestNo});
-            // }
-
             return View(assessment);
         }
 
 
-        //  public IActionResult Details(int requestNo)
-        // {
-        //     var assessment = _svc.GetAssessmentByRequestNo(requestNo);
-
-        //     if (assessment == null)
-        //     {
-        //         Alert("Assessment not found", AlertType.warning);
-        //         return RedirectToAction(nameof(Index));
-        //     }
-
-        //     return View(assessment);
-        // }
-
         // GET: /assessments/create
-        // Commented out the [Authorize(Roles = "admin,support")] attribute
+
         [Authorize(Roles = "admin, analyst")]
         public IActionResult Create()
         {
@@ -95,18 +68,11 @@ namespace SustiVest.Web.Controllers
         }
 
         // POST /assessments/create
-        // Commented out the [Authorize(Roles = "admin,support")] attribute
         [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Create(int AssessmentNo, [Bind("RequestNo, AnalystNo, Sales, EBITDA, DSR, CCC, RiskRating, MarketPosition, RepaymentStatus, FinancialLeverage, WorkingCapital, OperatingAssets, CRNo, TotalAssets, NetEquity")] Assessments a)
         {
-            // Check if an assessment with the same RequestNo and AnalystNo exists
-
-            // if (_svc.GetAssessment(a.RequestNo, a.AnalystNo) != null)
-            // {
-            //     ModelState.AddModelError("", "An assessment with the same RequestNo and AnalystNo already exists.");
-            // }
 
             if (ModelState.IsValid)
             {
@@ -125,7 +91,6 @@ namespace SustiVest.Web.Controllers
         }
 
         // GET /assessments/edit/{requestNo}/{analystNo]
-        // Commented out the [Authorize(Roles = "admin,support")] attribute
         [Authorize(Roles = "admin, analyst")]
         public IActionResult Edit(int assessmentNo)
         {
@@ -148,7 +113,6 @@ namespace SustiVest.Web.Controllers
 
 
         // POST /assessments/edit/{requestNo}/{analystNo]
-        // Commented out the [Authorize(Roles = "admin,support")] attribute
         [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -177,7 +141,6 @@ namespace SustiVest.Web.Controllers
         }
 
         // GET /assessments/delete/{requestNo}/{analystNo]
-        // Commented out the [Authorize(Roles = "admin,support")] attribute
         [Authorize(Roles = "admin, analyst")]
         public IActionResult Delete(int assessmentNo)
         {
@@ -198,7 +161,6 @@ namespace SustiVest.Web.Controllers
         }
 
         // POST /assessments/delete/{requestNo}/{analystNo]
-        // Commented out the [Authorize(Roles = "admin,support")] attribute
         [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]

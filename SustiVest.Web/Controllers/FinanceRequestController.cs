@@ -1,22 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using SustiVest.Web.Views;
 using SustiVest.Data.Entities;
 using SustiVest.Data.Services;
 using Microsoft.AspNetCore.Authorization;
-using SustiVest.Data.Security;
-using SustiVest.Web.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore;
 using System.Security.Claims;
-using SustiVest.Web;
-using System;
+
 namespace SustiVest.Web.Controllers
 {
 
-    // [Authorize]
+   [Authorize (Roles = "admin, analyst, borrower")]
     public class FinanceRequestController : BaseController
     {
         private readonly ICompanyService svc;
@@ -30,53 +21,7 @@ namespace SustiVest.Web.Controllers
 
         }
 
-        // GET/POST /Request/index
-        // public IActionResult Index(FinanceRequestSearchViewModel search)
-        // {
-        //     // set the viewmodel Tickets property by calling service method 
-        //     // using the range and query values from the viewmodel 
-        //     search.Tickets = svc.SearchTickets(search.Range, search.Query, search.OrderBy, search.Direction);
-
-        //     // build custom alert message                
-        //     var alert = $"{search.Tickets.Count} result(s) found searching '{search.Range}' Tickets";
-        //     if (search.Query != null)
-        //     {
-        //         alert += $" for '{search.Query}'";
-        //     }
-        //     // display alert
-        //     Alert(alert, AlertType.info);
-
-        //     return View(search);
-        // }
-
-        // display page containg JS query 
-        // public IActionResult Search()
-        // {
-        //     return View();
-        // }
-
-        // //[AllowAnonymous]
-
-        // // GET /tickets/query
-        // [HttpGet("api/ticket/search")]
-        // public IActionResult Search(string query, TicketRange range = TicketRange.ALL)
-        // {
-        //     // search tickets   
-        //     var tickets = svc.SearchTickets(range, query);
-        //     // map tickets to custom DTO object
-        //     var data = tickets.Select(t => new
-        //     {
-        //         Id = t.Id,
-        //         Issue = t.Issue,
-        //         CreatedOn = t.CreatedOn,
-        //         Active = t.Active,
-        //         Student = t.Student?.Name
-        //     });
-        //     // return json containing custom tickets list
-        //     return Ok(tickets);
-        // }
-
-        // GET/ticket/{id}
+        
         [Authorize(Roles = "admin, analyst, borrower")]
         public IActionResult Details(int requestNo)
         {
@@ -92,18 +37,16 @@ namespace SustiVest.Web.Controllers
 
         // [HttpPost]
         // [Authorize(Roles = "admin,support")]
-        public IActionResult Resubmit(int requestNo, DateOnly dateOfRequest, bool assessment)
-        {
-            svc.ResubmitRequest(requestNo, dateOfRequest, assessment);
-            return RedirectToAction(nameof(Details), new { RequestNo = requestNo });
-        }
+        // public IActionResult Resubmit(int requestNo, DateOnly dateOfRequest, bool assessment)
+        // {
+        //     svc.ResubmitRequest(requestNo, dateOfRequest, assessment);
+        //     return RedirectToAction(nameof(Details), new { RequestNo = requestNo });
+        // }
 
-        // POST /ticket/close/{id}
         [HttpPost]
         [Authorize(Roles = "admin, analyst")]
         public IActionResult Close([Bind("RequestNo, Status")] FinanceRequest f)
         {
-            // close ticket via service
             var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
             if (!_permissions.IsUserAuthorizedToEditCompany(f.CRNo, userId, httpContext: HttpContext))
             {
@@ -126,21 +69,12 @@ namespace SustiVest.Web.Controllers
             return RedirectToAction(nameof(Details), new { RequestNo = f.RequestNo });
         }
 
-        // GET /ticket/create
         [Authorize(Roles = "admin, analyst, borrower")]
         [HttpGet]
         public IActionResult CreateRequest(String crNo)
         {
 
             {
-                // if (string.IsNullOrEmpty(crNo))
-                // {
-                //     // Handle the case where CRNo is not provided.
-                //     // You can show an error message or redirect as needed.
-                //     return RedirectToAction(nameof(CompanyController.CompanyIndex)); // Example redirect.
-                // }
-
-                // You can use the crNo parameter to pre-populate the CRNo field in your form.
                 var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
                 var company = svc.GetCompany(crNo);
 
@@ -163,7 +97,6 @@ namespace SustiVest.Web.Controllers
             }
         }
 
-        // // POST /ticket/create
         [HttpPost]
         [Authorize(Roles = "admin, analyst, borrower")]
         public IActionResult CreateRequest([Bind("Purpose, Amount, Tenor, FacilityType, CRNo, Status, DateOfRequest, Assessment")] FinanceRequest fr)
@@ -194,6 +127,7 @@ namespace SustiVest.Web.Controllers
             return View(table);
         }
 
+        [Authorize (Roles = "admin, analyst, borrower")]
         public IActionResult RequestEdit(int requestNo)
         {
             var financeRequest = svc.GetFinanceRequest(requestNo);
@@ -212,6 +146,8 @@ namespace SustiVest.Web.Controllers
 
             return View("RequestEdit", financeRequest);
         }
+
+        [Authorize (Roles = "admin, analyst, borrower")]
         [HttpPost]
         public IActionResult RequestEdit(int requestNo, [Bind("Purpose, Amount, Tenor, FacilityType, Status, DateOfRequest, Assessment")] FinanceRequest f)
         {
@@ -235,11 +171,6 @@ namespace SustiVest.Web.Controllers
                 Alert("Request Not Found", AlertType.warning);
                 return RedirectToAction(nameof(Details));
             }
-            // if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext))
-            // {
-            //     Alert("You are not authorized to delete this request", AlertType.warning);
-            //     return RedirectToAction(nameof(Details), new { requestNo = financeRequest.RequestNo });
-            // }
 
             return View("Delete", financeRequest);
         }

@@ -1,26 +1,63 @@
-﻿<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+﻿<div class="text-center mt-5">
+    <h1 class="display-4">Welcome to <span style="font-weight: bold; color: #097969;">SustiVest</span></h1>
+    <p class="lead mb-4 mt-6">Where green dreams come to <span style="color: #097969;">grow</span></p>
 </div>
 
+<!-- Green background section -->
+<section style="background-color: #097969; padding: 40px 0; margin-top: -10px; width: 100%; display: flex; justify-content: center; align-items: center;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card text-white bg-transparent">
+                    <div class="card-body">
+                        <h4 class="card-title">Why SustiVest?</h4>
+                        <p class="card-text">
+                            We're on a mission to support startups and small businesses dedicated to creating a greener, more sustainable world. Join us in making a difference.
+                        </p>
+                        <a href="#" class="btn btn-success">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- card is only visible when authorised - note use of asp-authorize -->
-<div asp-authorize class="card">
-    <div class="card-body">
-        <h4 class="card-title">Authorized</h4>
-        <p class="card-text">This content is only visible if you are <span class="text-success">Authorized.</span></p>
-
-        <!-- p elements are only rendered when user has specified role(s) -->
-        <p asp-roles="admin">This content is only visible if you are authenticated and have the <span class="text-danger">admin</span> role</p>
-        <p asp-roles="guest">This content is only visible if you are authenticated and have the <span class="text-danger">guest</span> role</p>
-        <p asp-roles="manager">This content is only visible if you are authenticated and have the <span class="text-danger">manager</span> role</p>
-        <p asp-roles="admin,manager">This content is visible if you have the <span class="text-danger">admin or manager</span> roles</p>
-        
-        <!-- uncomment AddPolicyAuthorisation() in Program.cs to access RolePolicy in example below -->
-        <!--
-            <p asp-policy="RolePolicy">This content is visible if you have the <span class="text-danger">RolePolicy</span></p>
-        -->
+<!-- Card section -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Borrowers</h4>
+                    <p class="card-text">
+                        Securely manage your profile, request finance, and be part of a network that boosts your credibility.
+                    </p>
+                    <a href="#" class="btn btn-success" style="background-color: #097969;">Get Started</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Analysts</h4>
+                    <p class="card-text">
+                        Dive into finance requests, create assessments, and help green initiatives thrive.
+                    </p>
+                    <a href="#" class="btn btn-success" style="background-color: #097969;">Join Us</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Investors</h4>
+                    <p class="card-text">
+                        Explore innovative projects and invest in sustainability.
+                    </p>
+                    <a href="#" class="btn btn-success" style="background-color: #097969;">Invest Now</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 

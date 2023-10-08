@@ -193,21 +193,6 @@ namespace SustiVest.Test
             Assert.True(Hasher.ValidateHash(user.Password, "password"));
         }
 
-        // [Fact]
-        // public void ResetPasswordRequest_WithValidUserAndExpiredToken_ShouldReturnNull()
-        // {
-        //     // arrange
-        //     _userService.AddUser("admin", "admin@mail.com", "admin", Role.admin );
-        //     var expiredToken = _userService.ForgotPassword("admin@mail.com");
-        //     _userService.ForgotPassword("admin@mail.com");
-
-        //     // act      
-        //     var user = _userService.ResetPassword("admin@mail.com", expiredToken, "password");
-
-        //     // assert
-        //     Assert.Null(user);  
-        // }
-
         [Fact]
         public void ResetPasswordRequest_WithInValidUserAndValidToken_ShouldReturnNull()
         {
@@ -222,28 +207,7 @@ namespace SustiVest.Test
             Assert.Null(user);
         }
 
-        // [Fact]
-        // public void ResetPasswordRequests_WhenAllCompleted_ShouldExpireAllTokens()
-        // {
-        //     // arrange
-        //     _userService.AddUser("admin", "admin@mail.com", "admin", Role.admin);
-        //     _userService.AddUser("guest", "guest@mail.com", "guest", Role.guest);
-
-        //     // create token and reset password - token then invalidated
-        //     var token1 = _userService.ForgotPassword("admin@mail.com");
-        //     _userService.ResetPassword("admin@mail.com", token1, "password");
-
-        //     // create token and reset password - token then invalidated
-        //     var token2 = _userService.ForgotPassword("guest@mail.com");
-        //     _userService.ResetPassword("guest@mail.com", token2, "password");
-
-        //     // act  
-        //     // retrieve valid tokens 
-        //     var tokens = _userService.GetValidPasswordResetTokens();
-
-        //     // assert
-        //     Assert.Empty(tokens);
-        // }
+      
         [Fact]
         public void GetCompanies_WhenNoneExist_ShouldReturnEmptyList()
         {

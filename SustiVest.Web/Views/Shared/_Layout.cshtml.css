@@ -7,25 +7,44 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+/* Custom CSS to change the search button color */
+#searchButton {
+  background-color: #097969;
+  /* Cadmium Green */
+  border-color: #097969;
+  /* Cadmium Green */
+}
+
+#searchButton:hover {
+  background-color: #0b8a6c;
+  /* Darker shade of green on hover */
+  border-color: #0b8a6c;
+  /* Darker shade of green on hover */
+}
+
 a {
-  color: #0077cc;
+  color: #097969;
 }
 
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: #097969;
+  border-color: #097969;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: #097969;
+  border-color: #097969;
 }
+
+/* Add this CSS to your stylesheet */
 
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
   border-bottom: 1px solid #e5e5e5;
 }
@@ -39,6 +58,7 @@ button.accept-policy {
   line-height: inherit;
 }
 
+
 .footer {
   position: absolute;
   bottom: 0;
@@ -50,9 +70,16 @@ button.accept-policy {
 /* Define a new text colour using bootstrap css variables
  * https://getbootstrap.com/docs/5.2/customize/css-variables/
  */
- .text-lightgray {
+.text-lightgray {
   color: var(--bs-gray-100);
 }
+
 .text-darkgray {
   color: var(--bs-gray-900);
 }
+/* Custom CSS to change icons and buttons to Cadmium Green */
+.text-cadmiumgreen {
+  color: #097969; /* Cadmium Green */
+}
+/* Change the color of the icons */
+

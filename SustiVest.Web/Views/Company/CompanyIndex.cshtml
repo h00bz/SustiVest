@@ -8,8 +8,9 @@
     <div class="d-flex align-items-center justify-content-between">
         <h3>Company</h3>
 
-        <a class="btn btn-sm btn-primary" asp-action="create" title="add company" aria-label="add company">
-            <i class="bi bi-plus"></i> Create
+        <a class="btn btn-sm btn-primary" asp-action="create" title="add company" aria-label="add company"
+            style="background-color: #097969;">
+            <i class="bi bi-plus" style="color: white;"></i> Create
         </a>
 
     </div>
@@ -17,30 +18,30 @@
     <!-- Search bar -->
 
     @* <form id="searchForm" class="form-inline mt-3">
-        <div class="input-group">
-            <select id="searchEntity" class="form-select">
-                <option value="company">Company</option>
-                <option value="financeRequest">Finance Request</option>
-                <!-- Add more options for other entities as needed -->
-            </select>
-            <select id="searchProperty" class="form-select">
-                <option value="all">All Properties</option>
-                <option value="crNo">CRNo</option>
-                <option value="taxid">Tax ID</option>
-                <option value="companyname">Company Name</option>
-                <option value="industry">Industry</option>
-                <option value="type">Type</option>
-            </select>
+    <div class="input-group">
+    <select id="searchEntity" class="form-select">
+    <option value="company">Company</option>
+    <option value="financeRequest">Finance Request</option>
+    <!-- Add more options for other entities as needed -->
+    </select>
+    <select id="searchProperty" class="form-select">
+    <option value="all">All Properties</option>
+    <option value="crNo">CRNo</option>
+    <option value="taxid">Tax ID</option>
+    <option value="companyname">Company Name</option>
+    <option value="industry">Industry</option>
+    <option value="type">Type</option>
+    </select>
 
-            <input type="text" id="searchQuery" class="form-control"
-                placeholder="Search by Company Name, CRNo, Industry, etc." aria-label="Search" />
-            <button type="button" id="searchButton" class="btn btn-primary"><i class="bi bi-search"></i>
-                Search</button>
-        </div>
+    <input type="text" id="searchQuery" class="form-control"
+    placeholder="Search by Company Name, CRNo, Industry, etc." aria-label="Search" />
+    <button type="button" id="searchButton" class="btn btn-primary"><i class="bi bi-search"></i>
+    Search</button>
+    </div>
     </form> *@
 
     @* <div id="searchResults" class="mt-4">
-        <!-- Search results will be displayed here -->
+    <!-- Search results will be displayed here -->
     </div> *@
 
     <!-- List of companies -->
@@ -134,79 +135,13 @@
         </tbody>
     </table>
 
-     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    @* @section scripts {
-        <script>
-            $(document).ready(function () {
-                // Function to perform the search and update the search results
-                function performSearch(query, property) {
-                    $.ajax({
-                        url: '/Company/Search',
-                        type: 'GET',
-                        data: { query: query, property: property },
-                        success: function (data) {
-                            // Clear the search results container
-                            $('#searchResults').empty();
-
-                            // Check if there are results
-                            if (data.length === 0) {
-                                $('#searchResults').html('<p>No results found.</p>');
-                            } else {
-                                // Create a table to display the search results
-                                var table = $('<table class="table table-hover"></table>');
-                                var headerRow = $('<tr><th>Company Name</th><th>CRNo</th><th>Industry</th></tr>');
-                                table.append(headerRow);
-
-                                // Populate the table with search results
-                                $.each(data, function (index, company) {
-                                    var row = $('<tr></tr>');
-                                    row.append('<td><a href="/Company/CompanyDetails/?crNo' + company.crNo + '">' + company.companyName + '</a></td>');
-                                    row.append('<td>' + company.crNo + '</td>');
-                                    row.append('<td>' + company.industry + '</td>');
-                                    // Add more columns as needed
-
-                                    table.append(row);
-                                });
-
-                                // Append the table to the search results container
-                                $('#searchResults').append(table);
-                            }
-                        },
-                        error: function () {
-                            $('#searchResults').html('<p>Error occurred while searching.</p>');
-                        }
-                    });
-                }
-
-                // Handle the search button click event
-
-                $('#searchButton').click(function () {
-                    event.preventDefault(); // Prevent form submission
-                    var query = $('#searchQuery').val();
-                    var property = $('#searchProperty').val();
-
-                    if (query.length === 0) {
-                        $('#searchResults').html('<p>Please enter a search word.</p>');
-                        return;
-                    }
-                    performSearch(query, property);
-                });
-
-                // Handle the enter button event
-                $('#searchQuery').on('keydown', function (event) {
-                    if (event.keyCode === 13) { // Check for Enter key
-                        event.preventDefault(); // Prevent form submission
-                        var query = $('#searchQuery').val();
-                        var property = $('#searchProperty').val();
-                        if (query.length === 0) {
-                            $('#searchResults').html('<p>Please enter a search word.</p>');
-                            return;
-                        }
-                        performSearch(query, property);
-                    }
-                });
-
-            });
-        </script>
-    } *@
+    <style>
+        .bi {
+            color: #097969;
+        }
+    </style>
+    <style>
+        .btn-primary:hover {
+            background-color: #0b8a6c;
+        }
+    </style>
