@@ -23,7 +23,7 @@ namespace SustiVest.Web
             _companyService = companyService;
             this.ctx = ctx;
         }
-        [Authorize(Roles = "admin, analyst")]
+        [Authorize(Roles = "admin, analyst, borrower")]
         public IActionResult Search(string query, string property, string entity)
         {
             Console.WriteLine("=================Search  being called===================");
@@ -57,19 +57,17 @@ namespace SustiVest.Web
                 return Json(results);
             }
 
-            if (entity == "financerequest")
+            if (entity == "financerequest" && !User.IsInRole("borrower"))
             {
                 var results = _companyService.GetFinanceRequests()
                 .Where(fr =>
             (propertyName == "requestno" && fr.RequestNo.ToString().Contains(query, StringComparison.OrdinalIgnoreCase)) ||
-            (propertyName == "companyname" && fr.Company.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "financerequest.company.companyname" && fr.Company.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
             (propertyName == "amount" && fr.Amount.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
             (propertyName == "tenor" && fr.Tenor.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
             (propertyName == "facilitytype" && fr.FacilityType.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
             (propertyName == "status" && fr.Status.Contains(query, StringComparison.OrdinalIgnoreCase)))
             .ToList();
-                Console.WriteLine($"IN FR IF ======={propertyName} and query={query}==========result?={results}");
-
                 return Json(results);
             }
 

@@ -26,8 +26,8 @@ namespace SustiVest.Data.Entities
 
         public DateOnly DateOfRequest { get; set; }
 
-        public bool Assessment { get; set; }
-
+        public bool Assessment { get; set; } 
+       
         [ForeignKey("CRNo")]
         public Company Company { get; set; }
         [NotMapped]

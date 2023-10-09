@@ -3,6 +3,7 @@ using SustiVest.Data.Entities;
 using SustiVest.Data.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace SustiVest.Web.Controllers
 {
@@ -121,9 +122,9 @@ namespace SustiVest.Web.Controllers
         }
 
         [Authorize(Roles = "admin, analyst, borrower")]
-        public ActionResult Index(int page = 1, int size = 20, string order = "Purpose", string direction = "asc")
+        public ActionResult Index(int page = 1, int size = 20, string order = "RequestNo", string direction = "asc")
         {
-            var table = svc.GetFinanceRequests(page, size, order, direction);   
+            var table = svc.GetFinanceRequests(page, size, order, direction);
             return View(table);
         }
 

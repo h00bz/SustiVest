@@ -160,10 +160,13 @@ namespace SustiVest.Data.Services
             .ToList();
         }
 
-        public Paged<FinanceRequest> GetFinanceRequests(int page = 1, int size = 20, string orderBy = "Purpose", string direction = "asc")
+        public Paged<FinanceRequest> GetFinanceRequests(int page = 1, int size = 20, string orderBy = "RequestNo", string direction = "asc")
         {
             var results = (orderBy.ToLower(), direction.ToLower()) switch
             {
+                ("Company.CompanyName", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.Company.CompanyName),
+                ("Company.CompanyName", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.Company.CompanyName),
+
                 ("Purpose", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.Purpose),
                 ("Purpose", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.Purpose),
 
@@ -188,9 +191,9 @@ namespace SustiVest.Data.Services
                 ("Assessment", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.Assessment),
                 ("Assessment", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.Assessment),
 
-                _ => ctx.FinanceRequests.OrderBy(fr => fr.Purpose)
+                _ => ctx.FinanceRequests.OrderBy(fr => fr.RequestNo)
             };
-            return results.ToPaged(page, size, orderBy, direction);
+            return results.Include(fr=>fr.Company).ToPaged(page, size, orderBy, direction);
         }
 
 
