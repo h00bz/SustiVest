@@ -94,11 +94,11 @@ updateProperties();
 
                         var headerRow = $('<tr><th>RequestNo</th><th>Company</th><th>Amount</th><th>Tenor</th><th>Facility</th><th>Status</th></tr>');
                         table.append(headerRow);
-    
+                            // row.append('<td><a asp-action="Details" asp-route-requestNo=' + financeRequest.requestNo + '">' + financeRequest.requestNo+ '</a></td>');
+
                     $.each(data, function (index, financeRequest) {
                         var row = $('<tr></tr>');
-                        row.append('<td><a href="/Company/CompanyDetails/?crNo=' + financeRequest.crNo + '">' + financeRequest.company.companyName + '</a></td>');
-                        row.append('<td>' + financeRequest.requestNo + '</td>');
+                        row.append('<td><a href="/FinanceRequest/Details?requestNo=' + financeRequest.requestNo + '">'+ financeRequest.requestNo+ '</a></td>');
                         row.append('<td>' + financeRequest.company.companyName + '</td>');
                         row.append('<td>' + financeRequest.amount + '</td>');
                         row.append('<td>' + financeRequest.tenor + '</td>');
