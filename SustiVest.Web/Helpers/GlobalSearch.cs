@@ -18,9 +18,12 @@ namespace SustiVest.Web
 
         private readonly ICompanyService _companyService;
 
-        public GlobalSearch(DatabaseContext ctx, ICompanyService companyService)
-        {
+        private readonly IAssessmentsService _assessmentsService;
+
+        public GlobalSearch(DatabaseContext ctx, ICompanyService companyService, IAssessmentsService assessmentsService)
+        {                                       
             _companyService = companyService;
+            _assessmentsService = assessmentsService;
             this.ctx = ctx;
         }
         [Authorize(Roles = "admin, analyst, borrower")]
@@ -71,7 +74,20 @@ namespace SustiVest.Web
                 return Json(results);
             }
 
+         if (entity == "assessments" )
+            {
+                var results = _assessmentsService.GetAssessments()
+                .Where(a =>
+            (propertyName == "assessmentno" && a.AssessmentNo.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "assessments.company.companyname" && a.Company.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "riskrating" && a.RiskRating.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "repaymentstatus" && a.RepaymentStatus.ToString().Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "analystno" && a.AnalystNo.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)))
+               .ToList();
+            Console.WriteLine($"IN Assessments IF======={propertyName} and query={query}==========result?={results}");
 
+                return Json(results);
+            }
             Console.WriteLine("________did not enter if");
             return View("_GlobalSearch");
         }

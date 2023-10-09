@@ -15,7 +15,9 @@ namespace SustiVest.Data.Services
 
         public IList<Assessments> GetAssessments()
         {
-            return ctx.Assessments.ToList();
+            return ctx.Assessments
+            .Include(a=>a.Company)
+            .ToList();
 
         }
 

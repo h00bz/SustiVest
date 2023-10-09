@@ -11,12 +11,19 @@ $(document).ready(function () {
     ],
     'financerequest': [
         { value: 'requestno', text: 'Request No' },
-        { value: 'financerequest.company.companyname', text: 'Name' },
+        { value: 'financerequest.company.companyname', text: 'Company' },
         { value: 'amount', text: 'Amount' },
         { value: 'tenor', text: 'Tenor' },
         { value: 'facilitytype', text: 'Facility' },
         { value: 'status', text: 'Status' }
-    ]
+    ],
+    'assessments': [
+        { value: 'assessmentno', text: 'Assessment No' },
+        { value: 'assessments.company.companyname', text: 'Company' },
+        { value: 'riskrating', text: 'Risk Rating' },
+        { value: 'repaymentstatus', text: 'Repayment Status' },
+        { value: 'analystno', text: 'AnalystNo' },
+    ],
 };
 
 // Function to update properties based on the selected entity
@@ -94,7 +101,6 @@ updateProperties();
 
                         var headerRow = $('<tr><th>RequestNo</th><th>Company</th><th>Amount</th><th>Tenor</th><th>Facility</th><th>Status</th></tr>');
                         table.append(headerRow);
-                            // row.append('<td><a asp-action="Details" asp-route-requestNo=' + financeRequest.requestNo + '">' + financeRequest.requestNo+ '</a></td>');
 
                     $.each(data, function (index, financeRequest) {
                         var row = $('<tr></tr>');
@@ -104,6 +110,27 @@ updateProperties();
                         row.append('<td>' + financeRequest.tenor + '</td>');
                         row.append('<td>' + financeRequest.faciltyType + '</td>');
                         row.append('<td>' + financeRequest.status + '</td>');
+                        // Add more columns as needed
+
+                        table.append(row);
+
+                    });
+                }
+                else if (entity=='assessments'){
+                    console.log('oooooooooooooooo inside fr if and data is :', data);
+                    var table = $('<table class="table table-hover"></table>');
+                   
+
+                        var headerRow = $('<tr><th>Assessment No</th><th>Company</th><th>Risk Rating</th><th>Repayment Status</th><th>Analyst</th></tr>');
+                        table.append(headerRow);
+
+                    $.each(data, function (index, assessments) {
+                        var row = $('<tr></tr>');
+                        row.append('<td><a href="/Assessments/Details?assessmentNo=' + assessments.assessmentNo + '">'+ assessments.assessmentNo+ '</a></td>');
+                        row.append('<td>' + assessments.company.companyName+ '</td>');
+                        row.append('<td>' + assessments.riskRating + '</td>');
+                        row.append('<td>' + assessments.repaymentStatus+ '</td>');
+                        row.append('<td>' + assessments.analystNo + '</td>');
                         // Add more columns as needed
 
                         table.append(row);
