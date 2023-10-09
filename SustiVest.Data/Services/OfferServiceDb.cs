@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SustiVest.Data.Entities;
 using SustiVest.Data.Repositories;
 
@@ -18,7 +19,7 @@ namespace SustiVest.Data.Services
         public IList<Offer> GetOffers()
         {
             return ctx.Offers
-                // .Include(o => o.Company)
+                .Include(o => o.Company)
                 .ToList();
         }
         public Offer GetOffer(int offerId)
@@ -116,7 +117,7 @@ namespace SustiVest.Data.Services
                 ("facilitytype", "desc") => ctx.Offers.OrderByDescending(o => o.FacilityType),
                 _ => ctx.Offers.OrderBy(o => o.OfferId)
             };
-            return results.ToPaged(page, size, orderBy, direction);
+            return results.Include(o=>o.Company).ToPaged(page, size, orderBy, direction);
         }
 
     }

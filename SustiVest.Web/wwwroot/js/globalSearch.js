@@ -24,6 +24,14 @@ $(document).ready(function () {
         { value: 'repaymentstatus', text: 'Repayment Status' },
         { value: 'analystno', text: 'AnalystNo' },
     ],
+    'offer': [
+        { value: 'offerid', text: 'Offer ID' },
+        { value: 'offer.company.companyname', text: 'Company' },
+        { value: 'amount', text: 'Amount' },
+        { value: 'tenor', text: 'Tenor' },
+        { value: 'ror', text: 'Rate Of Return (ROR)' },
+        { value: 'facilitytype', text: 'Facility Type' }
+    ],
 };
 
 // Function to update properties based on the selected entity
@@ -131,6 +139,28 @@ updateProperties();
                         row.append('<td>' + assessments.riskRating + '</td>');
                         row.append('<td>' + assessments.repaymentStatus+ '</td>');
                         row.append('<td>' + assessments.analystNo + '</td>');
+                        // Add more columns as needed
+
+                        table.append(row);
+
+                    });
+                }
+                else if (entity=='offer'){
+                    console.log('oooooooooooooooo inside fr if and data is :', data);
+                    var table = $('<table class="table table-hover"></table>');
+                   
+
+                        var headerRow = $('<tr><th>Offer ID</th><th>Company</th><th>Amount</th><th>Tenor</th><th>ROR</th><th>Facility</th></tr>');
+                        table.append(headerRow);
+
+                    $.each(data, function (index, offer) {
+                        var row = $('<tr></tr>');
+                        row.append('<td><a href="/Offer/Details?offerId=9' + offer.offerId + '">'+ offer.offerId+ '</a></td>');
+                        row.append('<td>' + offer.company.companyName+ '</td>');
+                        row.append('<td>' + offer.amount + '</td>');
+                        row.append('<td>' + offer.tenor+ '</td>');
+                        row.append('<td>' + offer.ror + '</td>');
+                        row.append('<td>' + offer.facilityType + '</td>');
                         // Add more columns as needed
 
                         table.append(row);

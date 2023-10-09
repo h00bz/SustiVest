@@ -152,8 +152,5 @@ namespace SustiVest.Data.Services
                 .ToList();
         }
 
-
-
-
     }
 }

@@ -20,10 +20,13 @@ namespace SustiVest.Web
 
         private readonly IAssessmentsService _assessmentsService;
 
-        public GlobalSearch(DatabaseContext ctx, ICompanyService companyService, IAssessmentsService assessmentsService)
-        {                                       
+        private readonly IOfferService _offerService;
+
+        public GlobalSearch(DatabaseContext ctx, ICompanyService companyService, IAssessmentsService assessmentsService, IOfferService offerService)
+        {
             _companyService = companyService;
             _assessmentsService = assessmentsService;
+            _offerService = offerService;
             this.ctx = ctx;
         }
         [Authorize(Roles = "admin, analyst, borrower")]
@@ -66,7 +69,7 @@ namespace SustiVest.Web
                 .Where(fr =>
             (propertyName == "requestno" && fr.RequestNo.ToString().Contains(query, StringComparison.OrdinalIgnoreCase)) ||
             (propertyName == "financerequest.company.companyname" && fr.Company.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
-            (propertyName == "amount" && fr.Amount.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "amount" && fr.Amount.ToString().Contains(query, StringComparison.OrdinalIgnoreCase)) ||
             (propertyName == "tenor" && fr.Tenor.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
             (propertyName == "facilitytype" && fr.FacilityType.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
             (propertyName == "status" && fr.Status.Contains(query, StringComparison.OrdinalIgnoreCase)))
@@ -74,7 +77,7 @@ namespace SustiVest.Web
                 return Json(results);
             }
 
-         if (entity == "assessments" )
+            if (entity == "assessments")
             {
                 var results = _assessmentsService.GetAssessments()
                 .Where(a =>
@@ -84,8 +87,22 @@ namespace SustiVest.Web
             (propertyName == "repaymentstatus" && a.RepaymentStatus.ToString().Contains(query, StringComparison.OrdinalIgnoreCase)) ||
             (propertyName == "analystno" && a.AnalystNo.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)))
                .ToList();
-            Console.WriteLine($"IN Assessments IF======={propertyName} and query={query}==========result?={results}");
+                Console.WriteLine($"IN Assessments IF======={propertyName} and query={query}==========result?={results}");
 
+                return Json(results);
+            }
+
+            if (entity == "offer" )
+            {
+                var results = _offerService.GetOffers()
+                .Where(o =>
+            (propertyName == "offerid" && o.OfferId.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "offer.company.companyname" && o.Company.CompanyName.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "amount" && o.Amount.ToString().Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "tenor" && o.Tenor.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "ror" && o.ROR.ToString().Equals(query, StringComparison.OrdinalIgnoreCase)) ||
+            (propertyName == "facilitytype" && o.FacilityType.Contains(query, StringComparison.OrdinalIgnoreCase)))
+            .ToList();
                 return Json(results);
             }
             Console.WriteLine("________did not enter if");
