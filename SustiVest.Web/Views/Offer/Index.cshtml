@@ -39,6 +39,13 @@
                     </a>
                 </th>
                 <th>
+                        Funded-To-Date 
+                    <a asp-action="Index" asp-route-order="fundedAmount" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="fundedAmount" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
                     Tenor
                     <a asp-action="Index" asp-route-order="tenor" asp-route-direction=@Model.Direction
                         asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
@@ -69,6 +76,7 @@
                     <td>@offer.OfferId</td>
                     <td>@offer.CRNo</td>
                     <td>@offer.Amount</td>
+                    <td>@offer.FundedAmount</td>
                     <td>@offer.Tenor</td>
                     <td>@offer.ROR</td>
                     <td>@offer.FacilityType</td>

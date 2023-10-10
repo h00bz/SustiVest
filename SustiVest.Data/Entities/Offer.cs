@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SustiVest.Data.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Runtime;
 
 
 namespace SustiVest.Data.Entities
@@ -17,6 +18,11 @@ namespace SustiVest.Data.Entities
         public string CRNo { get; set; }
 
         public int Amount { get; set; }
+
+        public int FundedAmount { get; set; }
+        
+        [NotMapped]
+        public int RemainingToFund => Amount - FundedAmount;
 
         public int Tenor { get; set; }
 

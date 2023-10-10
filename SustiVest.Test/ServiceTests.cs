@@ -790,6 +790,7 @@ namespace SustiVest.Test
                 RequestNo = 1,
                 CRNo = "CR123",
                 Amount = 10000,
+                FundedAmount=5000,
                 Tenor = 12,
                 Payback = "Monthly",
                 Linens = "None",
@@ -807,6 +808,7 @@ namespace SustiVest.Test
                 RequestNo = 2,
                 CRNo = "CR456",
                 Amount = 20000,
+                FundedAmount=10000,
                 Tenor = 24,
                 Payback = "Quarterly",
                 Linens = "None",
@@ -885,11 +887,11 @@ namespace SustiVest.Test
         {
             // Arrange
             Offer_Add2();
-            var offer = new Offer { Amount = 10000, Tenor = 12, Payback = "Monthly", Linens = "None", Undertakings = "None", Covenants = "None", ROR = 0.05, FacilityType = "Term Loan", UtilizationMechanism = "Direct Payment" };
+            var offer = new Offer { Amount = 10000, FundedAmount=5000, Tenor = 12, Payback = "Monthly", Linens = "None", Undertakings = "None", Covenants = "None", ROR = 0.05, FacilityType = "Term Loan", UtilizationMechanism = "Direct Payment" };
 
 
             // Act
-            var result = _offerService.UpdateOffer(1, 1, "CR123", offer.Amount, offer.Tenor, offer.Payback, offer.Linens, offer.Undertakings, offer.Covenants, offer.ROR, offer.FacilityType, offer.UtilizationMechanism, 1, 1);
+            var result = _offerService.UpdateOffer(1, 1, "CR123", offer.Amount, offer.FundedAmount, offer.Tenor, offer.Payback, offer.Linens, offer.Undertakings, offer.Covenants, offer.ROR, offer.FacilityType, offer.UtilizationMechanism, 1, 1);
 
             // Assert
 

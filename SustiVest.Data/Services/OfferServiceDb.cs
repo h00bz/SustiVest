@@ -40,6 +40,7 @@ namespace SustiVest.Data.Services
                 RequestNo = o.RequestNo,
                 CRNo = o.CRNo,
                 Amount = o.Amount,
+                FundedAmount=o.FundedAmount,
                 Tenor = o.Tenor,
                 Payback = o.Payback,
                 Linens = o.Linens,
@@ -57,7 +58,7 @@ namespace SustiVest.Data.Services
             return offer;
         }
 
-        public Offer UpdateOffer( int offerId, int requestNo, string crNo, int amount, int tenor, string payback, string linens, string undertakings, string covenants, double ror, string facilityType, string utilizationMechanism, int analystNo, int assessmentNo)
+        public Offer UpdateOffer( int offerId, int requestNo, string crNo, int amount, int fundedAmount, int tenor, string payback, string linens, string undertakings, string covenants, double ror, string facilityType, string utilizationMechanism, int analystNo, int assessmentNo)
         {
             var offer = GetOffer(offerId);
             if (offer == null)
@@ -74,6 +75,7 @@ namespace SustiVest.Data.Services
             offer.RequestNo = requestNo;
             offer.CRNo = crNo;
             offer.Amount = amount;
+            offer.FundedAmount = fundedAmount;
             offer.Tenor = tenor;
             offer.Payback = payback;
             offer.Linens = linens;

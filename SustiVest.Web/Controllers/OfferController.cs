@@ -50,7 +50,7 @@ namespace SustiVest.Web.Controllers
         [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Create([Bind("RequestNo, CRNo, Amount, Tenor, Payback, Linens, Undertakings, Covenants, ROR, FacilityType, UtilizationMechanism, AnalystNo, AssessmentNo")] Offer o)
+        public IActionResult Create([Bind("RequestNo, CRNo, Amount, FundedAmount, Tenor, Payback, Linens, Undertakings, Covenants, ROR, FacilityType, UtilizationMechanism, AnalystNo, AssessmentNo")] Offer o)
         {
             if (ModelState.IsValid)
             {
@@ -93,12 +93,12 @@ namespace SustiVest.Web.Controllers
         [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Edit(int offerId, int requestNo, string crNo, int analystNo, int assessmentNo, [Bind("Amount, Tenor, Payback, Linens, Undertakings, Covenants, ROR, FacilityType, UtilizationMechanism")] Offer o)
+        public IActionResult Edit(int offerId, int requestNo, string crNo, int analystNo, int assessmentNo, [Bind("Amount, FundedAmount, Tenor, Payback, Linens, Undertakings, Covenants, ROR, FacilityType, UtilizationMechanism")] Offer o)
         {
 
             if (ModelState.IsValid)
             {
-                var updated = _svc.UpdateOffer(offerId, requestNo, crNo, o.Amount, o.Tenor, o.Payback, o.Linens, o.Undertakings, o.Covenants, o.ROR, o.FacilityType, o.UtilizationMechanism, analystNo, assessmentNo);
+                var updated = _svc.UpdateOffer(offerId, requestNo, crNo, o.Amount, o.FundedAmount, o.Tenor, o.Payback, o.Linens, o.Undertakings, o.Covenants, o.ROR, o.FacilityType, o.UtilizationMechanism, analystNo, assessmentNo);
 
                 if (updated == null)
                 {
