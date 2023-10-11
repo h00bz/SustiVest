@@ -1,0 +1,49 @@
+@model DepositRequest
+
+<partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/FinanceRequest/Index","Finance Requests"),
+    ($"/DepositRequest/Index?requestNo={Model.DepositRequestNo}", "DepositRequests"), ("", "Delete Request") }) />
+
+<div class="card rounded shadow p-4">
+    <!-- Display offer details -->
+    <div class="row">
+        <!-- Details and Navigation -->
+        <div class="col-8 d-flex flex-column justify-content-between">
+            <!-- Offer details -->
+
+
+            <!-- Navigation links -->
+            <div>
+                <a asp-action="Index" class="btn btn-sm btn-outline-primary" aria-label="deposit list">
+                    <i class="bi bi-list" title="deposit list"></i>
+                    <span class="ms-1 d-none d-md-inline">List</span>
+                </a>
+
+                <a asp-action="Edit" asp-route-depositRequestNo="@Model.DepositRequestNo" class="btn btn-sm btn-outline-secondary"
+                    aria-label="edit deposit">
+                    <i class="bi bi-pen-fill" title="edit deposit"></i>
+                    <span class="ms-1 d-none d-md-inline">Update Request</span>
+                </a>
+
+                <form method="post" asp-action="DeleteConfirm" asp-route-depositRequestNo="@Model.DepositRequestNo" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" aria-label="delete deposit">
+                        <i class="bi bi-trash-fill" title="delete deposit"></i>
+                        <span class="ms-1 d-none d-md-inline">Delete Request</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript to display the delete confirmation dialog -->
+<script>
+    document.getElementById("deleteDepositButton").addEventListener("click", function () {
+        if (confirm("Are you sure you want to delete this deposit request?")) {
+            // Replace placeholders with actual values
+            var depositRequestNo = '@Model.DepositRequestNo'; // Wrap in single quotes
+            // Wrap in single quotes
+            // Redirect to the DeleteConfirm action
+            window.location.href = `/DepositRequest/DeleteConfirm?depositRequestNo=${depositRequestNo}`;
+        }
+    });
+</script>

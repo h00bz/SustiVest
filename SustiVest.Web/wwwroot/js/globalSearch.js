@@ -30,7 +30,14 @@ $(document).ready(function () {
         { value: 'amount', text: 'Amount' },
         { value: 'tenor', text: 'Tenor' },
         { value: 'ror', text: 'Rate Of Return (ROR)' },
-        { value: 'facilitytype', text: 'Facility Type' }
+        { value: 'facilitytype', text: 'Facility Type' },
+    ],
+    'depositrequest': [
+        { value: 'depositrequestno', text: 'Deposit No' },
+        { value: 'depositrequest.company.companyname', text: 'Company' },
+        { value: 'investorid', text: 'Investor ID' },
+        { value: 'offerid', text: 'Offer ID' },
+        { value: 'status', text: 'Status' },
     ],
 };
 
@@ -80,7 +87,7 @@ updateProperties();
                 // Check if there are results
                 if (data.length === 0) {
                     $('#searchResultsContainer').html('<p>No results found.</p>');
-                } else  if (entity=='company'){
+                } else  if (entity =='company'){
                     console.log('XXXXXXXXXXXXXXXXX Inside comp if: data passed is', data);
 
                     var table = $('<table class="table table-hover"></table>');
@@ -102,7 +109,7 @@ updateProperties();
                         table.append(row);
 
                     });
-                } else if (entity=='financerequest'){
+                } else if (entity =='financerequest'){
                     console.log('oooooooooooooooo inside fr if and data is :', data);
                     var table = $('<table class="table table-hover"></table>');
                    
@@ -124,7 +131,7 @@ updateProperties();
 
                     });
                 }
-                else if (entity=='assessments'){
+                else if (entity == 'assessments'){
                     console.log('oooooooooooooooo inside fr if and data is :', data);
                     var table = $('<table class="table table-hover"></table>');
                    
@@ -155,7 +162,7 @@ updateProperties();
 
                     $.each(data, function (index, offer) {
                         var row = $('<tr></tr>');
-                        row.append('<td><a href="/Offer/Details?offerId=9' + offer.offerId + '">'+ offer.offerId+ '</a></td>');
+                        row.append('<td><a href="/Offer/Details?offerId=' + offer.offerId + '">'+ offer.offerId+ '</a></td>');
                         row.append('<td>' + offer.company.companyName+ '</td>');
                         row.append('<td>' + offer.amount + '</td>');
                         row.append('<td>' + offer.tenor+ '</td>');
@@ -166,6 +173,30 @@ updateProperties();
                         table.append(row);
 
                     });
+                    
+                }
+                else if (entity=='depositrequest'){
+                    console.log('oooooooooooooooo inside fr if and data is :', data);
+                    var table = $('<table class="table table-hover"></table>');
+                   
+
+                        var headerRow = $('<tr><th>Deposit No</th><th>Amount</th><th>Offer ID</th><th>Company</th><th>ROR</th><th>Status</th></tr>');
+                        table.append(headerRow);
+
+                    $.each(data, function (index, depositrequest) {
+                        var row = $('<tr></tr>');
+                        row.append('<td><a href="/DepositRequest/Details?depositRequestNo=' + depositrequest.depositRequestNo + '">'+  depositrequest.depositRequestNo+ '</a></td>');
+                        row.append('<td>' + depositrequest.amount+ '</td>');
+                        row.append('<td>' + depositrequest.investorid + '</td>');
+                        row.append('<td>' + depositrequest.offerid+ '</td>');
+                        row.append('<td>' + depositrequest.company.companyName + '</td>');
+                        row.append('<td>' + depositrequest.status + '</td>');
+                        // Add more columns as needed
+
+                        table.append(row);
+
+                    });
+                    
                 }
                 $('#searchResultsContainer').append(table);
                 

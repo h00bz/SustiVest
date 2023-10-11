@@ -20,7 +20,7 @@ namespace SustiVest.Data.Entities
         public int Amount { get; set; }
 
         public int FundedAmount { get; set; }
-        
+
         [NotMapped]
         public int RemainingToFund => Amount - FundedAmount;
 
@@ -46,6 +46,8 @@ namespace SustiVest.Data.Entities
         [ForeignKey("CRNo")]
         public Company Company { get; set; }
         [ForeignKey("AnalystNo")]
+        public User User { get; set; }
+        [ForeignKey("RequestNo")]
         public FinanceRequest FinanceRequest { get; set; }
         [ForeignKey("AssessmentNo")]
         public Assessments Assessments { get; set; }

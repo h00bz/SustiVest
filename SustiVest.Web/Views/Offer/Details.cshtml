@@ -73,6 +73,11 @@
                         <i class="bi bi-trash-fill me-2" title="delete offer" aria-label="delete offer"></i>Delete
                     </button>
                 </a>
+                <a asp-controller="DepositRequest" asp-action="Create" asp-route-offerId="@Model.OfferId"
+                asp-route-crNo="@Model.CRNo" class="btn btn-sm btn-outline-success" aria-label="create deposit">
+                    <i class="bi bi-pen-fill" title="create deposit"></i>
+                    <span class="ms-1 d-none d-md-inline">Fund</span>
+                </a>
             </div>
         </div>
     </div>

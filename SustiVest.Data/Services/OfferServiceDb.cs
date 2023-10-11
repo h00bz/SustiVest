@@ -26,8 +26,7 @@ namespace SustiVest.Data.Services
         {
  
             return ctx.Offers
-                // .Include(o => o.Company)
-                // .Include(o => o.FinanceRequest)
+                .Include(o => o.Company)
                 .FirstOrDefault(o => o.OfferId == offerId);
            
         }
@@ -101,7 +100,7 @@ namespace SustiVest.Data.Services
             ctx.SaveChanges();
             return true;
         }
-        public Paged<Offer> GetOffers(int page = 1, int size = 20, string orderBy = "OfferId", string direction = "desc")
+        public Paged<Offer> GetOffers(int page = 1, int size = 20, string orderBy = "OfferId", string direction = "asc")
         {
             var results = (orderBy.ToLower(), direction.ToLower()) switch
             {

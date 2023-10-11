@@ -1,0 +1,99 @@
+@model Paged<DepositRequest>
+
+<partial name="_Breadcrumbs" model=@(new [] { ("/", "Home"), ("", "DepositRequest") }) />
+
+<div class="card border rounded shadow p-4">
+    <!-- Title bar -->
+    <div class="d-flex align-items-center justify-content-between">
+        <h3>DepositRequests</h3>
+        <a class="btn btn-sm btn-primary" asp-action="Create" title="Create DepositRequest" aria-label="Create DepositRequest"
+            style="background-color: #097969;">
+            <i class="bi bi-plus text-white"></i> Create
+        </a>
+
+    </div>
+
+    <!-- List of offers -->
+    <table class="table table-hover mt-4">
+        <thead>
+            <tr>
+                <th>
+                    Deposit Request No
+                    <a asp-action="Index" asp-route-order="depositRequestNo" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="depositRequestNo" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Amount
+                    <a asp-action="Index" asp-route-order="amount" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="amount" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+
+                <th>
+                        Investor ID
+                    <a asp-action="Index" asp-route-order="investorId" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="investorId" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                
+                        Offer ID
+                    <a asp-action="Index" asp-route-order="offerId" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="offerId" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Company
+                    <a asp-action="Index" asp-route-order="companyName" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="companyName" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+                <th>
+                    Status
+                    <a asp-action="Index" asp-route-order="status" asp-route-direction=@Model.Direction
+                        asp-route-page=@Model.CurrentPage asp-route-size=@Model.PageSize>
+                        <vc:sort-order field="status" orderby=@Model.OrderBy direction=@Model.Direction />
+                    </a>
+                </th>
+
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var depositRequest in Model.Data)
+            {
+                <tr>
+                    <td>@depositRequest.DepositRequestNo</td>
+                    <td>@depositRequest.Amount</td>
+                    <td>@depositRequest.InvestorId</td>
+                    <td>@depositRequest.OfferId</td>
+                    <td>@depositRequest.Company.CompanyName</td>
+                    <td>@depositRequest.Status</td>
+                    <td>
+                        <a asp-action="Details" asp-route-depositRequestNo="@depositRequest.DepositRequestNo">
+                            <i class="bi bi-display-fill me-2" title="View Deposit" aria-label="View Deposit"></i>
+                        </a>
+                        <a asp-action="Edit" asp-route-depositRequestNo="@depositRequest.DepositRequestNo">
+                            <i class="bi bi-pencil-fill me-2" title="Edit Deposit" aria-label="Edit Deposit"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-DepositRequestNo="@depositRequest.DepositRequestNo">
+                            <i class="bi bi-trash-fill me-2" title="Delete Deposit" aria-label="Delete Deposit"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<style>
+    .bi {
+        color: #097969;
+    }
+</style>

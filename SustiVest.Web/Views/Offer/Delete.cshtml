@@ -1,9 +1,7 @@
 @model Offer
 
 <partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/FinanceRequest/Index","Finance Requests"),
-    ($"/Offer/Index?requestNo={Model.RequestNo}&crNo={Model.CRNo}", "Offers"),
-    ("", "Delete Offer")
-}) />
+    ($"/Offer/Index?requestNo={Model.RequestNo}&crNo={Model.CRNo}", "Offers"), ("", "Delete Offer") }) />
 
 <div class="card rounded shadow p-4">
     <!-- Display offer details -->
@@ -11,7 +9,7 @@
         <!-- Details and Navigation -->
         <div class="col-8 d-flex flex-column justify-content-between">
             <!-- Offer details -->
-        
+
 
             <!-- Navigation links -->
             <div>
@@ -20,8 +18,8 @@
                     <span class="ms-1 d-none d-md-inline">List</span>
                 </a>
 
-                <a asp-action="Edit" asp-route-requestNo="@Model.RequestNo" asp-route-offerId="@Model.OfferId"
-                    class="btn btn-sm btn-outline-secondary" aria-label="edit offer">
+                <a asp-action="Edit" asp-route-offerId="@Model.OfferId" class="btn btn-sm btn-outline-secondary"
+                    aria-label="edit offer">
                     <i class="bi bi-pen-fill" title="edit offer"></i>
                     <span class="ms-1 d-none d-md-inline">Edit</span>
                 </a>
@@ -43,7 +41,7 @@
         if (confirm("Are you sure you want to delete this offer?")) {
             // Replace placeholders with actual values
             var offerId = '@Model.OfferId'; // Wrap in single quotes
-             // Wrap in single quotes
+            // Wrap in single quotes
             // Redirect to the DeleteConfirm action
             window.location.href = `/Offer/DeleteConfirm?offerId=${offerId}`;
         }

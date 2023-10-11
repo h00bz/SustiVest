@@ -1,0 +1,63 @@
+@model DepositRequest
+
+<partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/DepositRequest","DepositRequest"), ("",$"Deposit {Model.DepositRequestNo}") }) />
+
+<div class="card rounded shadow p-4">
+    <div class="row">
+        <div class="col-8 d-flex flex-column justify-content-between">
+            <div>
+                <h2 class="mb-4 text-primary">Deposit Request @Model.DepositRequestNo Details</h2>
+                <dl class="row">
+                    <dt class="col-4 pb-1">Request No.</dt>
+                    <dd class="col-8 pb-1">@Model.DepositRequestNo</dd>
+                    
+                    <dt class="col-4 pb-1">Request No.</dt>
+                    <dd class="col-8 pb-1">@Model.DepositRequestNo</dd>
+                    
+                    <dt class="col-4 pb-1">Investor ID</dt>
+                    <dd class="col-8 pb-1">@Model.InvestorId</dd>
+                    
+                    <dt class="col-4 pb-1">Offer ID</dt>
+                    <dd class="col-8 pb-1">@Model.OfferId</dd>
+
+                    <dt class="col-4 pb-1">Company</dt>
+                    <dd class="col-8 pb-1">@Model.Company.CompanyName</dd>
+                  
+                    <dt class="col-4 pb-1">Status</dt>
+                    <dd class="col-8 pb-1">@Model.Status</dd>
+ 
+                </dl>
+            </div>
+
+            <!-- Navigation links -->
+            <div class= "d-flex justify-content-align-between">
+                <a asp-action="Index" class="btn btn-sm btn-outline-primary" aria-label="deposit list">
+                    <i class="bi bi-list" title="deposit list"></i>
+                    <span class="ms-1 d-none d-md-inline">List</span>
+                </a>
+
+                <a asp-action="Edit" asp-route-depositRequestNo="@Model.DepositRequestNo"
+                  asp-route-offerId="@Model.OfferId" asp-route-investorId="@Model.InvestorId"
+                  asp-route-amount="@Model.Amount"
+                    class="btn btn-sm btn-outline-secondary" aria-label="edit deposit">
+                    <i class="bi bi-pen-fill" title="edit deposit"></i>
+                    <span class="ms-1 d-none d-md-inline">Update Request</span>
+                </a>
+
+                <form asp-controller="DepositRequest" asp-action="Approve" method="post">
+                     <input type="hidden" asp-for="DepositRequestNo" />
+                     <button type="submit" class="btn btn-sm btn-outline-success" aria-label="approve deposit">
+                        <i class="bi bi-trash-fill me-2" title="approve deposit" aria-label="approve deposit"></i>Approve
+                    </button>
+                </form>
+
+
+                <a asp-action="Delete" asp-route-depositRequestNo="@Model.DepositRequestNo">
+                    <button type="button" class="btn btn-sm btn-outline-danger" aria-label="delete deposit">
+                        <i class="bi bi-trash-fill me-2" title="delete deposit" aria-label="delete deposit"></i>Delete
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

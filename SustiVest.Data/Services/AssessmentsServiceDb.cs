@@ -49,7 +49,6 @@ namespace SustiVest.Data.Services
         {
             return ctx.Assessments
             .Include(a => a.Company)
-    
             .FirstOrDefault(a => a.AssessmentNo == assessmentNo);
         }
 
