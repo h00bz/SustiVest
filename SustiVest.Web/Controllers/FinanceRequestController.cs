@@ -26,7 +26,16 @@ namespace SustiVest.Web.Controllers
         [Authorize(Roles = "admin, analyst, borrower")]
         public IActionResult Details(int requestNo)
         {
+
             var financeRequest = svc.GetFinanceRequest(requestNo);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+            
+            if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext))
+            {
+                Alert("You are not authorized to view this request", AlertType.warning);
+                return RedirectToAction("CompanyDetails", "Company", new { crNo = financeRequest.CRNo });
+            }
+
             if (financeRequest == null)
             {
                 Alert("Request Not Found", AlertType.warning);

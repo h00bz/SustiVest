@@ -1,4 +1,5 @@
 @model SustiVest.Data.Entities.Company
+@using System.Security.Claims;
 
 <partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/company/companyindex","companies"),
     ("",$"{Model.CompanyName}") }) />
@@ -72,7 +73,6 @@
                 </button>
 
                 <form asp-controller="Company" asp-action="ApproveCompany" asp-route-crNo="@Model.CRNo" method="post">
-                    @* <input type="hidden" asp-for="CRNo" /> *@
                     <button type="submit" class="btn btn-sm btn-outline-success" aria-label="approve company">
                         <i class="bi bi-check-circle me-2" title="approve company"
                             aria-label="approve company"></i>Approve
@@ -83,12 +83,16 @@
 
     </div>
 </div>
-
 <!-- Finance Requests -->
+@{
+    var userId=int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+if (Model.RepId==userId)
+{
 <div class="card rounded shadow p-4 mt-4">
     <partial name="_FinanceRequests" />
 </div>
-
+}
+}
 <!-- Delete Modal -->
 <partial name="_DeleteModal" />
 <style>
