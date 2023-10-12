@@ -121,7 +121,8 @@ namespace SustiVest.Web.Controllers
             return View(fr);
         }
 
-        [Authorize(Roles = "admin, analyst, borrower")]
+        [Authorize(Roles = "admin, analyst")]
+        [HttpGet]
         public ActionResult Index(int page = 1, int size = 20, string order = "RequestNo", string direction = "asc")
         {
             var table = svc.GetFinanceRequests(page, size, order, direction);
@@ -150,16 +151,16 @@ namespace SustiVest.Web.Controllers
 
         [Authorize (Roles = "admin, analyst, borrower")]
         [HttpPost]
-        public IActionResult RequestEdit(int requestNo, [Bind("Purpose, Amount, Tenor, FacilityType, Status, DateOfRequest, Assessment")] FinanceRequest f)
+        public IActionResult RequestEdit([Bind("RequestNo, Purpose, Amount, Tenor, FacilityType, Status, DateOfRequest, Assessment")] FinanceRequest fr)
         {
             if (ModelState.IsValid)
             {
-                var request = svc.UpdateRequest(requestNo, f.Purpose, f.Amount, f.Tenor, f.FacilityType, f.Status, f.DateOfRequest, f.Assessment);
-                return RedirectToAction(nameof(Details), new { requestNo = requestNo });
+                var request = svc.UpdateRequest(fr);
+                return RedirectToAction(nameof(Details), new { requestNo = fr.RequestNo });
 
             }
             // redisplay the form for editing
-            return View(f);
+            return View(fr);
         }
         [Authorize(Roles = "admin, analyst")]
         public IActionResult Delete(int requestNo)

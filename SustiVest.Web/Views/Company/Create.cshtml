@@ -12,6 +12,10 @@
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+        <input type="hidden" asp-for="RepId"/>
+        <input type="hidden" asp-for="ProfileStatus"/>
+
+
         <div class="mt-3">
             <label asp-for="CRNo" class="form-label"></label>
             <input asp-for="CRNo" class="form-control" />
@@ -60,12 +64,21 @@
             <span asp-validation-for="ShareholderStructure" class="text-danger"></span>
         </div>
 
+        @if (User.IsInRole("analyst") || User.IsInRole("admin"))
+        {
             <div class="mt-3">
-            <label asp-for="RepId" class="form-label"></label>
-            <input asp-for="RepId" class="form-control" />
-            <span asp-validation-for="RepId" class="text-danger"></span>
+                <label asp-for="RepId" class="form-label"></label>
+                <input asp-for="RepId" class="form-control" />
+                <span asp-validation-for="RepId" class="text-danger"></span>
+            </div>
+        
+        <div class="mt-3">
+            <label asp-for="ProfileStatus" class="form-label"></label>
+            <input asp-for="ProfileStatus" class="form-control" />
+            <span asp-validation-for="ProfileStatus" class="text-danger"></span>
         </div>
-
+        }
+        
         <div class="mt-3">
             <button type="submit" name="submit" class="btn btn-primary" aria-label="save">Save</button>
             <a class="btn btn-secondary" asp-action="CompanyIndex" aria-label="cancel">Cancel</a>

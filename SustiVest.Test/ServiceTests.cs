@@ -207,7 +207,7 @@ namespace SustiVest.Test
             Assert.Null(user);
         }
 
-      
+
         [Fact]
         public void GetCompanies_WhenNoneExist_ShouldReturnEmptyList()
         {
@@ -233,7 +233,8 @@ namespace SustiVest.Test
                 Activity = "Software Development",
                 Type = "Startup",
                 ShareholderStructure = "Private",
-                RepId = borrowerUser.Id
+                RepId = borrowerUser.Id,
+                ProfileStatus = "Pending Approval"
             };
 
             var company2Values = new Company
@@ -246,12 +247,13 @@ namespace SustiVest.Test
                 Activity = "Investment Banking",
                 Type = "SME",
                 ShareholderStructure = "Public",
-                RepId = borrowerUser2.Id
+                RepId = borrowerUser2.Id,
+                ProfileStatus = "Pending Approval"
             };
 
             // Act
-            var company1 = _companyService.AddCompany(company1Values.CRNo, company1Values.TaxID, company1Values.CompanyName, company1Values.Industry, company1Values.DateOfEstablishment, company1Values.Activity, company1Values.Type, company1Values.ShareholderStructure, company1Values.RepId);
-            var company2 = _companyService.AddCompany(company2Values.CRNo, company2Values.TaxID, company2Values.CompanyName, company2Values.Industry, company2Values.DateOfEstablishment, company2Values.Activity, company2Values.Type, company2Values.ShareholderStructure, company2Values.RepId);
+            var company1 = _companyService.AddCompany(company1Values);
+            var company2 = _companyService.AddCompany(company2Values);
 
         }
         [Fact]
@@ -271,7 +273,8 @@ namespace SustiVest.Test
                 Activity = "Software Development",
                 Type = "Startup",
                 ShareholderStructure = "Private",
-                RepId = borrowerUser.Id
+                RepId = borrowerUser.Id,
+                ProfileStatus = "Pending Approval"
             };
 
             var company2Values = new Company
@@ -284,12 +287,13 @@ namespace SustiVest.Test
                 Activity = "Investment Banking",
                 Type = "SME",
                 ShareholderStructure = "Public",
-                RepId = borrowerUser2.Id
+                RepId = borrowerUser2.Id,
+                ProfileStatus = "Pending Approval"
             };
 
             // Act
-            var company1 = _companyService.AddCompany(company1Values.CRNo, company1Values.TaxID, company1Values.CompanyName, company1Values.Industry, company1Values.DateOfEstablishment, company1Values.Activity, company1Values.Type, company1Values.ShareholderStructure, company1Values.RepId);
-            var company2 = _companyService.AddCompany(company2Values.CRNo, company2Values.TaxID, company2Values.CompanyName, company2Values.Industry, company2Values.DateOfEstablishment, company2Values.Activity, company2Values.Type, company2Values.ShareholderStructure, company2Values.RepId);
+            var company1 = _companyService.AddCompany(company1Values);
+            var company2 = _companyService.AddCompany(company2Values);
 
             // Assert
             Assert.NotNull(company1);
@@ -302,6 +306,8 @@ namespace SustiVest.Test
             Assert.Equal(company1Values.Type, company1.Type);
             Assert.Equal(company1Values.ShareholderStructure, company1.ShareholderStructure);
             Assert.Equal(company1Values.RepId, company1.RepId);
+            Assert.Equal(company1Values.ProfileStatus, company1.ProfileStatus);
+
 
             Assert.NotNull(company2);
             Assert.Equal(company2Values.CRNo, company2.CRNo);
@@ -313,6 +319,8 @@ namespace SustiVest.Test
             Assert.Equal(company2Values.Type, company2.Type);
             Assert.Equal(company2Values.ShareholderStructure, company2.ShareholderStructure);
             Assert.Equal(company2Values.RepId, company2.RepId);
+            Assert.Equal(company2Values.ProfileStatus, company2.ProfileStatus);
+
         }
 
         [Fact]
@@ -369,27 +377,32 @@ namespace SustiVest.Test
         {
             // Arrange
             Add2CompaniesAnd2Reps();
-            var crNo = "CR123";
-            var taxID = "T111";
-            var companyName = "UpdatedCompany";
-            var industry = "Finance";
-            var dateOfEstablishment = new DateOnly(2010, 1, 1);
-            var activity = "Investment Banking";
-            var type = "SME";
-            var shareholderStructure = "Public";
-            var repId = 2;
+            var update = new Company
+            {
+                CRNo = "CR123",
+                TaxID = "T111",
+                CompanyName = "NewCompany",
+                Industry = "Technology",
+                DateOfEstablishment = new DateOnly(2021, 1, 1),
+                Activity = "Software Development",
+                Type = "Startup",
+                ShareholderStructure = "Private",
+                RepId = 1,
+                ProfileStatus = "Pending Approval"
+            };
 
             // Act
-            var company = _companyService.UpdateCompany(crNo, taxID, companyName, industry, dateOfEstablishment, activity, type, shareholderStructure, repId);
-
-            // Assert
+            var company = _companyService.UpdateCompany(update);
             Assert.NotNull(company);
-            Assert.Equal(companyName, company.CompanyName);
-            Assert.Equal(industry, company.Industry);
-            Assert.Equal(dateOfEstablishment, company.DateOfEstablishment);
-            Assert.Equal(activity, company.Activity);
-            Assert.Equal(type, company.Type);
-            Assert.Equal(shareholderStructure, company.ShareholderStructure);
+            Assert.Equal(update.CompanyName, company.CompanyName);
+            Assert.Equal(update.Industry, company.Industry);
+            Assert.Equal(update.DateOfEstablishment, company.DateOfEstablishment);
+            Assert.Equal(update.Activity, company.Activity);
+            Assert.Equal(update.Type, company.Type);
+            Assert.Equal(update.ShareholderStructure, company.ShareholderStructure);
+            Assert.Equal(update.RepId, company.RepId);
+            Assert.Equal(update.ProfileStatus, company.ProfileStatus);
+
         }
 
         [Fact]
@@ -790,7 +803,7 @@ namespace SustiVest.Test
                 RequestNo = 1,
                 CRNo = "CR123",
                 Amount = 10000,
-                FundedAmount=5000,
+                FundedAmount = 5000,
                 Tenor = 12,
                 Payback = "Monthly",
                 Linens = "None",
@@ -808,7 +821,7 @@ namespace SustiVest.Test
                 RequestNo = 2,
                 CRNo = "CR456",
                 Amount = 20000,
-                FundedAmount=10000,
+                FundedAmount = 10000,
                 Tenor = 24,
                 Payback = "Quarterly",
                 Linens = "None",
@@ -820,9 +833,9 @@ namespace SustiVest.Test
                 AnalystNo = 2,
                 AssessmentNo = 2
             };
-            
-            var offer1=_offerService.CreateOffer(offer1Values);
-            var offer2=_offerService.CreateOffer(offer2Values);
+
+            var offer1 = _offerService.CreateOffer(offer1Values);
+            var offer2 = _offerService.CreateOffer(offer2Values);
         }
 
         [Fact]
@@ -843,14 +856,14 @@ namespace SustiVest.Test
         {
             // Arrange
             Offer_Add2();
-            var exprectedOfferId=1;
-            var expectedAssessmentNo=1;
+            var exprectedOfferId = 1;
+            var expectedAssessmentNo = 1;
 
             // Act
             var result = _offerService.GetOffer(exprectedOfferId);
 
             // Assert
-            Assert.Equal(exprectedOfferId, result.OfferId);  
+            Assert.Equal(exprectedOfferId, result.OfferId);
             Assert.Equal(expectedAssessmentNo, result.AssessmentNo);
 
         }
@@ -887,7 +900,7 @@ namespace SustiVest.Test
         {
             // Arrange
             Offer_Add2();
-            var offer = new Offer { Amount = 10000, FundedAmount=5000, Tenor = 12, Payback = "Monthly", Linens = "None", Undertakings = "None", Covenants = "None", ROR = 0.05, FacilityType = "Term Loan", UtilizationMechanism = "Direct Payment" };
+            var offer = new Offer { Amount = 10000, FundedAmount = 5000, Tenor = 12, Payback = "Monthly", Linens = "None", Undertakings = "None", Covenants = "None", ROR = 0.05, FacilityType = "Term Loan", UtilizationMechanism = "Direct Payment" };
 
 
             // Act
@@ -926,7 +939,7 @@ namespace SustiVest.Test
         {
             // Arrange
             Offer_Add2();
-            var records=_offerService.GetOffers();
+            var records = _offerService.GetOffers();
 
             // Act
             var pagedOffers = _offerService.GetOffers(1, 2);

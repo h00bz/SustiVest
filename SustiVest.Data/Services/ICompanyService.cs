@@ -11,15 +11,16 @@ namespace SustiVest.Data.Services
         Paged<Company> GetCompanies(int page = 1, int size = 10, string orderBy = "companyname", string direction = "asc");
         Company GetCompany(string CRNo);
         Company GetCompanyByName(string CompanyName);
-        Company AddCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure, int repId);
-        Company UpdateCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure, int repId);
+        Company AddCompany(Company c);
+        Company Approve(Company c);
+        Company UpdateCompany(Company c);
         bool DeleteCompany(string CRNo);
         IList<FinanceRequest> GetFinanceRequests();
         Paged<FinanceRequest> GetFinanceRequests(int page = 1, int size = 20, string orderBy = "Purpose", string direction = "asc");
         FinanceRequest GetFinanceRequest(int requestNo);
         FinanceRequest CreateRequest(FinanceRequest fr);
         FinanceRequest CloseRequest(int requestNo, string status);
-        FinanceRequest UpdateRequest(int requestNo, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment);
+        FinanceRequest UpdateRequest(FinanceRequest fr);
         FinanceRequest ResubmitRequest(int requestNo, DateOnly dateOfRequest, bool assessment);
         bool DeleteRequest(int RequestNo);
 

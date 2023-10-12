@@ -30,26 +30,28 @@ namespace SustiVest.Data.Entities
        
         [ForeignKey("CRNo")]
         public Company Company { get; set; }
-        [NotMapped]
-        public int RepId
-        {
-            get { return Company.RepId; }
-            set { Company.RepId = value; }
-        }
-        [JsonIgnore]
-        [NotMapped]
-        public User Rep
-        {
-            get { return Company.Rep; }
-            set { Company.Rep = value; }
-        }
 
-        public FinanceRequest()
-        {
-            if (Company != null)
-            {
-                Rep = Company.Rep;
-            }
-        }
+        // [NotMapped]
+        // public int RepId
+        // {
+        //     get { return Company != null ? Company.RepId : 0; }
+        //     set { if (Company != null) Company.RepId = value; }
+        // }
+        
+        // [JsonIgnore]
+        // [NotMapped]
+        // public User Rep
+        // {
+        //     get { return Company.Rep; }
+        //     set { Company.Rep = value; }
+        // }
+
+        // public FinanceRequest()
+        // {
+        //     if (Company != null)
+        //     {
+        //         Rep = Company.Rep;
+        //     }
+        // }
     }
 }           

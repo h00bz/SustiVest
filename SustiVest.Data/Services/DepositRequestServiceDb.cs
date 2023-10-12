@@ -66,6 +66,7 @@ namespace SustiVest.Data.Services
                 return null;
             }
 
+            deposit.Offer.FundedAmount += deposit.Amount;
             deposit.Status = "Approved";
             ctx.SaveChanges();
             return deposit;

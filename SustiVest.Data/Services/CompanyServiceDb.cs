@@ -1,6 +1,7 @@
 using SustiVest.Data.Entities;
 using SustiVest.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 namespace SustiVest.Data.Services
 {
 
@@ -55,6 +56,9 @@ namespace SustiVest.Data.Services
 
                 ("shareholderstructure", "asc") => ctx.Companies.OrderBy(c => c.ShareholderStructure),
                 ("shareholderstructure", "desc") => ctx.Companies.OrderByDescending(c => c.ShareholderStructure),
+
+                ("ProfileStatus", "asc") => ctx.Companies.OrderBy(c => c.ProfileStatus),
+                ("ProfileStatus", "desc") => ctx.Companies.OrderByDescending(c => c.ProfileStatus),
                 _ => ctx.Companies.OrderBy(c => c.CRNo)
             };
             return results.ToPaged(page, size, orderBy, direction);
@@ -69,11 +73,11 @@ namespace SustiVest.Data.Services
         }
 
         // Add a new company
-        public Company AddCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure, int repId)
+        public Company AddCompany(Company c)
         {
             // Check if a company with the same CompanyName or CRNo already exists
-            var existsByName = GetCompanyByName(companyName);
-            var existsByCRNo = GetCompany(crNo);
+            var existsByName = GetCompanyByName(c.CompanyName);
+            var existsByCRNo = GetCompany(c.CRNo);
 
             if (existsByName != null || existsByCRNo != null)
             {
@@ -82,19 +86,34 @@ namespace SustiVest.Data.Services
 
             var company = new Company
             {
-                CRNo = crNo,
-                TaxID = taxID,
-                CompanyName = companyName,
-                Industry = industry,
-                DateOfEstablishment = dateOfEstablishment,
-                Activity = activity,
-                Type = type,
-                ShareholderStructure = shareholderStructure,
-                RepId= repId
+                CRNo = c.CRNo,
+                TaxID = c.TaxID,
+                CompanyName = c.CompanyName,
+                Industry = c.Industry,
+                DateOfEstablishment = c.DateOfEstablishment,
+                Activity = c.Activity,
+                Type = c.Type,
+                ShareholderStructure = c.ShareholderStructure,
+                RepId = c.RepId,
+                ProfileStatus = c.ProfileStatus
             };
 
             ctx.Companies.Add(company);
             ctx.SaveChanges();
+            return company;
+        }
+        public Company Approve(Company c)
+        {
+            var company = GetCompany(c.CRNo);
+            if (company == null) 
+            {
+                return null;
+                }
+
+            company.ProfileStatus = "Approved";
+            Console.WriteLine($"SSSScompany: {company} name:{company.CompanyName}");
+
+            ctx.SaveChanges(); // write to database
             return company;
         }
 
@@ -114,10 +133,10 @@ namespace SustiVest.Data.Services
         }
 
         // Update the company with the details in updated 
-        public Company UpdateCompany(string crNo, string taxID, string companyName, string industry, DateOnly dateOfEstablishment, string activity, string type, string shareholderStructure, int repId)
+        public Company UpdateCompany(Company c)
         {
             // verify the commpany exists 
-            var company = GetCompany(crNo);
+            var company = GetCompany(c.CRNo);
             if (company == null)
             {
                 return null;
@@ -131,15 +150,16 @@ namespace SustiVest.Data.Services
             }
 
             // update the details of the company retrieved and save
-            company.CompanyName = companyName;
-            company.Industry = industry;
-            company.DateOfEstablishment = dateOfEstablishment;
-            company.Activity = activity;
-            company.Type = type;
-            company.ShareholderStructure = shareholderStructure;
-            company.CRNo = crNo;
-            company.TaxID = taxID;
-            company.RepId = repId;  
+            company.CompanyName = c.CompanyName;
+            company.Industry = c.Industry;
+            company.DateOfEstablishment = c.DateOfEstablishment;
+            company.Activity = c.Activity;
+            company.Type = c.Type;
+            company.ShareholderStructure = c.ShareholderStructure;
+            company.CRNo = c.CRNo;
+            company.TaxID = c.TaxID;
+            company.RepId = c.RepId;
+            company.ProfileStatus = c.ProfileStatus;
 
 
             ctx.SaveChanges();
@@ -150,6 +170,7 @@ namespace SustiVest.Data.Services
         {
             return ctx.Companies.FirstOrDefault(c => c.CompanyName == name);
         }
+
 
         // ==================== Finance Request Management =======================
 
@@ -190,10 +211,9 @@ namespace SustiVest.Data.Services
 
                 ("Assessment", "asc") => ctx.FinanceRequests.OrderBy(fr => fr.Assessment),
                 ("Assessment", "desc") => ctx.FinanceRequests.OrderByDescending(fr => fr.Assessment),
-
                 _ => ctx.FinanceRequests.OrderBy(fr => fr.RequestNo)
             };
-            return results.Include(fr=>fr.Company).ToPaged(page, size, orderBy, direction);
+            return results.Include(fr => fr.Company).ToPaged(page, size, orderBy, direction);
         }
 
 
@@ -228,18 +248,18 @@ namespace SustiVest.Data.Services
         }
 
 
-        public FinanceRequest UpdateRequest(int requestNo, string purpose, int amount, int tenor, string facilityType, string status, DateOnly dateOfRequest, bool assessment)
+        public FinanceRequest UpdateRequest(FinanceRequest fr)
         {
-            var financeRequest = GetFinanceRequest(requestNo);
+            var financeRequest = GetFinanceRequest(fr.RequestNo);
             if (financeRequest == null) return null;
 
-            financeRequest.Purpose = purpose;
-            financeRequest.Amount = amount;
-            financeRequest.Tenor = tenor;
-            financeRequest.FacilityType = facilityType;
-            financeRequest.Status = status;
-            financeRequest.DateOfRequest = dateOfRequest;
-            financeRequest.Assessment = assessment;
+            financeRequest.Purpose = fr.Purpose;
+            financeRequest.Amount = fr.Amount;
+            financeRequest.Tenor = fr.Tenor;
+            financeRequest.FacilityType = fr.FacilityType;
+            financeRequest.Status = fr.Status;
+            financeRequest.DateOfRequest = fr.DateOfRequest;
+            financeRequest.Assessment = fr.Assessment;
 
             ctx.SaveChanges(); // write to database
             return financeRequest;
