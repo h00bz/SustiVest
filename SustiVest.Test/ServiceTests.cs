@@ -2,7 +2,7 @@
 using Xunit;
 using SustiVest.Data.Entities;
 using SustiVest.Data.Services;
-
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using SustiVest.Data.Repositories;
 using SustiVest.Data.Security;
@@ -507,27 +507,29 @@ namespace SustiVest.Test
             // Arrange
             Add2CompaniesAnd2Reps();
             FinanceRequest_Add2();
-            var requestNo = 1;
-            var purpose = "Updated Purpose";
-            var amount = 200000;
-            var tenor = 24;
-            var facilityType = "Overdraft";
-            var status = "Approved";
-            var dateOfRequest = new DateOnly(2021, 2, 1);
-            var assessment = true;
-
+            var financeRequest = new FinanceRequest
+            {
+                RequestNo = 1,
+                Purpose = "Updated Purpose",
+                Amount = 200000,
+                Tenor = 24,
+                FacilityType = "Overdraft",
+                Status = "Approved",
+                DateOfRequest = new DateOnly(2021, 2, 1),
+                Assessment = true
+            };
             // Act
-            var result = _companyService.UpdateRequest(requestNo, purpose, amount, tenor, facilityType, status, dateOfRequest, assessment);
+            var result = _companyService.UpdateRequest(financeRequest);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(purpose, result.Purpose);
-            Assert.Equal(amount, result.Amount);
-            Assert.Equal(tenor, result.Tenor);
-            Assert.Equal(facilityType, result.FacilityType);
-            Assert.Equal(status, result.Status);
-            Assert.Equal(dateOfRequest, result.DateOfRequest);
-            Assert.Equal(assessment, result.Assessment);
+            Assert.Equal(financeRequest.Purpose, result.Purpose);
+            Assert.Equal(financeRequest.Amount, result.Amount);
+            Assert.Equal(financeRequest.Tenor, result.Tenor);
+            Assert.Equal(financeRequest.FacilityType, result.FacilityType);
+            Assert.Equal(financeRequest.Status, result.Status);
+            Assert.Equal(financeRequest.DateOfRequest, result.DateOfRequest);
+            Assert.Equal(financeRequest.Assessment, result.Assessment);
         }
 
         [Fact]
@@ -598,6 +600,10 @@ namespace SustiVest.Test
                 DateOfRequest = new DateOnly(2021, 1, 1),
                 Assessment = true
             });
+            var analyst1= _userService.AddUser("Analyst1", "analyst1@mail.com", "123456", Role.analyst);
+
+            var analyst2 = _userService.AddUser("Analyst2", "analyst2@mail.com", "123456", Role.analyst);
+
             var financeRequest2 = _companyService.CreateRequest(new FinanceRequest
             {
                 CRNo = "CR456",
@@ -612,7 +618,7 @@ namespace SustiVest.Test
             var assessment1Values = new Assessments
             {
                 RequestNo = financeRequest1.RequestNo,
-                AnalystNo = financeRequest1.RepId,
+                AnalystNo = analyst1.Id,
                 Sales = 100000,
                 EBITDA = 50000,
                 DSR = 1.5,
@@ -631,7 +637,7 @@ namespace SustiVest.Test
             var assessment2Values = new Assessments
             {
                 RequestNo = financeRequest2.RequestNo,
-                AnalystNo = financeRequest2.RepId,
+                AnalystNo = analyst2.Id,
                 Sales = 200000,
                 EBITDA = 100000,
                 DSR = 2.0,

@@ -38,6 +38,8 @@ namespace SustiVest.Data.Entities
 
         public int NetEquity { get; set; }
 
+        public bool Posted { get; set; }=false;
+
         // Navigation properties for foreign keys
         [ForeignKey("CRNo")]
         public Company Company { get; set; }

@@ -93,6 +93,19 @@ namespace SustiVest.Data.Services
             return assessment;
         }
 
+        public Assessments PostAssessment(int assessmentNo)
+        {
+            var assessment = GetAssessment(assessmentNo);
+            if (assessment == null)
+            {
+                return null;
+            }
+
+            assessment.Posted = true;
+            ctx.SaveChanges();
+            return assessment;
+        }
+
         public Assessments UpdateAssessment(int assessmentNo, int requestNo, int analystNo, int sales, int ebitda, double dsr, double ccc, int riskRating, string marketPosition, string repaymentStatus, double financialLeverage, int workingCapital, int operatingAssets, string crNo, int totalAssets, int netEquity)
         {
             var assessment = GetAssessment(assessmentNo);

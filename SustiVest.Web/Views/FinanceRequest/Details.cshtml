@@ -2,20 +2,20 @@
 
 <!-- Breadcrumbs using partial view -->
 <partial name="_Breadcrumbs" model=@(new [] { ("/", "Home"), ("/FinanceRequest", "FinanceRequests"), ("","Close") }) />
-    
+
 <div class="col card rounded shadow-lg p-4">
     <h3 class="mb-4">Finance Request</h3>
-    
-    <dl class="row">       
+
+    <dl class="row">
         <dt class="col-4">Request No.</dt>
         <dd class="col-8">@Model.RequestNo</dd>
-        
+
         <dt class="col-4">Company</dt>
         <dd class="col-8">@Model.Company.CompanyName</dd>
-   
+
         <dt class="col-4">Purpose</dt>
         <dd class="col-8">@Model.Purpose</dd>
-     
+
         <dt class="col-4">Amount</dt>
         <dd class="col-8">@Model.Amount</dd>
 
@@ -35,7 +35,8 @@
         <dd class="col-8">
             @if (Model.Assessment)
             {
-                <a asp-controller= "Assessments" asp-action="Details" asp-route-requestNo="@Model.RequestNo">View Assessment</a>
+                <a asp-controller="Assessments" asp-action="Details" asp-route-requestNo="@Model.RequestNo">View
+                    Assessment</a>
             }
             else
             {
@@ -45,10 +46,16 @@
 
     </dl>
 
-    <div>             
-        <a asp-action="RequestEdit" asp-route-requestNo="@Model.RequestNo" class="btn btn-sm btn-outline-secondary" aria-label="edit request">
-                    <i class="bi bi-pen-fill" title="edit request"></i>
-                    <span class="ms-1 d-none d-md-inline">Edit</span>
-                </a></div>
-</div> 
-
+    <div>
+        <a asp-action="RequestEdit" asp-route-requestNo="@Model.RequestNo" class="btn btn-sm btn-outline-secondary"
+            aria-label="edit request">
+            <i class="bi bi-pen-fill" title="edit request"></i>
+            <span class="ms-1 d-none d-md-inline">Edit</span>
+        </a>
+        <a asp- asp-controller="Assessments" asp-action="Create" asp-route-requestNo="@Model.RequestNo" asp-route-crNo="@Model.CRNo" class="btn btn-sm btn-outline-success"
+            aria-label="create request">
+            <i class="bi bi-pen-fill" title="create request"></i>
+            <span class="ms-1 d-none d-md-inline">Start Assessment</span>
+        </a>
+    </div>
+</div>

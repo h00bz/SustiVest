@@ -42,6 +42,8 @@ namespace SustiVest.Data.Entities
 
         public int AnalystNo { get; set; }
 
+        public bool Posted { get; set; } = false;
+
         public int AssessmentNo { get; set; }
         [ForeignKey("CRNo")]
         public Company Company { get; set; }

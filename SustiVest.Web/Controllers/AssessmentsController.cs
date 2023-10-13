@@ -27,32 +27,41 @@ namespace SustiVest.Web.Controllers
             return View(table);
         }
 
+
         // GET /assessments/details/{requestNo}/{analystNo}
-        [Authorize(Roles = "admin, analyst, borrower")]
+        [Authorize(Roles = "admin, analyst, borrower, investor")]
         public IActionResult Details(int? assessmentNo, int? requestNo)
         {
 
-            Assessments assessment = null;
+            var assessment= assessmentNo.HasValue ? _svc.GetAssessment(assessmentNo.Value): _svc.GetAssessmentByRequestNo(requestNo.Value);
+
             var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.Sid).Value);
 
-            if (assessmentNo.HasValue)
-            {
-                // Try to get the assessment by assessment number.
-                assessment = _svc.GetAssessment(assessmentNo.Value);
-            }
-            else if (requestNo.HasValue)
-            {
-                // Try to get the assessment by request number.
-                assessment = _svc.GetAssessmentByRequestNo(requestNo.Value);
-            }
+            // if (assessmentNo.HasValue)
+            // {
+            //     // Try to get the assessment by assessment number.
+            //     assessment = _svc.GetAssessment(assessmentNo.Value);
+            // }
+            // else if (requestNo.HasValue)
+            // {
+            //     // Try to get the assessment by request number.
+            //     assessment = _svc.GetAssessmentByRequestNo(requestNo.Value);
+            // }
 
             if (assessment == null)
             {
                 Alert("Assessment not found", AlertType.warning);
                 return RedirectToAction(nameof(Index));
             }
-
-            var company = _companyService.GetCompany(assessment.CRNo);
+            if (assessment.Posted)
+            {
+                return View(assessment);
+            }
+            if (!_permissions.IsUserAuthorizedToEditCompany(assessment.CRNo, userId, httpContext: HttpContext) && !User.IsInRole("admin") && !User.IsInRole("analyst"))
+            {
+                Alert("You are not authorized to view this assessment", AlertType.warning);
+                return RedirectToAction("CompanyIndex", "Company");
+            }
 
             return View(assessment);
         }
@@ -61,9 +70,9 @@ namespace SustiVest.Web.Controllers
         // GET: /assessments/create
 
         [Authorize(Roles = "admin, analyst")]
-        public IActionResult Create()
+        public IActionResult Create(int requestNo, string crNo)
         {
-            // Display a blank form to create an assessment
+
             return View();
         }
 
@@ -71,8 +80,12 @@ namespace SustiVest.Web.Controllers
         [Authorize(Roles = "admin, analyst")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Create(int AssessmentNo, [Bind("RequestNo, AnalystNo, Sales, EBITDA, DSR, CCC, RiskRating, MarketPosition, RepaymentStatus, FinancialLeverage, WorkingCapital, OperatingAssets, CRNo, TotalAssets, NetEquity")] Assessments a)
+        public IActionResult Create([Bind("AssessmentNo, RequestNo, AnalystNo, Sales, EBITDA, DSR, CCC, RiskRating, MarketPosition, RepaymentStatus, FinancialLeverage, WorkingCapital, OperatingAssets, CRNo, TotalAssets, NetEquity")] Assessments a)
         {
+            if (User.IsInRole("analyst"))
+            {
+                a.AnalystNo = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.Sid).Value);
+            }
 
             if (ModelState.IsValid)
             {
@@ -90,8 +103,42 @@ namespace SustiVest.Web.Controllers
             return View(a);
         }
 
+        [Authorize(Roles = "admin, borrower")]
+        [HttpPost]
+        public IActionResult Post(int assessmentNo)
+        {
+            var assessment = _svc.GetAssessment(assessmentNo);
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.Sid).Value);
+
+            if (assessment == null)
+            {
+                Alert("Assessment not found", AlertType.warning);
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (!_permissions.IsUserAuthorizedToEditCompany(assessment.CRNo, userId, httpContext: HttpContext)&&!User.IsInRole("admin"))
+            {
+                Alert("You are not authorized to post this assessment", AlertType.warning);
+                return RedirectToAction(nameof(Index));
+            }
+
+            var posted = _svc.PostAssessment(assessmentNo);
+
+            if (posted != null)
+            {
+                Alert("Assessment Posted", AlertType.success);
+            }
+            else
+            {
+                Alert("Encountered an issue while posting the assessment.", AlertType.warning);
+            }
+
+            return RedirectToAction(nameof(Details), new { assessmentNo = assessment.AssessmentNo });
+        }
+
         // GET /assessments/edit/{requestNo}/{analystNo]
         [Authorize(Roles = "admin, analyst")]
+        [HttpGet]
         public IActionResult Edit(int assessmentNo)
         {
             var assessment = _svc.GetAssessment(assessmentNo);

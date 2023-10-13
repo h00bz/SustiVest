@@ -26,7 +26,7 @@ namespace SustiVest.Web.Controllers
             _svc = offerService;
             _permissions = permissions;
         }
-        [Authorize(Roles = "admin, analyst, borrower, investor")]
+        // [Authorize(Roles = "admin, analyst, borrower, investor")]
         public IActionResult Details(int offerId)
         {
             var offer = _svc.GetOffer(offerId);
@@ -35,8 +35,19 @@ namespace SustiVest.Web.Controllers
                 Alert("Offer Not Found", AlertType.warning);
                 return RedirectToAction(nameof(Index));
             }
+            if (offer.Posted)
+            {return View(offer);}
 
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+            if (!_permissions.IsUserAuthorizedToEditCompany(offer.Company.CRNo, userId, httpContext: HttpContext) && !User.IsInRole("admin") && !User.IsInRole("analyst"))
+            {
+                Alert("You are not authorized to view this offer", AlertType.warning);
+                return RedirectToAction("CompanyIndex", "Company");
+            }
             return View(offer);
+
+
+        
         }
 
         [Authorize(Roles = "admin, analyst")]
@@ -69,6 +80,43 @@ namespace SustiVest.Web.Controllers
             // Redisplay the form for editing with validation errors
             return View(o);
         }
+
+        [Authorize(Roles = "admin, borrower")]
+        [HttpGet]
+        public IActionResult PostOffer(int offerId)
+        {
+            var offer = _svc.GetOffer(offerId);
+
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+
+            if (offer == null)
+            {
+                Alert("Offer not found", AlertType.warning);
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (!_permissions.IsUserAuthorizedToEditCompany(offer.Company.CRNo, userId, httpContext: HttpContext) && !User.IsInRole("admin"))
+            {
+                Alert("You are not authorized to post this offer", AlertType.warning);
+                return RedirectToAction(nameof(Details), new { offerId = offerId });
+            }
+
+            var posted = _svc.PostOffer(offer.OfferId);
+
+            if (posted != null)
+            {
+                Alert("Offer and assessment posted successfully", AlertType.success);
+            }
+            else
+            {
+                Alert("Encountered an issue while posting the offer.", AlertType.warning);
+            }
+
+            return RedirectToAction(nameof(Details), new { offerId = offer.OfferId });
+        }
+
+
+
         [Authorize(Roles = "admin, analyst")]
         [HttpGet]
         public IActionResult Edit(int offerId)
@@ -153,7 +201,16 @@ namespace SustiVest.Web.Controllers
         public IActionResult Index(int page = 1, int size = 20, string orderBy = "OfferId", string direction = "asc")
         {
             var offers = _svc.GetOffers(page, size, orderBy, direction);
+            if (User.IsInRole("admin") || User.IsInRole("analyst"))
+            {
+                return View(offers);
+            }
+
+            offers.Data = offers.Data.Where(o => o.Posted).ToList();
+
             return View(offers);
+
+
         }
     }
 }

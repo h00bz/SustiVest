@@ -1,4 +1,5 @@
 @model Assessments
+@using System.Security.Claims;
 
 <partial name="_BreadCrumbs" model=@(new [] { ("/","Home"), ("/Assessments","Assessments"), ("",$"Assessment {Model.RequestNo}-{Model.AnalystNo}") }) />
 
@@ -58,6 +59,23 @@
 
                     <dt class="col-4 pb-1">Total Assets</dt>
                     <dd class="col-8 pb-1">@Model.TotalAssets</dd>
+
+                    @{
+                        var userId= int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.Sid).Value);
+
+                         if (userId == Model.AnalystNo  || User.IsInRole("admin") || User.IsInRole("analyst"))
+                            {
+                                <dt class="col-4 pb-1">Posted</dt>
+                                @if (Model.Posted)
+                                {
+                                    <dd class="col-8 pb-1">Yes</dd>
+                                }
+                                else
+                                {
+                                    <dd class="col-8 pb-1">No</dd>
+                                }
+                    
+                            }}
                 </dl>
             </div>
 

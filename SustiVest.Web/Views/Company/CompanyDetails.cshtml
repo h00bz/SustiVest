@@ -85,13 +85,16 @@
 </div>
 <!-- Finance Requests -->
 @{
-    var userId=int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
-if (Model.RepId==userId)
-{
-<div class="card rounded shadow p-4 mt-4">
-    <partial name="_FinanceRequests" />
-</div>
-}
+    if (User.Identity.IsAuthenticated)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+        if (Model.RepId == userId)
+        {
+            <div class="card rounded shadow p-4 mt-4">
+                <partial name="_FinanceRequests" />
+            </div>
+        }
+    }
 }
 <!-- Delete Modal -->
 <partial name="_DeleteModal" />

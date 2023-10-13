@@ -11,6 +11,8 @@
     <form asp-action="Create" method="post">
        
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="RequestNo" />
+        <input type="hidden" asp-for="CRNo" class="form-control" />
 
         <div class="mt-3">
             <label asp-for="RequestNo" class="form-label">Request No</label>

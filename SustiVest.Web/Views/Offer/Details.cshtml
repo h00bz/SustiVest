@@ -52,6 +52,30 @@
 
                     <dt class="col-4 pb-1">Analyst No.</dt>
                     <dd class="col-8 pb-1">@Model.AnalystNo</dd>
+
+                    <dt class="col-4 pb-1">Assessment</dt>
+                    <dd class="col-8 pb-1"><a asp-controller="Assessments" asp-action="Details" asp-route-assessmentNo="@Model.AssessmentNo">View
+                    Assessment</a></dd>
+                    @{if (User.Identity.IsAuthenticated)
+                    {
+                        var userId= int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.Sid).Value);
+
+                         if (userId == Model.Company.RepId  || User.IsInRole("admin") || User.IsInRole("analyst"))
+                            {
+                                <dt class="col-4 pb-1">Posted</dt>
+                                @if (Model.Posted)
+                                {
+                                    <dd class="col-8 pb-1">Yes</dd>
+                                }
+                                else
+                                {
+                                    <dd class="col-8 pb-1">No</dd>
+                                }
+                    
+                            }
+                    }
+                    }
+                    
                 </dl>
             </div>
 
@@ -66,6 +90,11 @@
                     class="btn btn-sm btn-outline-secondary" aria-label="edit offer">
                     <i class="bi bi-pen-fill" title="edit offer"></i>
                     <span class="ms-1 d-none d-md-inline">Edit</span>
+                </a>
+                <a asp-action="PostOffer" asp-route-offerId="@Model.OfferId"
+                    class="btn btn-sm btn-outline-success" aria-label="post offer">
+                    <i class="bi bi-confirm-fill" title="post offer"></i>
+                    <span class="ms-1 d-none d-md-inline">Post</span>
                 </a>
 
                 <a asp-action="Delete" asp-route-offerId="@Model.OfferId">

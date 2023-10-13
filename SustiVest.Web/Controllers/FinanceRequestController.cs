@@ -30,7 +30,7 @@ namespace SustiVest.Web.Controllers
             var financeRequest = svc.GetFinanceRequest(requestNo);
             var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
             
-            if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext))
+            if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext) && !User.IsInRole("admin") && !User.IsInRole("analyst"))
             {
                 Alert("You are not authorized to view this request", AlertType.warning);
                 return RedirectToAction("CompanyDetails", "Company", new { crNo = financeRequest.CRNo });
@@ -94,8 +94,8 @@ namespace SustiVest.Web.Controllers
                     Alert("Company Not Found", AlertType.warning);
                     return RedirectToAction("CompanyIndex", "Company", new { crNo = crNo });
                 }
-
-                if (!_permissions.IsUserAuthorizedToEditCompany(crNo, userId, httpContext: HttpContext))
+                
+                if (!_permissions.IsUserAuthorizedToEditCompany(crNo, userId, httpContext: HttpContext) && !User.IsInRole("admin") && !User.IsInRole("analyst"))
                 {
                     Alert("You are not authorized to create a request for this company", AlertType.warning);
                     return RedirectToAction("CompanyDetails", "Company", new { crNo = crNo });
@@ -107,23 +107,29 @@ namespace SustiVest.Web.Controllers
             }
         }
 
-        [HttpPost]
         [Authorize(Roles = "admin, analyst, borrower")]
+        [HttpPost]
         public IActionResult CreateRequest([Bind("Purpose, Amount, Tenor, FacilityType, CRNo, Status, DateOfRequest, Assessment")] FinanceRequest fr)
         {
-
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
 
             if (ModelState.IsValid)
             {
                 var request = svc.CreateRequest(fr);
 
-                if (request is null)
+                if (request == null)
                 {
                     Alert("Encountered issue creating request.", AlertType.warning);
                     return RedirectToAction("CompanyDetails", "Company", new { crNo = fr.CRNo });
                 }
+                if (!_permissions.IsUserAuthorizedToEditCompany(fr.CRNo, userId, httpContext: HttpContext) && !User.IsInRole("admin") && !User.IsInRole("analyst"))
+                {
+                    Alert("You are not authorized to create a request for this company", AlertType.warning);
+                    return RedirectToAction("CompanyDetails", "Company", new { crNo = fr.CRNo });
+                }
                 Alert($"Request Submitted", AlertType.info);
                 return RedirectToAction(nameof(Details), new { requestNo = request.RequestNo });
+                
             }
 
             // redisplay the form for editing
@@ -149,7 +155,7 @@ namespace SustiVest.Web.Controllers
                 Alert("Request Not Found", AlertType.warning);
                 return RedirectToAction(nameof(Details));
             }
-            if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext))
+            if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext) && !User.IsInRole("admin") && !User.IsInRole("analyst"))
             {
                 Alert("You are not authorized to edit this request", AlertType.warning);
                 return RedirectToAction(nameof(Details), new { requestNo = financeRequest.RequestNo });
@@ -159,9 +165,15 @@ namespace SustiVest.Web.Controllers
         }
 
         [Authorize (Roles = "admin, analyst, borrower")]
-        [HttpPost]
+        [HttpPost]  
         public IActionResult RequestEdit([Bind("RequestNo, Purpose, Amount, Tenor, FacilityType, Status, DateOfRequest, Assessment")] FinanceRequest fr)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+            if (!_permissions.IsUserAuthorizedToEditCompany(fr.CRNo, userId, httpContext: HttpContext) && !User.IsInRole("admin") && !User.IsInRole("analyst"))
+            {
+                Alert("You are not authorized to edit this request", AlertType.warning);
+                return RedirectToAction(nameof(Details), new { requestNo = fr.RequestNo });
+            }
             if (ModelState.IsValid)
             {
                 var request = svc.UpdateRequest(fr);
@@ -176,6 +188,12 @@ namespace SustiVest.Web.Controllers
         {
             var financeRequest = svc.GetFinanceRequest(requestNo);
             var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+            
+            if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext) && !User.IsInRole("admin") && !User.IsInRole("analyst"))
+            {
+                Alert("You are not authorized to edit this request", AlertType.warning);
+                return RedirectToAction(nameof(Details), new { requestNo = financeRequest.RequestNo });
+            }
 
             if (financeRequest == null)
             {
@@ -188,6 +206,14 @@ namespace SustiVest.Web.Controllers
 
         public IActionResult DeleteConfirm (int requestNo)
         {
+             var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+             var financeRequest = svc.GetFinanceRequest(requestNo);
+            
+            if (!_permissions.IsUserAuthorizedToEditCompany(financeRequest.CRNo, userId, httpContext: HttpContext) && !User.IsInRole("admin") && !User.IsInRole("analyst"))
+            {
+                Alert("You are not authorized to edit this request", AlertType.warning);
+                return RedirectToAction(nameof(Details), new { requestNo = financeRequest.RequestNo });
+            }
             var deleted= svc.DeleteRequest(requestNo);
             if (deleted)
             {
